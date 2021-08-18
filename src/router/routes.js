@@ -8,7 +8,7 @@ const routes = [
       { path: "", component: () => import("src/pages/Users.vue") },
       { path: "/auth", component: () => import("src/pages/Auth.vue") },
       {
-        path: "/chat/:id",
+        path: "/chat/:from/:to",
         component: () => import("src/pages/Chat.vue"),
         beforeEnter: (to, from, next) => {
           auth.onAuthStateChanged((user) => {

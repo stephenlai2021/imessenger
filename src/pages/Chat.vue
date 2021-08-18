@@ -10,7 +10,7 @@
         :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
         class="bg-grey-4 banner"
       >
-        {{ route.params.id }} is {{ store.state.online ? "Online" : "Offline" }}
+        {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
       </q-banner>
     </transition>
     <div
@@ -103,15 +103,15 @@ export default {
       store.methods.sendMessage({
         text: newMessage.value,
         from: "me",
-        to: route.params.id,
+        to: route.params.to,
         createdAt: Date.now(),
       });
       newMessage.value = "";
     };
 
     onMounted(() => {
-      store.methods.getMessages(route.params.id);
-      store.methods.getOnlineStatus(route.params.id);
+      store.methods.getMessages(route.params.to);
+      store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();    
     });
 

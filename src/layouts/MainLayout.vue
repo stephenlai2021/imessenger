@@ -163,7 +163,7 @@ export default {
       let currentPath = route.fullPath;
       if (currentPath === "/") return "SmackChat";
       // if (currentPath === "/") return store.state.userDetails.name;
-      if (currentPath === `/chat/${route.params.id}`) return route.params.id;
+      if (currentPath === `/chat/${store.state.userDetails.name}/${route.params.to}`) return route.params.to;
       // if (currentPath === `/chat/${route.params.id}`) return store.state.avatar;
       if (currentPath === "/auth") return "Login";
       return "";

@@ -53,7 +53,7 @@ export default {
       // store.state.online = user.online
       store.state.avatar = user.avatar
 
-      router.push(`/chat/${user.name}`)
+      router.push(`/chat/${store.state.userDetails.name}/${user.name}`)
       // router.push(`/chat/${user.userId}`)
     }
 
