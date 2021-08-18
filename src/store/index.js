@@ -109,10 +109,10 @@ const methods = {
       });
   },
   sendMessage(data) {
-    // let from = state.userDetails.name;
+    let from = state.userDetails.name;
 
     db.collection("chat-messages")
-      .doc(data.user)
+      .doc(from)
       .collection(data.to)
       .add({
         from: "me",
@@ -121,7 +121,7 @@ const methods = {
       })
       .then(() => (state.typing = false));
 
-    db.collection("chat-messages").doc(data.to).collection(data.user).add({
+    db.collection("chat-messages").doc(data.to).collection(from).add({
       from: "them",
       text: data.text,
       createdAt: data.createdAt,
