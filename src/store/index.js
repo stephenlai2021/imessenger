@@ -98,11 +98,11 @@ const methods = {
       .collection(to)
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
+        state.messages.length = 0;
         state.messages = snapshot.docs.map((doc) => {
           return { ...doc.data() };
         });
 
-        // state.messages.length = 0;
         // snapshot.docs.forEach((doc) => {
         //   state.messages.push({ ...doc.data() });
         // });
