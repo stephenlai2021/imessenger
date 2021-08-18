@@ -28,7 +28,7 @@
         :avatar="message.from === 'me' ? store.state.userDetails.avatar : store.state.avatar"
         :text="[message.text]"
         :sent="message.from === 'me'"
-        stamp="7 minutes ago"
+        :stamp="message.createdAt"
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
       >
       </q-chat-message>
@@ -104,7 +104,7 @@ export default {
         text: newMessage.value,
         from: "me",
         to: route.params.to,
-        createdAt: Date.now(),
+        createdAt: new Date().toLocaleString(),
       });
       newMessage.value = "";
     };
