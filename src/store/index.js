@@ -1,4 +1,4 @@
-import Vue, { reactive } from "vue";
+import { reactive } from "vue";
 import { auth, db } from "src/boot/firebase";
 import router from "../router";
 
@@ -85,8 +85,8 @@ const methods = {
           console.log("user is offline");
         });
 
-      console.log("user logged out");
-      state.userDetails = {};
+      // console.log("user logged out");
+      // state.userDetails = {};
     });
   },
   getMessages(to) {
