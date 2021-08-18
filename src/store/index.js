@@ -93,12 +93,13 @@ const methods = {
     // console.log("to: ", to);
     let from = state.userDetails.name;
 
+    state.messages.length = 0
+    
     db.collection("chat-messages")
       .doc(from)
       .collection(to)
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
-        state.messages = [];
         state.messages = snapshot.docs.map((doc) => {
           return { ...doc.data() };
         });
