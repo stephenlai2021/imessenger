@@ -41,6 +41,7 @@ const methods = {
       }
       if (!user) {
         console.log("there is no user | auth state change");
+        state.userDetails = {}
         state.online = false;
         router.push("/auth");
       }
@@ -88,9 +89,9 @@ const methods = {
       state.userDetails = {};
     });
   },
-  getMessages(to) {
+  getMessages(from, to) {
     console.log("to: ", to);
-    let from = state.userDetails.name;
+    // let from = state.userDetails.name;
 
     db.collection("chat-messages")
       .doc(from)
@@ -108,10 +109,10 @@ const methods = {
       });
   },
   sendMessage(data) {
-    let from = state.userDetails.name;
+    // let from = state.userDetails.name;
 
     db.collection("chat-messages")
-      .doc(from)
+      .doc(data.user)
       .collection(data.to)
       .add({
         from: "me",
@@ -120,7 +121,7 @@ const methods = {
       })
       .then(() => (state.typing = false));
 
-    db.collection("chat-messages").doc(data.to).collection(from).add({
+    db.collection("chat-messages").doc(data.to).collection(data.user).add({
       from: "them",
       text: data.text,
       createdAt: data.createdAt,

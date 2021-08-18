@@ -18,7 +18,7 @@
       class="q-pa-md column col justify-end messages"
       :style="{ marginTop: store.state.online ? '0px' : '50px' }"
     >
-      <q-chat-message :label="store.state.today" />
+      <!-- <q-chat-message :label="store.state.today" /> -->
       <q-chat-message
         v-for="message in store.state.messages"
         :key="message.text"
@@ -103,6 +103,7 @@ export default {
       store.methods.sendMessage({
         text: newMessage.value,
         from: "me",
+        user: route.params.from,
         to: route.params.to,
         createdAt: new Date().toLocaleString(),
       });
@@ -110,7 +111,7 @@ export default {
     };
 
     onMounted(() => {
-      store.methods.getMessages(route.params.to);
+      store.methods.getMessages(route.params.from, route.params.to);
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();    
     });
