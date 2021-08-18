@@ -89,16 +89,16 @@ const methods = {
       state.userDetails = {};
     });
   },
-  getMessages(from, to) {
-    console.log("to: ", to);
-    // let from = state.userDetails.name;
+  getMessages(to) {
+    // console.log("to: ", to);
+    let from = state.userDetails.name;
 
     db.collection("chat-messages")
       .doc(from)
       .collection(to)
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
-        state.messages.length = 0;
+        state.messages = [];
         state.messages = snapshot.docs.map((doc) => {
           return { ...doc.data() };
         });

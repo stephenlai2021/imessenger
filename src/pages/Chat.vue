@@ -111,7 +111,8 @@ export default {
     };
 
     onMounted(() => {
-      store.methods.getMessages(route.params.from, route.params.to);
+      // store.methods.getMessages(route.params.from, route.params.to);
+      store.methods.getMessages(route.params.to);
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();    
     });
