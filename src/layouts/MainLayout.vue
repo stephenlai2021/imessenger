@@ -10,51 +10,38 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-        <!-- <q-btn
-          icon="arrow_back"
-          flat
-          dense
-          to="/"
-          v-if="route.fullPath.includes('/chat')"
-        /> -->
-
-        <q-toolbar-title class="">
-          {{ title }}
+        <q-toolbar-title>
+          {{ title
+          }}<q-spinner-dots
+            v-if="
+              store.state.typing.typing &&
+              route.fullPath.includes(
+                `/chat/${route.params.from}/${route.params.to}`
+              )
+            "
+            size="2rem"
+          />
         </q-toolbar-title>
 
-        <!-- <q-btn
-          v-if="!store.state.userDetails.name"
-          icon="account_circle"
-          flat
-          dense
-          no-caps
-          to="/auth"
-          label="Login"
-          class="absolute-right q-mr-sm"
-        /> -->
-
-        <q-btn
+        <q-avatar
           v-if="store.state.userDetails.name"
-          class="absolute-right q-mr-sm"
-          no-caps
-          dense
-          flat
-        >
-          <!-- @click="store.methods.logoutUser()" -->
-          <q-avatar>
-            <img :src="store.state.userDetails.avatar" alt="my avatar" />
-          </q-avatar>
-
-          <!-- <span class="logout-text">
-            Logout
-            <br />
-            {{
-              store.state.userDetails.name.length >= 6
-                ? store.state.userDetails.name.substring(0, 5) + "."
-                : store.state.userDetails.name
-            }}
-          </span> -->
-        </q-btn>
+          font-size="24px"
+          icon="people"
+          @click="router.push('/')"
+        />
+        <q-avatar
+          v-if="store.state.userDetails.name"
+          font-size="24px"
+          icon="logout"
+          @click="store.methods.logoutUser()"
+        />
+        <q-avatar v-if="store.state.userDetails.name">
+          <img
+            style="width: 24px; height: 24px"
+            :src="store.state.userDetails.avatar"
+            alt="my avatar"
+          />
+        </q-avatar>
       </q-toolbar>
     </q-header>
 
@@ -72,7 +59,8 @@
 
           <q-item-section>{{ link.title }}</q-item-section>
         </q-item> -->
-        <q-item
+
+        <!-- <q-item
           v-if="store.state.userDetails.name"
           clickable
           v-ripple
@@ -109,7 +97,7 @@
             <q-icon color="primary" name="logout" />
           </q-item-section>
           <q-item-section>Logout</q-item-section>
-        </q-item>
+        </q-item> -->
       </q-list>
     </q-drawer>
 

@@ -13,7 +13,7 @@
         {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
       </q-banner>
 
-      <q-banner
+      <!-- <q-banner
         class="bg-grey-4 banner"
         :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
         v-if="
@@ -25,7 +25,7 @@
         style="text-align: center"
       >
         <q-spinner-dots size="2rem" />
-      </q-banner>
+      </q-banner> -->
     </transition-group>
 
     <div
@@ -57,8 +57,8 @@
         <q-spinner-dots size="2rem" />
       </q-chat-message> -->
       <q-chat-message
-        v-for="message in store.state.messages"
-        :key="message.text"
+        v-for="(message, index) in store.state.messages"
+        :key="index"
         :name="
           message.from === 'me' ? store.state.userDetails.name : route.params.to
         "
@@ -87,7 +87,7 @@
             @keydown.enter="sendMessage"
             @keydown="sendTypingIndicator()"
           >
-            <template v-slot:after>
+            <!-- <template v-slot:after>
               <q-btn
                 round
                 dense
@@ -96,6 +96,27 @@
                 icon="send"
                 color="white"
               />
+            </template> -->
+            <template v-slot:append>
+              <q-fab color="primary" icon="list" direction="left" flat padding="2px">
+                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="videocam" />
+                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="image" />
+                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="phone" />
+                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="photo_camera" />
+                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="place" />
+              </q-fab>
+              <!-- <q-icon
+                name="list"
+                color="primary"
+                class="q-mx-sm"
+                @click="sendMessage"
+              /> -->
+              <!-- <q-icon name="phone" color="primary" class="q-mx-sm" @click="sendMessage" />
+              <q-icon name="videocam" color="primary" class="q-mx-sm" @click="sendMessage" />
+              <q-icon name="image" color="primary" class="q-mx-sm" @click="sendMessage" />
+              <q-icon name="photo_camera" color="primary" class="q-mx-sm" @click="sendMessage" />
+              <q-icon name="place" color="primary" class="q-mx-sm" @click="sendMessage" /> -->
+              <!-- <q-icon name="send" color="primary" @click="sendMessage" /> -->
             </template>
           </q-input>
         </q-form>
@@ -128,13 +149,6 @@ export default {
     const newMessage = ref("");
     const showMessages = ref(false);
 
-    // watch(
-    //   () => store.state.typing,
-    //   () => {
-    //     store.methods.getTypingIndicator(route.params.to, route.params.from);
-    //   }
-    // );
-
     watch(
       () => store.state.messages,
       () => {
@@ -153,6 +167,8 @@ export default {
     };
 
     const sendMessage = () => {
+      if (newMessage.value === "") return;
+
       store.methods.sendMessage({
         text: newMessage.value,
         from: "me",
@@ -161,6 +177,10 @@ export default {
       });
       newMessage.value = "";
     };
+
+    const onClick = () => {
+      console.log('hi, there !')
+    }
 
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
@@ -180,6 +200,7 @@ export default {
       newMessage,
       sendMessage,
       sendTypingIndicator,
+      onClick
     };
   },
 };
