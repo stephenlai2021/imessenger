@@ -60,7 +60,7 @@
         v-for="message in store.state.messages"
         :key="message.text"
         :name="
-          message.from === 'me' ? store.state.userDetails.name : route.params.id
+          message.from === 'me' ? store.state.userDetails.name : route.params.to
         "
         :avatar="
           message.from === 'me'
