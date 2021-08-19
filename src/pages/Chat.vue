@@ -13,7 +13,7 @@
         {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
       </q-banner>
 
-      <!-- <q-banner
+      <q-banner
         class="bg-grey-4 banner"
         :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
         v-if="
@@ -25,7 +25,7 @@
         style="text-align: center"
       >
         <q-spinner-dots size="2rem" />
-      </q-banner> -->
+      </q-banner>
     </transition-group>
 
     <div

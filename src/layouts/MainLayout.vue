@@ -11,8 +11,8 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title>
-          {{ title
-          }}<q-spinner-dots
+          {{ title }}
+          <!-- <q-spinner-dots
             v-if="
               store.state.typing.typing &&
               route.fullPath.includes(
@@ -20,7 +20,7 @@
               )
             "
             size="2rem"
-          />
+          /> -->
         </q-toolbar-title>
 
         <q-avatar
