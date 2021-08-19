@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, watchEffect } from "vue";
 import { auth, db } from "src/boot/firebase";
 import router from "../router";
 
@@ -12,7 +12,7 @@ const state = reactive({
   today: null,
   leftDrawerOpen: false,
   typing: false,
-  avatar: null
+  avatar: null,
 });
 
 const methods = {
@@ -41,7 +41,7 @@ const methods = {
       }
       if (!user) {
         console.log("there is no user | auth state change");
-        state.userDetails = {}
+        state.userDetails = {};
         state.online = false;
         router.push("/auth");
       }
@@ -56,7 +56,7 @@ const methods = {
         db.collection("chat-users").doc(user.uid).set({
           name: data.name,
           email: data.email,
-          online: true,          
+          online: true,
         });
       })
       .catch((err) => {
@@ -89,38 +89,36 @@ const methods = {
       // state.userDetails = {};
     });
   },
-  getMessages(to) {
-    // console.log("to: ", to);
-    let from = state.userDetails.name;
-
-    state.messages.length = 0
-    
-    db.collection("chat-messages")
+  getMessages(from, to) {
+    const unsub = db.collection("chat-messages")
       .doc(from)
       .collection(to)
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
+        console.log('snapshot: getMessages')
         state.messages = snapshot.docs.map((doc) => {
-          return { ...doc.data() };
+          return doc.data()
         });
 
+        // state.messages.length = 0;
         // snapshot.docs.forEach((doc) => {
         //   state.messages.push({ ...doc.data() });
         // });
       });
+    
+     watchEffect((onInvalidate) => {
+       // unsub from prev collection when watcher is stopped (component unmounted)
+       onInvalidate(() => unsub());
+     });
   },
   sendMessage(data) {
     let from = state.userDetails.name;
 
-    db.collection("chat-messages")
-      .doc(from)
-      .collection(data.to)
-      .add({
-        from: "me",
-        text: data.text,
-        createdAt: data.createdAt,
-      })
-      .then(() => (state.typing = false));
+    db.collection("chat-messages").doc(from).collection(data.to).add({
+      from: "me",
+      text: data.text,
+      createdAt: data.createdAt,
+    });
 
     db.collection("chat-messages").doc(data.to).collection(from).add({
       from: "them",
@@ -129,21 +127,31 @@ const methods = {
     });
   },
   getUsers() {
-    db.collection("chat-users").onSnapshot((snap) => {
+    const unsub = db.collection("chat-users").onSnapshot((snap) => {
+      console.log('snapshot: getUsers')
       state.users = snap.docs.map((doc) => {
         return { ...doc.data(), userId: doc.id };
       });
     });
+
+    watchEffect((onInvalidate) => {
+      onInvalidate(() => unsub());
+    });
   },
   getOnlineStatus(id) {
-    db.collection("chat-users")
+    const unsub = db.collection("chat-users")
       .where("name", "==", id)
       .onSnapshot((snapshot) => {
+        console.log("snapshot: getOnlineStatus");
         snapshot.docs.map((doc) => {
           state.online = doc.data().online;
           console.log("state: ", state.online);
         });
       });
+    
+    watchEffect((onInvalidate) => {
+      onInvalidate(() => unsub());
+    });
   },
   getToday() {
     state.today = new Date().toLocaleString();

@@ -1,4 +1,4 @@
-<template>      
+<template>
   <q-page class="flex column page-chat">
     <transition
       appear
@@ -13,8 +13,10 @@
         {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
       </q-banner>
     </transition>
+
     <div
       ref="chats"
+      :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
       :style="{ marginTop: store.state.online ? '0px' : '50px' }"
     >
@@ -25,7 +27,11 @@
         :name="
           message.from === 'me' ? store.state.userDetails.name : route.params.id
         "
-        :avatar="message.from === 'me' ? store.state.userDetails.avatar : store.state.avatar"
+        :avatar="
+          message.from === 'me'
+            ? store.state.userDetails.avatar
+            : store.state.avatar
+        "
         :text="[message.text]"
         :sent="message.from === 'me'"
         :stamp="message.createdAt"
@@ -66,7 +72,15 @@
 </template>
 
 <script>
-import { ref, onMounted, inject, watch, watchEffect, onUpdated } from "vue";
+import {
+  ref,
+  onUnmounted,
+  onMounted,
+  inject,
+  watch,
+  watchEffect,
+  onUpdated,
+} from "vue";
 import { useRoute } from "vue-router";
 
 export default {
@@ -75,9 +89,10 @@ export default {
 
     const route = useRoute();
 
-    const chats = ref(null)
-    const input = ref(null)
+    const chats = ref(null);
+    const input = ref(null);
     const newMessage = ref("");
+    const showMessages = ref(false);
 
     watchEffect(() => {
       console.log("online: ", store.state.online);
@@ -89,11 +104,15 @@ export default {
       }, 5000);
     });
 
-    watch(() => store.state.messages, () => {
-      setTimeout(() => {
-        window.scrollTo(0, chats.value.scrollHeight)
-      }, 20)
-    })
+    watch(
+      () => store.state.messages,
+      () => {
+        setTimeout(() => {
+          window.scrollTo(0, chats.value.scrollHeight);
+          showMessages.value = true;
+        }, 20);
+      }
+    );
 
     const showIndicator = () => {
       store.state.typing = true;
@@ -103,7 +122,6 @@ export default {
       store.methods.sendMessage({
         text: newMessage.value,
         from: "me",
-        user: route.params.from,
         to: route.params.to,
         createdAt: new Date().toLocaleString(),
       });
@@ -111,18 +129,21 @@ export default {
     };
 
     onMounted(() => {
-      // store.methods.getMessages(route.params.from, route.params.to);
-      store.methods.getMessages(route.params.to);
+      store.methods.getMessages(route.params.from, route.params.to);
       store.methods.getOnlineStatus(route.params.to);
-      store.methods.getToday();    
+      store.methods.getToday();
     });
+
+    onUnmounted(() => {
+      // store.state.online = false
+    })
 
     return {
       store,
       route,
       chats,
       input,
-      // messages,
+      showMessages,
       newMessage,
       sendMessage,
       showIndicator,
@@ -150,7 +171,7 @@ export default {
 .page-chat {
   background: #e2dfd5;
   &:after {
-    content: '';
+    content: "";
     display: block;
     position: fixed;
     left: 0;
