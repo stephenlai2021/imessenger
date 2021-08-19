@@ -166,7 +166,7 @@ const methods = {
         .then(() => {
           state.typing.typing = false;
         });
-    }, 5000)
+    }, 1000)
   },
   getTypingIndicator(from, to) {
     const unsub = db
