@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex column page-chat">
-    <transition-group
+    <transition
       appear
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
@@ -12,21 +12,7 @@
       >
         {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
       </q-banner>
-
-      <q-banner
-        class="bg-grey-4 banner"
-        :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
-        v-if="
-          store.state.typing.typing &&
-          route.fullPath.includes(
-            `/chat/${route.params.from}/${route.params.to}`
-          )
-        "
-        style="text-align: center"
-      >
-        <q-spinner-dots size="2rem" />
-      </q-banner>
-    </transition-group>
+    </transition>
 
     <div
       ref="chats"
@@ -34,44 +20,29 @@
       class="q-pa-md column col justify-end messages"
       :style="{ marginTop: store.state.online ? '0px' : '50px' }"
     >
-      <q-chat-message :label="new Date().toLocaleDateString()" />
-
-      <!-- <q-chat-message
-        v-if="
-          store.state.typing.typing &&
-          route.fullPath.includes(
-            `/chat/${route.params.from}/${route.params.to}`
-          )
-        "
-        :name="
-          store.state.typing.from === 'me'
-            ? store.state.userDetails.name
-            : route.params.id
-        "
-        :avatar="
-          store.state.typing.from === 'me'
-            ? store.state.userDetails.avatar
-            : store.state.avatar
-        "
-      >
-        <q-spinner-dots size="2rem" />
-      </q-chat-message> -->
-      <q-chat-message
-        v-for="message in store.state.messages"
-        :key="message.text"
-        :name="
-          message.from === 'me' ? store.state.userDetails.name : route.params.id
-        "
-        :avatar="
-          message.from === 'me'
-            ? store.state.userDetails.avatar
-            : store.state.avatar
-        "
-        :text="[message.text]"
-        :sent="message.from === 'me'"
-        :stamp="message.createdAt"
-        :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
-      />
+      <div v-for="(message, index) in store.state.messages" :key="index">
+        <q-chat-message :label="new Date().toLocaleDateString()" />
+        <q-chat-message
+          :name="store.state.userDetails.name"
+          :avatar="store.state.userDetails.avatar"
+          :text="[message.text]"
+          :sent="message.from === 'me'"
+          :stamp="message.createdAt"
+          bg-color="white"
+        >
+          <q-spinner-dots v-if="typing" size="2rem" />
+        </q-chat-message>
+        <q-chat-message
+          :name="route.params.id"
+          :avatar="store.state.avatar"
+          :text="[message.text]"
+          :sent="message.from === 'them'"
+          :stamp="message.createdAt"
+          bg-color="light-green-2"
+        >
+          <q-spinner-dots v-if="typing" size="2rem" />
+        </q-chat-message>
+      </div>
     </div>
     <q-footer elevated>
       <q-toolbar>
@@ -85,7 +56,7 @@
             dense
             bg-color="white"
             @keydown.enter="sendMessage"
-            @keydown="sendTypingIndicator()"
+            @keyup="showIndicator()"
           >
             <template v-slot:after>
               <q-btn
@@ -127,13 +98,17 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
+    const typing = ref(false);
 
-    // watch(
-    //   () => store.state.typing,
-    //   () => {
-    //     store.methods.getTypingIndicator(route.params.to, route.params.from);
-    //   }
-    // );
+    watchEffect(() => {
+      console.log("online: ", store.state.online);
+
+      setInterval(() => {
+        if (store.state.typing) {
+          store.state.typing = false;
+        }
+      }, 5000);
+    });
 
     watch(
       () => store.state.messages,
@@ -145,11 +120,8 @@ export default {
       }
     );
 
-    const sendTypingIndicator = () => {
-      store.methods.sendTypingIndicator({
-        from: "me",
-        to: route.params.to,
-      });
+    const showIndicator = () => {
+      store.state.typing = true;
     };
 
     const sendMessage = () => {
@@ -164,11 +136,12 @@ export default {
 
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
-      store.methods.getTypingIndicator(route.params.from, route.params.to);
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();
+    });
 
-      console.log("messages: ", store.state.messages);
+    onUnmounted(() => {
+      // store.state.online = false
     });
 
     return {
@@ -176,10 +149,11 @@ export default {
       route,
       chats,
       input,
+      typing,
       showMessages,
       newMessage,
       sendMessage,
-      sendTypingIndicator,
+      showIndicator,
     };
   },
 };

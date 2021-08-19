@@ -2,35 +2,27 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <!-- <q-btn
+        <q-btn
           flat
           dense
           round
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        /> -->
-        <q-btn
+        />
+        <!-- <q-btn
           icon="arrow_back"
           flat
           dense
           to="/"
           v-if="route.fullPath.includes('/chat')"
-        />
+        /> -->
 
-        <q-toolbar-title class="absolute-center">
-          <!-- <q-avatar v-if="route.fullPath.includes('/chat')"> -->
-          <!-- <q-avatar>
-            <img :src="title" alt="user avatar" />
-          </q-avatar> -->
-          <!-- <span v-else>
-            {{ title }}
-          </span> -->
-
+        <q-toolbar-title class="">
           {{ title }}
         </q-toolbar-title>
 
-        <q-btn
+        <!-- <q-btn
           v-if="!store.state.userDetails.name"
           icon="account_circle"
           flat
@@ -39,23 +31,21 @@
           to="/auth"
           label="Login"
           class="absolute-right q-mr-sm"
-        />
-        <!-- icon="account_circle" -->
-        <!-- icon="logout" -->
+        /> -->
+
         <q-btn
-          v-else
+          v-if="store.state.userDetails.name"
           class="absolute-right q-mr-sm"
           no-caps
           dense
           flat
-          @click="store.methods.logoutUser()"
         >
+          <!-- @click="store.methods.logoutUser()" -->
           <q-avatar>
             <img :src="store.state.userDetails.avatar" alt="my avatar" />
           </q-avatar>
-          <!-- <q-icon name="logout" /> -->
 
-          <span class="logout-text">
+          <!-- <span class="logout-text">
             Logout
             <br />
             {{
@@ -63,7 +53,7 @@
                 ? store.state.userDetails.name.substring(0, 5) + "."
                 : store.state.userDetails.name
             }}
-          </span>
+          </span> -->
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -75,15 +65,51 @@
       class="bg-grey-1"
     >
       <q-list>
-        <q-item-label header class="text-grey-8">
-          Essential Links
-        </q-item-label>
+        <!-- <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon color="primary" :name="link.icon" />
+          </q-item-section>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+          <q-item-section>{{ link.title }}</q-item-section>
+        </q-item> -->
+        <q-item
+          v-if="store.state.userDetails.name"
+          clickable
+          v-ripple
+          @click="router.push('/')"
+          class="q-mx-lg"
+        >
+          <q-item-section avatar>
+            <q-icon color="primary" name="people" />
+          </q-item-section>
+          <q-item-section>Users</q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="!store.state.userDetails.name"
+          clickable
+          v-ripple
+          @click="router.push('/auth')"
+          class="q-mx-lg"
+        >
+          <q-item-section avatar>
+            <q-icon color="primary" name="login" />
+          </q-item-section>
+          <q-item-section>Login/Register</q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="store.state.userDetails.name"
+          clickable
+          v-ripple
+          @click="store.methods.logoutUser()"
+          class="q-mx-lg"
+        >
+          <q-item-section avatar>
+            <q-icon color="primary" name="logout" />
+          </q-item-section>
+          <q-item-section>Logout</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -94,94 +120,64 @@
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
-
-const linksList = [
-  {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
-  },
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
-  },
-  {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
-  },
-];
-
 import { ref, computed, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
-  components: {
-    EssentialLink,
-  },
-
   setup() {
     const route = useRoute();
     const router = useRouter();
 
     const store = inject("store");
 
+    const links = ref([
+      {
+        title: "Users",
+        icon: "people",
+      },
+      {
+        title: "Login/Register",
+        icon: "login",
+      },
+      {
+        title: "Logout",
+        icon: "logout",
+      },
+    ]);
+
     const leftDrawerOpen = ref(false);
 
     // computed
     const title = computed(() => {
-      // console.log('route: ', route)
       let currentPath = route.fullPath;
       if (currentPath === "/") return "SmackChat";
-      // if (currentPath === "/") return store.state.userDetails.name;
-      if (currentPath === `/chat/${store.state.userDetails.name}/${route.params.to}`) return route.params.to;
-      // if (currentPath === `/chat/${route.params.id}`) return store.state.avatar;
+      if (
+        currentPath ===
+        `/chat/${store.state.userDetails.name}/${route.params.to}`
+      )
+        return route.params.to;
       if (currentPath === "/auth") return "Login";
       return "";
     });
 
     // methods
     const toggleLeftDrawer = () => {
-      // leftDrawerOpen.value = !leftDrawerOpen.value;
       store.state.leftDrawerOpen = !store.state.leftDrawerOpen;
+    };
+
+    const sayHi = () => {
+      console.log("hi");
     };
 
     return {
       store,
-      essentialLinks: linksList,
-      leftDrawerOpen,
+      links,
       title,
       route,
+      router,
+      leftDrawerOpen,
       toggleLeftDrawer,
+      sayHi,
     };
   },
 };
@@ -203,5 +199,10 @@ export default {
 }
 .title {
   border: 1px solid white;
+}
+.q-item {
+}
+.q-item__section {
+  // text-align: center;
 }
 </style>

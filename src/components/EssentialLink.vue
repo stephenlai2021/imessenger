@@ -1,9 +1,6 @@
 <template>
   <q-item
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
   >
     <q-item-section
       v-if="icon"
@@ -14,18 +11,14 @@
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { inject } from 'vue'
 
-export default defineComponent({
-  name: 'EssentialLink',
+export default {
   props: {
     title: {
       type: String,
@@ -46,6 +39,13 @@ export default defineComponent({
       type: String,
       default: ''
     }
+  },
+  setup() {
+     const store = inject("store");
+
+     return {
+       store
+     }
   }
-})
+}
 </script>

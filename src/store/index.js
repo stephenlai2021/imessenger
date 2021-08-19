@@ -11,7 +11,10 @@ const state = reactive({
   online: false,
   today: null,
   leftDrawerOpen: false,
-  typing: false,
+  typing: {
+    from: null,
+    typing: false
+  },
   avatar: null,
 });
 
@@ -84,20 +87,18 @@ const methods = {
         .then(() => {
           console.log("user is offline");
         });
-
-      // console.log("user logged out");
-      // state.userDetails = {};
     });
   },
   getMessages(from, to) {
-    const unsub = db.collection("chat-messages")
+    const unsub = db
+      .collection("chat-messages")
       .doc(from)
       .collection(to)
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
-        console.log('snapshot: getMessages')
+        console.log("snapshot: getMessages");
         state.messages = snapshot.docs.map((doc) => {
-          return doc.data()
+          return doc.data();
         });
 
         // state.messages.length = 0;
@@ -105,14 +106,21 @@ const methods = {
         //   state.messages.push({ ...doc.data() });
         // });
       });
-    
-     watchEffect((onInvalidate) => {
-       // unsub from prev collection when watcher is stopped (component unmounted)
-       onInvalidate(() => unsub());
-     });
+
+    watchEffect((onInvalidate) => {
+      onInvalidate(() => unsub());
+    });
   },
   sendMessage(data) {
     let from = state.userDetails.name;
+
+    db.collection("chat-messages")
+      .doc(data.to)
+      .collection(from)
+      .doc("typing indicator")
+      .update({
+        typing: false,
+      });
 
     db.collection("chat-messages").doc(from).collection(data.to).add({
       from: "me",
@@ -124,11 +132,59 @@ const methods = {
       from: "them",
       text: data.text,
       createdAt: data.createdAt,
-    });
+    });    
+  },
+  sendTypingIndicator(data) {
+    let from = state.userDetails.name;
+
+    db.collection("chat-messages")
+      .doc(from)
+      .collection(data.to)
+      .doc("typing indicator")
+      .set({
+        from: 'me',
+        typing: false,
+      })
+    
+    db.collection("chat-messages")
+      .doc(data.to)
+      .collection(from)
+      .doc("typing indicator")
+      .set({
+        from: 'them',
+        typing: true,
+      });
+    
+    setTimeout(() => {
+      db.collection("chat-messages")
+        .doc(data.to)
+        .collection(from)
+        .doc("typing indicator")
+        .update({
+          typing: false,
+        })
+        .then(() => {
+          state.typing.typing = false;
+        });
+    }, 5000)
+  },
+  getTypingIndicator(from, to) {
+    const unsub = db
+      .collection("chat-messages")
+      .doc(from)
+      .collection(to)
+      .doc("typing indicator")
+      .onSnapshot(doc => {
+        state.typing = doc.data()
+      });
+    
+     watchEffect((onInvalidate) => {
+       onInvalidate(() => unsub());
+     });
   },
   getUsers() {
     const unsub = db.collection("chat-users").onSnapshot((snap) => {
-      console.log('snapshot: getUsers')
+      console.log("snapshot: getUsers");
       state.users = snap.docs.map((doc) => {
         return { ...doc.data(), userId: doc.id };
       });
@@ -139,7 +195,8 @@ const methods = {
     });
   },
   getOnlineStatus(id) {
-    const unsub = db.collection("chat-users")
+    const unsub = db
+      .collection("chat-users")
       .where("name", "==", id)
       .onSnapshot((snapshot) => {
         console.log("snapshot: getOnlineStatus");
@@ -148,7 +205,7 @@ const methods = {
           console.log("state: ", state.online);
         });
       });
-    
+
     watchEffect((onInvalidate) => {
       onInvalidate(() => unsub());
     });
