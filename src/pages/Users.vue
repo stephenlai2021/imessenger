@@ -8,6 +8,15 @@
       <q-spinner color="primary" size="3em" />
     </div>
     <q-list v-else class="full-width">
+      <q-input
+        outlined
+        rounded
+        label="Message"
+        dense
+        bg-color="white"
+        class="q-mx-md q-mt-sm q-mb-lg"
+        style=""
+      />
       <q-item
         v-for="(user, index) in store.getters.filteredUsers()"
         :key="index"
@@ -17,16 +26,20 @@
         @click="goChat(user)"
       >
         <q-item-section avatar>
-          <q-avatar>
-            <img :src="user.avatar" alt="user avatar">
+          <q-avatar size="50px" style="position: relative">
+            <img :src="user.avatar" alt="user avatar" />
           </q-avatar>
-          <!-- <q-avatar color="primary" text-color="white">
-            {{ user.name.charAt(0) }}
-          </q-avatar> -->
+          <q-badge
+            rounded
+            class="float-right"
+            style="position: absolute; left: 55px; top: 45px"
+            :color="user.online ? 'light-green-5' : 'grey-4'"
+          />
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ user.name }}</q-item-label>
+          <q-item-label class="text-subtitle2">{{ user.name }}</q-item-label>
+          <q-item-label>{{ user.email }}</q-item-label>
         </q-item-section>
 
         <q-item-section side>
@@ -41,21 +54,22 @@
 
 <script>
 import { ref, onMounted, inject } from "vue";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const store = inject("store");
 
-    const router = useRouter()
+    const router = useRouter();
 
     const goChat = (user) => {
-      // store.state.online = user.online
-      store.state.avatar = user.avatar
+      store.state.online = user.online;
+      store.state.user = user;
+      store.state.avatar = user.avatar;
 
-      router.push(`/chat/${store.state.userDetails.name}/${user.name}`)
+      router.push(`/chat/${store.state.userDetails.name}/${user.name}`);
       // router.push(`/chat/${user.userId}`)
-    }
+    };
 
     onMounted(() => {
       store.methods.getUsers();
@@ -64,7 +78,7 @@ export default {
     return {
       store,
 
-      goChat
+      goChat,
     };
   },
 };

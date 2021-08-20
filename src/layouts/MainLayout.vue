@@ -1,103 +1,132 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+  <q-layout view="lHr Lpr lFr">
+    <q-header elevated v-if="!route.fullPath.includes('/config')">
+      <!-- <q-toolbar class="q-mx-sm flex"> -->
+      <q-toolbar class="">
         <q-btn
           flat
           dense
           round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-        <q-toolbar-title>
-          {{ title }}
-          <!-- <q-spinner-dots
-            v-if="
-              store.state.typing.typing &&
-              route.fullPath.includes(
-                `/chat/${route.params.from}/${route.params.to}`
-              )
-            "
-            size="2rem"
-          /> -->
-        </q-toolbar-title>
-
-        <q-avatar
-          v-if="store.state.userDetails.name"
-          font-size="24px"
-          icon="people"
+          icon="arrow_back"
+          aria-label="Arrow Bacj"
           @click="router.push('/')"
+          v-if="route.fullPath.includes(`/chat`)"
         />
-        <q-avatar
-          v-if="store.state.userDetails.name"
-          font-size="24px"
-          icon="logout"
-          @click="store.methods.logoutUser()"
-        />
-        <q-avatar v-if="store.state.userDetails.name">
-          <img
-            style="width: 24px; height: 24px"
-            :src="store.state.userDetails.avatar"
-            alt="my avatar"
+        <q-toolbar-title class="" style="position: relative">
+          <span v-if="!route.fullPath.includes(`/auth`)">
+            <q-avatar v-if="userPage || !chatPage">
+              <img
+                style="width: 35px; height: 35px; cursor: pointer"
+                :src="store.state.userDetails.avatar"
+                alt="my avatar"
+                @click="toggleLeftDrawer"
+              />
+              <!-- @click="router.push('/config')" -->
+            </q-avatar>
+            <q-avatar v-if="chatPage || !userPage">
+              <img
+                style="width: 35px; height: 35px"
+                :src="store.state.avatar"
+                alt="user avatar"
+              />
+              <q-badge
+                rounded
+                style="position: absolute; top: 25px"
+                :color="store.state.online ? 'light-green-5' : 'grey-4'"
+              />
+            </q-avatar>
+          </span>
+          {{ title }}
+          <q-spinner-dots
+            class="float-right q-mr-md"
+            v-if="store.state.typing.typing && route.fullPath.includes(`/chat`)"
+            size="2rem"
           />
-        </q-avatar>
+        </q-toolbar-title>
+        <q-btn
+          flat
+          dense
+          round
+          icon="face"
+          aria-label="Face"
+          @click="toggleRightDrawer"
+          v-if="route.fullPath.includes(`/`)"
+        />
       </q-toolbar>
     </q-header>
+
+    <q-drawer
+      show-if-above
+      v-model="store.state.rightDrawerOpen"
+      @click="toggleRightDrawer"
+      side="right"
+      bordered
+    >
+      <!-- drawer content -->
+      right drawer
+    </q-drawer>
 
     <q-drawer
       v-model="store.state.leftDrawerOpen"
       show-if-above
       bordered
+      side="left"
       class="bg-grey-1"
     >
+      <q-toolbar></q-toolbar>
+      <div class="flex row justify-center">
+        <img
+          :src="
+            store.state.userDetails.avatar
+              ? store.state.userDetails.avatar
+              : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+          "
+          alt="my avatar"
+          style="width: 90px"
+        />
+      </div>
+      <p class="text-center q-mt-sm text-h5 text-bold">
+        {{ store.state.userDetails.name }}
+      </p>
       <q-list>
-        <!-- <q-item clickable v-ripple>
+        <q-item>
           <q-item-section avatar>
-            <q-icon color="primary" :name="link.icon" />
+            <q-icon
+              color="white"
+              name="dark_mode"
+              class="icon"
+              style="background: black"
+            />
           </q-item-section>
 
-          <q-item-section>{{ link.title }}</q-item-section>
-        </q-item> -->
-
-        <!-- <q-item
-          v-if="store.state.userDetails.name"
-          clickable
-          v-ripple
-          @click="router.push('/')"
-          class="q-mx-lg"
-        >
-          <q-item-section avatar>
-            <q-icon color="primary" name="people" />
-          </q-item-section>
-          <q-item-section>Users</q-item-section>
+          <q-item-section>Dark Mode</q-item-section>
+          <q-toggle v-model="store.state.dark" color="black" />
         </q-item>
-
-        <q-item
-          v-if="!store.state.userDetails.name"
-          clickable
-          v-ripple
-          @click="router.push('/auth')"
-          class="q-mx-lg"
-        >
+        <q-item>
           <q-item-section avatar>
-            <q-icon color="primary" name="login" />
+            <q-icon
+              color="white"
+              name="translate"
+              class="icon"
+              style="background: #2196f3"
+            />
           </q-item-section>
-          <q-item-section>Login/Register</q-item-section>
+
+          <q-item-section>Chinese</q-item-section>
+          <q-toggle v-model="store.state.chinese" color="blue" />
         </q-item>
-
-        <q-item
-          v-if="store.state.userDetails.name"
-          clickable
-          v-ripple
-          @click="store.methods.logoutUser()"
-          class="q-mx-lg"
-        >
+        <q-item clickable v-ripple @click="store.methods.logoutUser()">
           <q-item-section avatar>
-            <q-icon color="primary" name="logout" />
+            <q-icon
+              color="white"
+              name="logout"
+              class="icon"
+              style="background: red"
+            />
           </q-item-section>
+
           <q-item-section>Logout</q-item-section>
-        </q-item> -->
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -108,7 +137,7 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue";
+import { ref, computed, inject, watch, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 export default {
@@ -118,27 +147,14 @@ export default {
 
     const store = inject("store");
 
-    const links = ref([
-      {
-        title: "Users",
-        icon: "people",
-      },
-      {
-        title: "Login/Register",
-        icon: "login",
-      },
-      {
-        title: "Logout",
-        icon: "logout",
-      },
-    ]);
-
-    const leftDrawerOpen = ref(false);
+    const userPage = ref(false);
+    const chatPage = ref(false);
+    const online = ref(true);
 
     // computed
     const title = computed(() => {
       let currentPath = route.fullPath;
-      if (currentPath === "/") return "SmackChat";
+      if (currentPath === "/") return "Chat";
       if (
         currentPath ===
         `/chat/${store.state.userDetails.name}/${route.params.to}`
@@ -153,18 +169,36 @@ export default {
       store.state.leftDrawerOpen = !store.state.leftDrawerOpen;
     };
 
+    const toggleRightDrawer = () => {
+      store.state.rightDrawerOpen = !store.state.rightDrawerOpen;
+    };
+
     const sayHi = () => {
       console.log("hi");
     };
 
+    // watch
+    watchEffect(() => {
+      if (route.fullPath.includes(`/chat/`)) {
+        userPage.value = false;
+        chatPage.value = true;
+      }
+      if (!route.fullPath.includes(`/chat/`)) {
+        userPage.value = true;
+        chatPage.value = false;
+      }
+    });
+
     return {
       store,
-      links,
       title,
       route,
       router,
-      leftDrawerOpen,
+      online,
+      userPage,
+      chatPage,
       toggleLeftDrawer,
+      toggleRightDrawer,
       sayHi,
     };
   },
@@ -172,6 +206,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.q-badge {
+  background: red;
+}
+.q-toolbar__title.ellipsis {
+  padding-left: 0;
+  // font-size: 1rem;
+}
 .q-toolbar {
   .q-btn {
     line-height: 1.2;

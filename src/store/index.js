@@ -11,11 +11,15 @@ const state = reactive({
   online: false,
   today: null,
   leftDrawerOpen: false,
+  rightDrawerOpen: false,
   typing: {
     from: null,
     typing: false
   },
   avatar: null,
+  user: {},
+  dark: false,
+  chinese: false
 });
 
 const methods = {
@@ -97,6 +101,7 @@ const methods = {
       .orderBy("createdAt", "asc")
       .onSnapshot((snapshot) => {
         console.log("snapshot: getMessages");
+
         state.messages = snapshot.docs.map((doc) => {
           return doc.data();
         });
@@ -175,7 +180,8 @@ const methods = {
       .collection(to)
       .doc("typing indicator")
       .onSnapshot(doc => {
-        state.typing = doc.data()
+        // state.typing = doc.data()
+        state.typing.typing = doc.data().typing
       });
     
      watchEffect((onInvalidate) => {

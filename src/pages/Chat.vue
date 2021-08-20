@@ -1,40 +1,12 @@
 <template>
   <q-page class="flex column page-chat">
-    <transition-group
-      appear
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-    >
-      <q-banner
-        v-if="!store.state.online"
-        :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
-        class="bg-grey-4 banner"
-      >
-        {{ route.params.to }} is {{ store.state.online ? "Online" : "Offline" }}
-      </q-banner>
-
-      <q-banner
-        class="bg-grey-4 banner"
-        :style="{ marginLeft: store.state.leftDrawerOpen ? '-150px' : '0' }"
-        v-if="
-          store.state.typing.typing &&
-          route.fullPath.includes(
-            `/chat/${route.params.from}/${route.params.to}`
-          )
-        "
-        style="text-align: center"
-      >
-        <q-spinner-dots size="2rem" />
-      </q-banner>
-    </transition-group>
-
     <div
       ref="chats"
       :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
-      :style="{ marginTop: store.state.online ? '0px' : '50px' }"
     >
-      <q-chat-message :label="new Date().toLocaleDateString()" />
+      <!-- :style="{ marginTop: store.state.online ? '0px' : '50px' }" -->
+      <!-- <q-chat-message :label="new Date().toLocaleDateString()" /> -->
 
       <!-- <q-chat-message
         v-if="
@@ -74,54 +46,51 @@
       />
     </div>
     <q-footer elevated>
-      <q-toolbar>
-        <q-form class="full-width">
-          <q-input
-            ref="input"
-            v-model="newMessage"
-            outlined
-            rounded
-            label="Message"
-            dense
-            bg-color="white"
-            @keydown.enter="sendMessage"
-            @keydown="sendTypingIndicator()"
-          >
-            <!-- <template v-slot:after>
-              <q-btn
-                round
-                dense
-                flat
-                @click="sendMessage"
-                icon="send"
-                color="white"
-              />
-            </template> -->
-            <template v-slot:append>
-              <q-fab color="primary" icon="list" direction="left" flat padding="2px">
-                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="videocam" />
-                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="image" />
-                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="phone" />
-                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="photo_camera" />
-                <q-fab-action color="primary" padding="2px" flat @click="onClick" icon="place" />
-              </q-fab>
-              <!-- <q-icon
-                name="list"
+      <!-- <q-toolbar> -->
+      <q-form class="flex row justify-center">
+        <q-btn-group flat class="q-mr-xs">
+          <q-btn round dense flat icon="phone" />
+          <q-btn round dense flat icon="image" />
+          <q-btn round dense flat icon="photo_camera" />
+          <q-btn round dense flat icon="place" />
+          <q-btn round dense flat icon="videocam" />
+        </q-btn-group>
+        <q-input
+          ref="input"
+          v-model="newMessage"
+          class="q-ma-sm float-right"
+          style="width: 45%"
+          outlined
+          rounded
+          label="Message"
+          dense
+          bg-color="white"
+          @keydown.enter="sendMessage"
+          @keydown="sendTypingIndicator()"
+        >
+          <template v-slot:append>
+            <!-- <q-fab
+              color="primary"
+              icon="list"
+              direction="left"
+              flat
+              padding="2px"
+            >
+              <q-fab-action
                 color="primary"
-                class="q-mx-sm"
-                @click="sendMessage"
-              /> -->
-              <!-- <q-icon name="phone" color="primary" class="q-mx-sm" @click="sendMessage" />
-              <q-icon name="videocam" color="primary" class="q-mx-sm" @click="sendMessage" />
-              <q-icon name="image" color="primary" class="q-mx-sm" @click="sendMessage" />
-              <q-icon name="photo_camera" color="primary" class="q-mx-sm" @click="sendMessage" />
-              <q-icon name="place" color="primary" class="q-mx-sm" @click="sendMessage" /> -->
-              <!-- <q-icon name="send" color="primary" @click="sendMessage" /> -->
-            </template>
-          </q-input>
-        </q-form>
-        <q-toolbar-title> </q-toolbar-title>
-      </q-toolbar>
+                padding="2px"
+                flat
+                @click="onClick"
+                v-for="item in icons"
+                :key="item"
+                :icon="item"
+              />
+            </q-fab> -->
+            <q-btn icon="send" dense flat color="primary" />
+          </template>
+        </q-input>
+      </q-form>
+      <!-- </q-toolbar> -->
     </q-footer>
   </q-page>
 </template>
@@ -148,7 +117,9 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
+    const icons = ref(["videocam", "image", "phone", "photo_camera", "place"]);
 
+    // watch
     watch(
       () => store.state.messages,
       () => {
@@ -159,6 +130,7 @@ export default {
       }
     );
 
+    // methods
     const sendTypingIndicator = () => {
       store.methods.sendTypingIndicator({
         from: "me",
@@ -179,9 +151,10 @@ export default {
     };
 
     const onClick = () => {
-      console.log('hi, there !')
-    }
+      console.log("hi, there !");
+    };
 
+    // lifecycle
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
       store.methods.getTypingIndicator(route.params.from, route.params.to);
@@ -196,11 +169,12 @@ export default {
       route,
       chats,
       input,
+      icons,
       showMessages,
       newMessage,
       sendMessage,
       sendTypingIndicator,
-      onClick
+      onClick,
     };
   },
 };
@@ -219,8 +193,7 @@ export default {
   padding-left: -300px;
 }
 .messages {
-  margin-top: 50px;
-  // margin-bottom: 50px;
+  // margin-top: 50px;
 }
 .page-chat {
   background: #e2dfd5;
