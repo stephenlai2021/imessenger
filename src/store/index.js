@@ -11,7 +11,7 @@ const state = reactive({
   online: false,
   today: null,
   leftDrawerOpen: false,
-  rightDrawerOpen: false,
+  rightatDrawerOpen: false,
   typing: {
     from: null,
     typing: false

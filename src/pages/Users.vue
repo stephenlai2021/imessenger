@@ -11,14 +11,18 @@
       <q-input
         outlined
         rounded
-        label="Message"
+        v-model="search"
+        label="Search"
         dense
         bg-color="white"
-        class="q-mx-md q-mt-sm q-mb-lg"
-        style=""
-      />
+        class="q-mx-sm q-mt-sm q-mb-md"
+      >
+        <template v-slot:prepend>
+          <q-icon name="search" @click="findUser" style="cursor: pointer" />
+        </template>
+      </q-input>
       <q-item
-        v-for="(user, index) in store.getters.filteredUsers()"
+      v-for="(user, index) in matchingUsers"
         :key="index"
         class="q-my-sm"
         clickable
@@ -53,7 +57,7 @@
 </template>
 
 <script>
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted, computed, inject, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -61,6 +65,16 @@ export default {
     const store = inject("store");
 
     const router = useRouter();
+
+    const search = ref("");
+
+    // methods
+    const findUser = () => {
+      console.log("search: ", search.value);
+      store.getters.filteredUsers().filter((user) => {
+        return user.name.includes(search.value);
+      });
+    };
 
     const goChat = (user) => {
       store.state.online = user.online;
@@ -71,14 +85,41 @@ export default {
       // router.push(`/chat/${user.userId}`)
     };
 
+    // computed
+    // const matchingNames = computed(() => {
+    //   return names.value.filter((name) => {
+    //     return name.includes(search.value);
+    //   });
+    // });
+
+    const matchingUsers = computed(() => {
+      return store.getters.filteredUsers().filter((user) => {
+        return user.name.includes(search.value);
+      });
+    });
+
+    // watch
+    watch(() => {
+      console.log("all users | watch: ", store.state.users);
+    });
+
     onMounted(() => {
       store.methods.getUsers();
+      console.log("all users: ", store.state.users);
     });
 
     return {
       store,
 
+      // ref
+      search,
+
+      // computed
+      matchingUsers,
+
+      // methods
       goChat,
+      findUser,
     };
   },
 };
