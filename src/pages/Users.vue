@@ -94,7 +94,7 @@ export default {
 
     const matchingUsers = computed(() => {
       return store.getters.filteredUsers().filter((user) => {
-        return user.name.includes(search.value);
+        return user.name.includes(search.value.toLowerCase() || search.value.toUpperCase())
       });
     });
 

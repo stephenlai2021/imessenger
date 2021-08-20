@@ -51,7 +51,7 @@
           aria-label="Face"
           @click="toggleRightDrawer"
           v-if="
-            !route.fullPath.includes(`/cat`) || !route.fullPath.includes(`/cat`)
+            !route.fullPath.includes(`/auth`) && !route.fullPath.includes(`/chat`)
           "
         />
       </q-toolbar>
@@ -62,11 +62,7 @@
       v-model="store.state.rightDrawerOpen"
       side="right"
       bordered
-    >
-      <h5>Search</h5>
-      <input v-model="search" />
-      <p>search term - {{ search }}</p>
-      <div v-for="name in matchingNames" :key="name">{{ name }}</div>
+    >     
     </q-drawer>
 
     <q-drawer
@@ -154,24 +150,6 @@ export default {
     const chatPage = ref(false);
     const online = ref(true);
 
-    /* example */
-    const search = ref(null);
-    const names = ref([
-      "mario",
-      "yoshi",
-      "luigi",
-      "toad",
-      "bowser",
-      "koopa",
-      "peach",
-    ]);
-
-    const matchingNames = computed(() => {
-      return names.value.filter((name) => {
-        return name.includes(search.value);
-      });
-    });
-
     // computed
     const title = computed(() => {
       let currentPath = route.fullPath;
@@ -221,11 +199,6 @@ export default {
       toggleLeftDrawer,
       toggleRightDrawer,
       sayHi,
-
-      // example
-      search,
-      names,
-      matchingNames,
     };
   },
 };
