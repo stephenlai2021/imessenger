@@ -76,6 +76,7 @@
             @keydown.enter="sendMessage"
             @keydown="sendTypingIndicator()"
             @focus="inputFocus = true"
+            @blur="inputFocus = false"
             :style="{ width: inputFocus ? '100%' : '50%' }"
           >
             <template v-slot:append>
