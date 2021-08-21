@@ -70,6 +70,7 @@
             rounded
             label="Message"
             dense
+            focus="false"
             bg-color="white"
             @keydown.enter="sendMessage"
             @keydown="sendTypingIndicator()"
@@ -162,14 +163,14 @@ export default {
       }
     );
 
-    watch(
-      () => input.value,
-      () => {
-        if (input.value.focus()) {
-          console.log("input focus");
-        }
-      }
-    );
+    // watch(
+    //   () => input.value,
+    //   () => {
+    //     if (input.value.focus()) {
+    //       console.log("input focus");
+    //     }
+    //   }
+    // );
 
     watch(
       () => indicator.value,
