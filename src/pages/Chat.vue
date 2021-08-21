@@ -145,7 +145,7 @@ export default {
         text: newMessage.value,
         from: "me",
         to: route.params.to,
-        createdAt: new Date().toLocaleTimeString(),
+        createdAt: new Date().toLocaleDateString(),
       });
       newMessage.value = "";
     };

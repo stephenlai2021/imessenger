@@ -82,15 +82,7 @@ export default {
       store.state.avatar = user.avatar;
 
       router.push(`/chat/${store.state.userDetails.name}/${user.name}`);
-      // router.push(`/chat/${user.userId}`)
     };
-
-    // computed
-    // const matchingNames = computed(() => {
-    //   return names.value.filter((name) => {
-    //     return name.includes(search.value);
-    //   });
-    // });
 
     const matchingUsers = computed(() => {
       return store.getters.filteredUsers().filter((user) => {
