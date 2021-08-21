@@ -86,7 +86,7 @@
                 :icon="item"
               />
             </q-fab> -->
-            <q-btn icon="send" dense flat color="primary" />
+            <q-btn icon="send" dense flat color="primary" @click="sendMessage" />
           </template>
         </q-input>
       </q-form>
@@ -145,7 +145,7 @@ export default {
         text: newMessage.value,
         from: "me",
         to: route.params.to,
-        createdAt: new Date().toLocaleDateString(),
+        createdAt: new Date().toLocaleTimeString()
       });
       newMessage.value = "";
     };

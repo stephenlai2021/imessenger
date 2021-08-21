@@ -8,20 +8,28 @@
           dense
           round
           icon="arrow_back"
-          aria-label="Arrow Bacj"
+          aria-label="Arrow Back"
           @click="router.push('/')"
           v-if="route.fullPath.includes(`/chat`)"
         />
         <q-toolbar-title class="" style="position: relative">
           <span v-if="!route.fullPath.includes(`/auth`)">
             <q-avatar v-if="userPage || !chatPage">
+              <!-- :src="
+                  store.state.online
+                    ? store.state.userDetails.avatar
+                    : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                " -->
               <img
-                style="width: 35px; height: 35px; cursor: pointer"
-                :src="store.state.userDetails.avatar"
+                style="width: 30px; height: 30px; cursor: pointer"
+                :src="
+                  !store.state.userDetails.avatar
+                    ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                    : store.state.userDetails.avatar
+                "
                 alt="my avatar"
                 @click="toggleLeftDrawer"
               />
-              <!-- @click="router.push('/config')" -->
             </q-avatar>
             <q-avatar v-if="chatPage || !userPage">
               <img
@@ -36,14 +44,16 @@
               />
             </q-avatar>
           </span>
-          {{ title }}
+          <span class="q-ml-sm">
+            {{ title }}
+          </span>
           <q-spinner-dots
             class="float-right q-mr-md"
             v-if="store.state.typing.typing && route.fullPath.includes(`/chat`)"
             size="2rem"
           />
         </q-toolbar-title>
-        <q-btn
+        <!-- <q-btn
           flat
           dense
           round
@@ -51,9 +61,10 @@
           aria-label="Face"
           @click="toggleRightDrawer"
           v-if="
-            !route.fullPath.includes(`/auth`) && !route.fullPath.includes(`/chat`)
+            !route.fullPath.includes(`/auth`) &&
+            !route.fullPath.includes(`/chat`)
           "
-        />
+        /> -->
       </q-toolbar>
     </q-header>
 
@@ -62,7 +73,7 @@
       v-model="store.state.rightDrawerOpen"
       side="right"
       bordered
-    >     
+    >
     </q-drawer>
 
     <q-drawer
@@ -84,10 +95,16 @@
           style="width: 90px"
         />
       </div>
+
       <p class="text-center q-mt-sm text-h5 text-bold">
         {{ store.state.userDetails.name }}
       </p>
-      <q-list>
+      <!-- <span class="q-ml-md">profile</span>
+      <p class="text-center">
+        {{ store.state.userDetails.email }}
+      </p> -->
+      <q-list class="q-mt-md">
+        <span class="q-ml-md text-grey">Settings</span>
         <q-item>
           <q-item-section avatar>
             <q-icon
@@ -114,17 +131,27 @@
           <q-item-section>Chinese</q-item-section>
           <q-toggle v-model="store.state.chinese" color="blue" />
         </q-item>
-        <q-item clickable v-ripple @click="store.methods.logoutUser()">
+        <q-item
+          clickable
+          v-ripple
+          @click="
+            !store.state.online
+              ? router.push('/auth')
+              : store.methods.logoutUser()
+          "
+        >
           <q-item-section avatar>
             <q-icon
               color="white"
-              name="logout"
+              :name="!store.state.online ? 'login' : 'logout'"
               class="icon"
               style="background: red"
             />
           </q-item-section>
 
-          <q-item-section>Logout</q-item-section>
+          <q-item-section>{{
+            !store.state.online ? "Login/Register" : "Logout"
+          }}</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>

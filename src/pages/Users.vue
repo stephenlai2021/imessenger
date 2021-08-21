@@ -4,8 +4,11 @@
     transition-show="slide-right"
     transition-hide="slide-left"
   >
-    <div class="spinner" v-if="!store.state.users.length">
+    <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner color="primary" size="3em" />
+    </div>
+    <div v-else-if="!store.state.users.length && noUserMessages" class="spinner">
+      <p class="text-center text-h6 text-primary border">Sorry, we can't find any user in database, please try again later !</p>
     </div>
     <q-list v-else class="full-width">
       <q-input
@@ -22,7 +25,7 @@
         </template>
       </q-input>
       <q-item
-      v-for="(user, index) in matchingUsers"
+        v-for="(user, index) in matchingUsers"
         :key="index"
         class="q-my-sm"
         clickable
@@ -57,7 +60,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, inject, watch } from "vue";
+import { ref, onMounted, computed, inject, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -67,6 +70,7 @@ export default {
     const router = useRouter();
 
     const search = ref("");
+    const noUserMessages = ref(false)
 
     // methods
     const findUser = () => {
@@ -86,18 +90,35 @@ export default {
 
     const matchingUsers = computed(() => {
       return store.getters.filteredUsers().filter((user) => {
-        return user.name.includes(search.value.toLowerCase() || search.value.toUpperCase())
+        return user.name.includes(
+          search.value.toLowerCase() || search.value.toUpperCase()
+        );
       });
     });
 
     // watch
-    watch(() => {
+    watchEffect(() => {
       console.log("all users | watch: ", store.state.users);
+      
+      setTimeout(() => {
+        if (!store.state.users.length) {
+          noUserMessages.value = true
+        }
+      }, 10000);
     });
 
     onMounted(() => {
       store.methods.getUsers();
       console.log("all users: ", store.state.users);
+
+      setTimeout(() => {
+        if (!store.state.users.length) {
+          noUserMessages.value = true
+
+          // router.push('/*.*')
+          router.push('/auth')
+        }
+      }, 3000);
     });
 
     return {
@@ -105,6 +126,7 @@ export default {
 
       // ref
       search,
+      noUserMessages,
 
       // computed
       matchingUsers,
