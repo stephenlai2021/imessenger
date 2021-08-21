@@ -234,9 +234,6 @@ export default {
   width: 30px;
   height: 30px;
 }
-.q-badge {
-  background: red;
-}
 .q-toolbar__title.ellipsis {
   padding-left: 0;
   // font-size: 1rem;
@@ -253,6 +250,7 @@ export default {
   border: 1px solid white;
   top: -2px;
   right: -5px;
+  border-radius: 50%;
 }
 .title {
   border: 1px solid white;
