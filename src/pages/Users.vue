@@ -115,10 +115,9 @@ export default {
         if (!store.state.users.length) {
           noUserMessages.value = true
 
-          // router.push('/*.*')
           router.push('/auth')
         }
-      }, 3000);
+      }, 10000);
     });
 
     return {

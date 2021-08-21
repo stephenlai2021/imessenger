@@ -47,29 +47,36 @@
     </div>
     <q-footer elevated>
       <!-- <q-toolbar> -->
+        <!-- style="border: 1px solid white" -->
       <q-form class="flex row justify-center">
-        <q-btn-group flat class="q-mr-xs">
-          <q-btn round dense flat icon="phone" />
-          <q-btn round dense flat icon="image" />
-          <q-btn round dense flat icon="photo_camera" />
-          <q-btn round dense flat icon="place" />
-          <q-btn round dense flat icon="videocam" />
-        </q-btn-group>
-        <q-input
-          ref="input"
-          v-model="newMessage"
-          class="q-ma-sm float-right"
-          style="width: 45%"
-          outlined
-          rounded
-          label="Message"
-          dense
-          bg-color="white"
-          @keydown.enter="sendMessage"
-          @keydown="sendTypingIndicator()"
-        >
-          <template v-slot:append>
-            <!-- <q-fab
+        <div  class="flex full-width">
+          <q-btn-group
+            flat
+            class="flex row justify-center"
+            style="width: 50%;"
+          >
+            <q-btn round dense flat icon="phone" />
+            <q-btn round dense flat icon="image" />
+            <q-btn round dense flat icon="photo_camera" />
+            <q-btn round dense flat icon="place" />
+            <q-btn round dense flat icon="videocam" />
+          </q-btn-group>
+
+          <q-input
+            ref="input"
+            v-model="newMessage"
+            class="q-pa-sm "
+            style="width: 50%"
+            outlined
+            rounded
+            label="Message"
+            dense
+            bg-color="white"
+            @keydown.enter="sendMessage"
+            @keydown="sendTypingIndicator()"
+          >
+            <template v-slot:append>
+              <!-- <q-fab
               color="primary"
               icon="list"
               direction="left"
@@ -86,9 +93,17 @@
                 :icon="item"
               />
             </q-fab> -->
-            <q-btn icon="send" dense flat color="primary" @click="sendMessage" />
-          </template>
-        </q-input>
+              <q-btn
+                icon="send"
+                size="md"
+                dense
+                flat
+                color="primary"
+                @click="sendMessage"
+              />
+            </template>
+          </q-input>
+        </div>
       </q-form>
       <!-- </q-toolbar> -->
     </q-footer>
@@ -145,7 +160,7 @@ export default {
         text: newMessage.value,
         from: "me",
         to: route.params.to,
-        createdAt: new Date().toLocaleTimeString()
+        createdAt: new Date().toLocaleTimeString(),
       });
       newMessage.value = "";
     };

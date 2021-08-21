@@ -92,17 +92,14 @@
               : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
           "
           alt="my avatar"
-          style="width: 90px"
+          style="width: 90px; border-radius: 50%;"
         />
       </div>
 
       <p class="text-center q-mt-sm text-h5 text-bold">
         {{ store.state.userDetails.name }}
       </p>
-      <!-- <span class="q-ml-md">profile</span>
-      <p class="text-center">
-        {{ store.state.userDetails.email }}
-      </p> -->
+
       <q-list class="q-mt-md">
         <span class="q-ml-md text-grey">Settings</span>
         <q-item>
