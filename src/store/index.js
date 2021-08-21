@@ -19,7 +19,8 @@ const state = reactive({
   avatar: null,
   user: {},
   dark: false,
-  chinese: false
+  chinese: false,
+  desktop: false,
 });
 
 const methods = {

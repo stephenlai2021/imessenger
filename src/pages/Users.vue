@@ -7,8 +7,13 @@
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner color="primary" size="3em" />
     </div>
-    <div v-else-if="!store.state.users.length && noUserMessages" class="spinner">
-      <p class="text-center text-h6 text-primary border">Sorry, we can't find any user in database, please try again later !</p>
+    <div
+      v-else-if="!store.state.users.length && noUserMessages"
+      class="spinner"
+    >
+      <p class="text-center text-h6 text-primary border">
+        Sorry, we can't find any user in database, please try again later !
+      </p>
     </div>
     <q-list v-else class="full-width">
       <q-input
@@ -70,7 +75,7 @@ export default {
     const router = useRouter();
 
     const search = ref("");
-    const noUserMessages = ref(false)
+    const noUserMessages = ref(false);
 
     // methods
     const findUser = () => {
@@ -99,10 +104,10 @@ export default {
     // watch
     watchEffect(() => {
       console.log("all users | watch: ", store.state.users);
-      
+
       setTimeout(() => {
         if (!store.state.users.length) {
-          noUserMessages.value = true
+          noUserMessages.value = true;
         }
       }, 10000);
     });
@@ -113,9 +118,9 @@ export default {
 
       setTimeout(() => {
         if (!store.state.users.length) {
-          noUserMessages.value = true
+          noUserMessages.value = true;
 
-          router.push('/auth')
+          router.push("/auth");
         }
       }, 10000);
     });

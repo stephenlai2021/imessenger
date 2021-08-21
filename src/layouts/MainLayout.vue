@@ -34,7 +34,11 @@
             <q-avatar v-if="chatPage || !userPage">
               <img
                 style="width: 35px; height: 35px"
-                :src="store.state.avatar"
+                :src="
+                  !store.state.avatar
+                    ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                    : store.state.avatar
+                "
                 alt="user avatar"
               />
               <q-badge
@@ -209,7 +213,7 @@ export default {
       if (!route.fullPath.includes(`/chat/`)) {
         userPage.value = true;
         chatPage.value = false;
-      }
+      } 
     });
 
     return {

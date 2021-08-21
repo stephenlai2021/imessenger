@@ -46,8 +46,6 @@
       />
     </div>
     <q-footer elevated>
-      <!-- <q-toolbar> -->
-      <!-- style="border: 1px solid white" -->
       <q-form class="flex row justify-center">
         <div class="flex full-width">
           <q-btn-group
@@ -75,10 +73,20 @@
             bg-color="white"
             @keydown.enter="sendMessage"
             @keydown="sendTypingIndicator()"
-            @focus="inputFocus = true"
-            @blur="inputFocus = false"
+            @focus="onFocus"
+            @blur="onBlur"
             :style="{ width: inputFocus ? '100%' : '50%' }"
           >
+            <template v-slot:prepend v-if="inputFocus">
+              <q-btn
+                icon="navigate_next"
+                size="md"
+                dense
+                flat
+                color="primary"
+                @click="inputFocus = false"
+              />
+            </template>
             <template v-slot:append>
               <!-- <q-fab
               color="primary"
@@ -109,7 +117,6 @@
           </q-input>
         </div>
       </q-form>
-      <!-- </q-toolbar> -->
     </q-footer>
   </q-page>
 </template>
@@ -125,13 +132,17 @@ import {
   onUpdated,
 } from "vue";
 import { useRoute } from "vue-router";
+import { useQuasar } from "quasar";
 
 export default {
   setup() {
     const store = inject("store");
 
+    const $q = useQuasar();
+
     const route = useRoute();
 
+    const desktop = ref(false);
     const indicator = ref(false);
     const inputFocus = ref(false);
     const chats = ref(null);
@@ -189,10 +200,16 @@ export default {
       newMessage.value = "";
     };
 
-    const onClick = () => {
-      console.log("input focus");
-      // input.value.style.width = '50px'
-      // inputWidth.value = true
+    const onFocus = () => {
+      if (!store.state.desktop) {
+        inputFocus.value = true;
+      }
+    };
+
+    const onBlur = () => {
+      if (!store.state.desktop) {
+        inputFocus.value = false;
+      }
     };
 
     // lifecycle
@@ -202,7 +219,13 @@ export default {
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();
 
-      console.log("messages: ", store.state.messages);
+      if ($q.platform.is.desktop) {
+        console.log("you are running on desktop | chat page");
+        store.state.desktop = true;
+      } else {
+        console.log("you are not running on desktop | chat page");
+        store.state.desktop = false;
+      }
     });
 
     return {
@@ -211,12 +234,14 @@ export default {
       chats,
       input,
       icons,
+      desktop,
       inputFocus,
       showMessages,
       newMessage,
       sendMessage,
       sendTypingIndicator,
-      onClick,
+      onFocus,
+      onBlur,
     };
   },
 };
