@@ -47,13 +47,14 @@
     </div>
     <q-footer elevated>
       <!-- <q-toolbar> -->
-        <!-- style="border: 1px solid white" -->
+      <!-- style="border: 1px solid white" -->
       <q-form class="flex row justify-center">
-        <div  class="flex full-width">
+        <div class="flex full-width">
           <q-btn-group
+            v-if="!inputFocus"
             flat
             class="flex row justify-center"
-            style="width: 50%;"
+            style="width: 50%"
           >
             <q-btn round dense flat icon="phone" />
             <q-btn round dense flat icon="image" />
@@ -65,7 +66,7 @@
           <q-input
             ref="input"
             v-model="newMessage"
-            class="q-pa-sm "
+            class="q-pa-sm"
             style="width: 50%"
             outlined
             rounded
@@ -74,6 +75,8 @@
             bg-color="white"
             @keydown.enter="sendMessage"
             @keydown="sendTypingIndicator()"
+            @focus="inputFocus = true"
+            :style="{ width: inputFocus ? '100%' : '50%' }"
           >
             <template v-slot:append>
               <!-- <q-fab
@@ -128,6 +131,8 @@ export default {
 
     const route = useRoute();
 
+    const indicator = ref(false);
+    const inputFocus = ref(false);
     const chats = ref(null);
     const input = ref(null);
     const newMessage = ref("");
@@ -145,8 +150,26 @@ export default {
       }
     );
 
+    watch(
+      () => input.value,
+      () => {
+        if (input.value.focus()) {
+          console.log("input focus");
+        }
+      }
+    );
+
+    watch(
+      () => indicator.value,
+      (newVal, oldVal) => {
+        store.methods.getTypingIndicator(route.params.from, route.params.to);
+      }
+    );
+
     // methods
     const sendTypingIndicator = () => {
+      indicator.value = true;
+
       store.methods.sendTypingIndicator({
         from: "me",
         to: route.params.to,
@@ -166,13 +189,15 @@ export default {
     };
 
     const onClick = () => {
-      console.log("hi, there !");
+      console.log("input focus");
+      // input.value.style.width = '50px'
+      // inputWidth.value = true
     };
 
     // lifecycle
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
-      store.methods.getTypingIndicator(route.params.from, route.params.to);
+      // store.methods.getTypingIndicator(route.params.from, route.params.to);
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();
 
@@ -185,6 +210,7 @@ export default {
       chats,
       input,
       icons,
+      inputFocus,
       showMessages,
       newMessage,
       sendMessage,
@@ -206,9 +232,6 @@ export default {
   z-index: 500;
   text-align: center;
   padding-left: -300px;
-}
-.messages {
-  // margin-top: 50px;
 }
 .page-chat {
   background: #e2dfd5;
