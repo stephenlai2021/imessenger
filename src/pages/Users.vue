@@ -35,13 +35,17 @@
       >
         <q-item-section avatar>
           <q-avatar size="50px" style="position: relative">
-            <img :src="user.avatar" alt="user avatar" style="border: 2px solid #69f0ae" />
+            <img
+              :src="user.avatar"
+              alt="user avatar"
+              style="border: 2px solid #69f0ae"
+            />
           </q-avatar>
           <q-badge
             rounded
             class="float-right"
             style="position: absolute; left: 55px; top: 45px"
-            :color="user.online ? 'light-green-5' : 'grey-4'"
+            :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
           />
         </q-item-section>
 
@@ -51,9 +55,11 @@
         </q-item-section>
 
         <q-item-section side>
-          <q-badge class="q-pa-xs" :color="user.online ? 'light-green-5' : 'grey-4'">{{
-            user.online ? "上線" : "下線"
-          }}</q-badge>
+          <q-badge
+            class="q-pa-xs"
+            :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
+            >{{ user.online ? "上線" : "下線" }}</q-badge
+          >
         </q-item-section>
       </q-item>
     </q-list>
