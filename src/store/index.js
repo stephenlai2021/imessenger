@@ -22,6 +22,7 @@ const state = reactive({
   chinese: false,
   desktop: false,
   login: false,
+  tab: 'home'
 });
 
 const methods = {
