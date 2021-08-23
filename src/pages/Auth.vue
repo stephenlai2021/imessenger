@@ -3,7 +3,7 @@
     <div class="spinner" v-if="store.state.login">
       <q-spinner-ios color="primary" size="3em" />
     </div>
-    <q-card class="full-width">
+    <q-card v-else class="full-width">
       <q-tabs
         v-model="tab"
         dense
@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .spinner {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 50px);
   display: flex;
   align-items: center;
   justify-content: center;
