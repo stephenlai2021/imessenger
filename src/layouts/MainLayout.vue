@@ -173,7 +173,7 @@
       </q-list>
     </q-drawer>
 
-    <q-footer elevated v-if="!route.fullPath.includes('/auth')">
+    <q-footer elevated v-if="!route.fullPath.includes('/auth') && !route.fullPath.includes('/finduser') && !route.fullPath.includes('/addpost') ">
       <q-tabs v-model="tab" no-caps class="flex row justify-evenly full-width">
         <q-tab
           name="home"
@@ -191,9 +191,7 @@
     </q-footer>
 
     <q-page-container>
-      <!-- <transition enter-active-class="animated fadeIn" appear> -->
       <router-view class="constraint" />
-      <!-- </transition> -->
     </q-page-container>
   </q-layout>
 </template>
