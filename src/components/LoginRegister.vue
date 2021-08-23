@@ -1,44 +1,38 @@
 <template>
-  <!-- <transition
-    appear
-    enter-active-class="animated slideInUp"
-    leave-active-class="animated slideOutDown"
-  > -->
-    <q-form @submit="submitForm">
-      <q-input
-        v-if="tab === 'register'"
-        class="q-mb-md"
-        outlined
-        v-model="formData.name"
-        label="Name"
-        required
+  <q-form @submit="submitForm">
+    <q-input
+      v-if="tab === 'register'"
+      class="q-mb-md"
+      outlined
+      v-model="formData.name"
+      label="Name"
+      required
+    />
+    <q-input
+      class="q-mb-md"
+      outlined
+      v-model="formData.email"
+      type="email"
+      label="Email"
+    />
+    <q-input
+      class="q-mb-md"
+      outlined
+      v-model="formData.password"
+      type="password"
+      label="Password"
+    />
+    <p style="color: red">{{ store.state.errorMessage }}</p>
+    <div class="row justify-end">
+      <q-btn
+        color="secondary"
+        label="Reset"
+        class="q-mr-sm"
+        @click="resetData"
       />
-      <q-input
-        class="q-mb-md"
-        outlined
-        v-model="formData.email"
-        type="email"
-        label="Email"
-      />
-      <q-input
-        class="q-mb-md"
-        outlined
-        v-model="formData.password"
-        type="password"
-        label="Password"
-      />
-      <p style="color: red">{{ store.state.errorMessage }}</p>
-      <div class="row justify-end">
-        <q-btn
-          color="secondary"
-          label="Reset"
-          class="q-mr-sm"
-          @click="resetData"
-        />
-        <q-btn color="primary" :label="tab" type="submit" />
-      </div>
-    </q-form>
-  <!-- </transition> -->
+      <q-btn color="primary" :label="tab" type="submit" />
+    </div>
+  </q-form>
 </template>
 
 <script>
@@ -61,6 +55,7 @@ export default {
 
     const submitForm = () => {
       if (props.tab === "login") {
+        store.state.login = true
         store.methods.loginUser(formData.value);
 
         if (store.state.successMessage === "user login successfully") {

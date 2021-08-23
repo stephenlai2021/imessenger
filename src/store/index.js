@@ -21,6 +21,7 @@ const state = reactive({
   dark: false,
   chinese: false,
   desktop: false,
+  login: false,
 });
 
 const methods = {
@@ -40,6 +41,7 @@ const methods = {
               .update({ online: true })
               .then(() => {
                 state.online = true;
+                state.login = false
                 router.push("/");
               });
           })

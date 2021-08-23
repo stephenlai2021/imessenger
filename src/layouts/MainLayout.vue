@@ -32,6 +32,7 @@
             route.fullPath.includes('/addpost') ||
             route.fullPath.includes('/finduser')
           "
+          class="pointer"
         />
         <span
           class="q-ml-sm"
@@ -51,14 +52,14 @@
             name="person_search"
             size="sm"
             @click="router.push('/finduser')"
-            class=""
+            class="pointer"
             v-if="route.fullPath.includes('/users')"
           />
           <q-icon
             name="edit"
             size="sm"
             @click="router.push('/addpost')"
-            class="q-mr-md"
+            class="q-mr-md pointer"
             v-if="
               !route.fullPath.includes('/users') &&
               !route.fullPath.includes('/finduser') &&
@@ -72,7 +73,7 @@
             name="settings"
             size="sm"
             @click="toggleLeftDrawer"
-            class="justify-end"
+            class="justify-end pointer"
             v-if="
               !route.fullPath.includes('/users') &&
               !route.fullPath.includes('/finduser') &&
@@ -312,10 +313,7 @@ export default {
 .title {
   border: 1px solid white;
 }
-.q-tab {
-  // margin: 0;
-}
-.q-tab_content.self-stretch {
-  // margin-top: 0;
+.pointer {
+  cursor: pointer;
 }
 </style>

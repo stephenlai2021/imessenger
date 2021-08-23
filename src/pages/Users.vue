@@ -1,11 +1,7 @@
 <template>
-  <q-page
-    class="flex q-pa-sm"
-    transition-show="slide-right"
-    transition-hide="slide-left"
-  >
+  <q-page class="flex q-pa-sm">
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
-      <q-spinner color="primary" size="3em" />
+      <q-spinner-ios color="primary" size="3em" />
     </div>
     <div
       v-else-if="!store.state.users.length && noUserMessages"
@@ -145,7 +141,8 @@ export default {
 
 <style lang="scss" scoped>
 .spinner {
-  width: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
