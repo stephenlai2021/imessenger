@@ -5,12 +5,67 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "/", component: () => import("src/pages/Post.vue") },
-      { path: "/users", component: () => import("src/pages/Users.vue") },
-      { path: "/finduser", component: () => import("src/pages/FindUser.vue") },
-      { path: "/addpost", component: () => import("src/pages/AddPost.vue") },
+      {
+        path: "/",
+        component: () => import("src/pages/Post.vue"),
+        beforeEnter: (to, from, next) => {
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              console.log("user is logged in | route guard");
+              next();
+            } else {
+              console.log("user logged out | route guard");
+              next("/auth");
+            }
+          });
+        },
+      },
+      {
+        path: "/users",
+        component: () => import("src/pages/Users.vue"),
+        beforeEnter: (to, from, next) => {
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              console.log("user is logged in | route guard");
+              next();
+            } else {
+              console.log("user logged out | route guard");
+              next("/auth");
+            }
+          });
+        },
+      },
+      {
+        path: "/finduser",
+        component: () => import("src/pages/FindUser.vue"),
+        beforeEnter: (to, from, next) => {
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              console.log("user is logged in | route guard");
+              next();
+            } else {
+              console.log("user logged out | route guard");
+              next("/auth");
+            }
+          });
+        },
+      },
+      {
+        path: "/addpost",
+        component: () => import("src/pages/AddPost.vue"),
+        beforeEnter: (to, from, next) => {
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              console.log("user is logged in | route guard");
+              next();
+            } else {
+              console.log("user logged out | route guard");
+              next("/auth");
+            }
+          });
+        },
+      },
       { path: "/auth", component: () => import("src/pages/Auth.vue") },
-      { path: "/settings", component: () => import("src/pages/Settings.vue") },
       {
         path: "/chat/:from/:to",
         component: () => import("src/pages/Chat.vue"),
@@ -21,11 +76,12 @@ const routes = [
               next();
             } else {
               console.log("user logged out | route guard");
-              next("/login");
+              next("/auth");
             }
           });
         },
       },
+      // { path: "/settings", component: () => import("src/pages/Settings.vue") },
     ],
   },
 
