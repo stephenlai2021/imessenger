@@ -38,7 +38,7 @@
             <img
               :src="user.avatar"
               alt="user avatar"
-              style="border: 2px solid #69f0ae"
+              :style="{border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0'}"
             />
           </q-avatar>
           <q-badge
@@ -51,7 +51,6 @@
 
         <q-item-section>
           <q-item-label class="text-subtitle2">{{ user.name }}</q-item-label>
-          <!-- <q-item-label>{{ user.email }}</q-item-label> -->
         </q-item-section>
 
         <q-item-section side>

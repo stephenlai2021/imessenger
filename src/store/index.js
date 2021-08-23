@@ -43,6 +43,7 @@ const methods = {
               .then(() => {
                 state.online = true;
                 state.login = false
+                state.tab = 'home'
                 router.push("/");
               });
           })
