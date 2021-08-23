@@ -8,7 +8,8 @@
             !route.fullPath.includes('/finduser') &&
             !route.fullPath.includes('/addpost') &&
             !route.fullPath.includes('/settings') &&
-            !route.fullPath.includes('/chat')
+            !route.fullPath.includes('/chat') &&
+            !route.fullPath.includes('/auth')
           "
         >
           <img
@@ -35,13 +36,14 @@
         />
         <span
           class="q-ml-sm"
-          style="font-size: 21px; width: 100%;"
+          style="font-size: 21px; width: 100%"
           v-if="
             route.fullPath.includes('/users') ||
             route.fullPath.includes('/finduser') ||
             route.fullPath.includes('/addpost') ||
             route.fullPath.includes('/settings') ||
-            route.fullPath.includes('/chat')
+            route.fullPath.includes('/chat') ||
+            route.fullPath.includes('/auth')
           "
         >
           {{ title }}
@@ -64,7 +66,8 @@
               !route.fullPath.includes('/finduser') &&
               !route.fullPath.includes('/addpost') &&
               !route.fullPath.includes('/settings') &&
-              !route.fullPath.includes('/chat')
+              !route.fullPath.includes('/chat') &&
+              !route.fullPath.includes('/auth')
             "
           />
           <q-icon
@@ -77,7 +80,8 @@
               !route.fullPath.includes('/finduser') &&
               !route.fullPath.includes('/addpost') &&
               !route.fullPath.includes('/settings') &&
-              !route.fullPath.includes('/chat')
+              !route.fullPath.includes('/chat') &&
+              !route.fullPath.includes('/auth')
             "
           />
         </div>
@@ -170,10 +174,30 @@
       </q-list>
     </q-drawer>
 
-    <q-footer elevated>
+    <q-footer
+      elevated
+      v-if="
+        !route.fullPath.includes('/users') &&
+        !route.fullPath.includes('/finduser') &&
+        !route.fullPath.includes('/addpost') &&
+        !route.fullPath.includes('/settings') &&
+        !route.fullPath.includes('/chat') &&
+        !route.fullPath.includes('/auth')
+      "
+    >
       <q-tabs v-model="tab" no-caps class="flex row justify-evenly full-width">
-        <q-tab name="home" icon="home" style="width: 50%;" @click="router.push('/')" />
-        <q-tab name="chat" icon="chat" style="width: 50%;" @click="router.push('/users')" />
+        <q-tab
+          name="home"
+          icon="home"
+          style="width: 50%"
+          @click="router.push('/')"
+        />
+        <q-tab
+          name="chat"
+          icon="chat"
+          style="width: 50%"
+          @click="router.push('/users')"
+        />
       </q-tabs>
     </q-footer>
 
