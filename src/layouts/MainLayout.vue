@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHr lpR lFr">
-    <q-header>
+    <q-header elevated>
       <q-toolbar class="constraint">
         <q-avatar
           v-if="
@@ -173,7 +173,14 @@
       </q-list>
     </q-drawer>
 
-    <q-footer elevated v-if="!route.fullPath.includes('/auth') && !route.fullPath.includes('/finduser') && !route.fullPath.includes('/addpost') ">
+    <q-footer
+      elevated
+      v-if="
+        !route.fullPath.includes('/auth') &&
+        !route.fullPath.includes('/finduser') &&
+        !route.fullPath.includes('/addpost')
+      "
+    >
       <q-tabs v-model="tab" no-caps class="flex row justify-evenly full-width">
         <q-tab
           name="home"
@@ -190,7 +197,7 @@
       </q-tabs>
     </q-footer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-2">
       <router-view class="constraint" />
     </q-page-container>
   </q-layout>
