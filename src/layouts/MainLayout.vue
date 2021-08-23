@@ -183,7 +183,7 @@
     >
       <q-tabs v-model="store.state.tab" no-caps class="flex row justify-evenly full-width">
         <q-tab
-          :name="store.state.tab"
+          name="home"
           icon="home"
           style="width: 50%"
           @click="router.push('/')"
