@@ -223,7 +223,6 @@ export default {
     const userPage = ref(false);
     const chatPage = ref(false);
     const online = ref(true);
-    const tab = ref("home");
 
     // computed
     const title = computed(() => {
@@ -287,7 +286,6 @@ export default {
       online,
       userPage,
       chatPage,
-      tab,
       checkRoute,
       toggleLeftDrawer,
       toggleRightDrawer,
