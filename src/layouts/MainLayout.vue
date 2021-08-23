@@ -35,7 +35,7 @@
         />
         <span
           class="q-ml-sm"
-          style="font-size: 21px; width: 50%;"
+          style="font-size: 21px; width: 100%;"
           v-if="
             route.fullPath.includes('/users') ||
             route.fullPath.includes('/finduser') ||
