@@ -35,7 +35,7 @@
       >
         <q-item-section avatar>
           <q-avatar size="50px" style="position: relative">
-            <img :src="user.avatar" alt="user avatar" />
+            <img :src="user.avatar" alt="user avatar" style="border: 2px solid #69f0ae" />
           </q-avatar>
           <q-badge
             rounded
