@@ -200,8 +200,8 @@
     <q-page-container class="bg-grey-2">
       <transition-group
         appear
-        :enter-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated slideInRight' : ''"
-        :leave-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated slideOutLeft' : ''"
+        :enter-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated fadeIn' : ''"
+        :leave-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated fadeOut' : ''"
       >
         <router-view class="constraint" />
       </transition-group>

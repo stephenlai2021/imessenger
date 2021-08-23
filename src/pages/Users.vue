@@ -52,7 +52,7 @@
 
         <q-item-section side>
           <q-badge class="q-pa-xs" :color="user.online ? 'light-green-5' : 'grey-4'">{{
-            user.online ? "線上" : "線下"
+            user.online ? "上線" : "下線"
           }}</q-badge>
         </q-item-section>
       </q-item>
