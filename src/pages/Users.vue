@@ -23,7 +23,7 @@
         label="Search"
         dense
         bg-color="white"
-        class="q-mx-sm q-mt-sm q-mb-md"
+        class="q-mx-sm q-mt-xs q-mb-md"
       >
         <template v-slot:prepend>
           <q-icon name="search" @click="findUser" style="cursor: pointer" />

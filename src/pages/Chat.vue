@@ -5,29 +5,6 @@
       :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
     >
-      <!-- :style="{ marginTop: store.state.online ? '0px' : '50px' }" -->
-      <!-- <q-chat-message :label="new Date().toLocaleDateString()" /> -->
-
-      <!-- <q-chat-message
-        v-if="
-          store.state.typing.typing &&
-          route.fullPath.includes(
-            `/chat/${route.params.from}/${route.params.to}`
-          )
-        "
-        :name="
-          store.state.typing.from === 'me'
-            ? store.state.userDetails.name
-            : route.params.id
-        "
-        :avatar="
-          store.state.typing.from === 'me'
-            ? store.state.userDetails.avatar
-            : store.state.avatar
-        "
-      >
-        <q-spinner-dots size="2rem" />
-      </q-chat-message> -->
       <q-chat-message
         v-for="(message, index) in store.state.messages"
         :key="index"
@@ -45,26 +22,26 @@
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
       />
     </div>
-    <q-footer elevated>
-      <q-form class="flex row justify-center">
+    <q-footer elevated class="constraint">
+      <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
             v-if="!inputFocus"
             flat
-            class="flex row justify-center"
+            class="flex row justify-evenly"
             style="width: 50%"
           >
-            <q-btn round dense flat icon="phone" />
             <q-btn round dense flat icon="image" />
             <q-btn round dense flat icon="photo_camera" />
             <q-btn round dense flat icon="place" />
             <q-btn round dense flat icon="videocam" />
+            <q-btn round dense flat icon="emoji_emotions" />
           </q-btn-group>
 
           <q-input
             ref="input"
             v-model="newMessage"
-            class="q-pa-sm"
+            class="q-pa-xs"
             style="width: 50%"
             outlined
             rounded
@@ -89,23 +66,6 @@
               />
             </template>
             <template v-slot:append>
-              <!-- <q-fab
-              color="primary"
-              icon="list"
-              direction="left"
-              flat
-              padding="2px"
-            >
-              <q-fab-action
-                color="primary"
-                padding="2px"
-                flat
-                @click="onClick"
-                v-for="item in icons"
-                :key="item"
-                :icon="item"
-              />
-            </q-fab> -->
               <q-btn
                 icon="send"
                 size="md"
@@ -122,17 +82,27 @@
   </q-page>
 </template>
 
+<!-- <q-fab
+  color="primary"
+  icon="list"
+  direction="left"
+  flat
+  padding="2px"
+>
+  <q-fab-action
+    color="primary"
+    padding="2px"
+    flat
+    @click="onClick"
+    v-for="item in icons"
+    :key="item"
+    :icon="item"
+  />
+</q-fab> -->
+
 <script>
-import {
-  ref,
-  onUnmounted,
-  onMounted,
-  inject,
-  watch,
-  watchEffect,
-  onUpdated,
-} from "vue";
-import { useRoute } from "vue-router";
+import { ref, onMounted, inject, watch, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
 export default {
@@ -142,6 +112,7 @@ export default {
     const $q = useQuasar();
 
     const route = useRoute();
+    const router = useRouter();
 
     const desktop = ref(false);
     const indicator = ref(false);
@@ -232,6 +203,7 @@ export default {
     return {
       store,
       route,
+      router,
       chats,
       input,
       icons,

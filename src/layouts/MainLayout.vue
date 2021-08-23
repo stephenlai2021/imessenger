@@ -1,74 +1,86 @@
 <template>
-  <q-layout view="lHr Lpr lFr">
-    <q-header elevated v-if="!route.fullPath.includes('/config')">
-      <!-- <q-toolbar class="q-mx-sm flex"> -->
-      <q-toolbar class="">
-        <q-btn
-          flat
-          dense
-          round
-          icon="arrow_back"
-          aria-label="Arrow Back"
-          @click="router.push('/')"
-          v-if="route.fullPath.includes(`/chat`)"
-        />
-        <q-toolbar-title class="" style="position: relative">
-          <span v-if="!route.fullPath.includes(`/auth`)">
-            <q-avatar v-if="userPage || !chatPage">
-              <!-- :src="
-                  store.state.online
-                    ? store.state.userDetails.avatar
-                    : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
-                " -->
-              <img
-                style="width: 30px; height: 30px; cursor: pointer"
-                :src="
-                  !store.state.userDetails.avatar
-                    ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
-                    : store.state.userDetails.avatar
-                "
-                alt="my avatar"
-                @click="toggleLeftDrawer"
-              />
-            </q-avatar>
-            <q-avatar v-if="chatPage || !userPage">
-              <img
-                style="width: 35px; height: 35px"
-                :src="
-                  !store.state.avatar
-                    ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
-                    : store.state.avatar
-                "
-                alt="user avatar"
-              />
-              <q-badge
-                rounded
-                style="position: absolute; top: 25px"
-                :color="store.state.online ? 'light-green-5' : 'grey-4'"
-              />
-            </q-avatar>
-          </span>
-          <span class="q-ml-sm">
-            {{ title }}
-          </span>
-          <q-spinner-dots
-            class="float-right q-mr-md"
-            v-if="store.state.typing.typing && route.fullPath.includes(`/chat`)"
-            size="2rem"
-          />
-        </q-toolbar-title>
-        <!-- <q-btn
-          flat
-          dense
-          round
-          icon="face"
-          aria-label="Face"
-          @click="toggleRightDrawer"
+  <q-layout view="lHr lpR lFr">
+    <q-header>
+      <q-toolbar class="constraint">
+        <q-avatar
           v-if="
-            !route.fullPath.includes(`/auth`) &&
-            !route.fullPath.includes(`/chat`)
+            !route.fullPath.includes('/users') &&
+            !route.fullPath.includes('/finduser') &&
+            !route.fullPath.includes('/addpost') &&
+            !route.fullPath.includes('/settings') &&
+            !route.fullPath.includes('/chat')
           "
-        /> -->
+        >
+          <img
+            style="width: 30px; height: 30px"
+            :src="
+              !store.state.userDetails.avatar
+                ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                : store.state.userDetails.avatar
+            "
+            alt="user avatar"
+            @click="toggleLeftDrawer"
+          />
+        </q-avatar>
+
+        <q-icon
+          name="chevron_left"
+          size="md"
+          @click="checkRoute"
+          v-if="
+            route.fullPath.includes('/chat') ||
+            route.fullPath.includes('/addpost') ||
+            route.fullPath.includes('/finduser')
+          "
+        />
+        <span
+          class="q-ml-sm"
+          style="font-size: 21px; width: 50%;"
+          v-if="
+            route.fullPath.includes('/users') ||
+            route.fullPath.includes('/finduser') ||
+            route.fullPath.includes('/addpost') ||
+            route.fullPath.includes('/settings') ||
+            route.fullPath.includes('/chat')
+          "
+        >
+          {{ title }}
+        </span>
+        <div class="flex row justify-end full-width">
+          <q-icon
+            name="person_search"
+            size="sm"
+            @click="router.push('/finduser')"
+            class=""
+            v-if="route.fullPath.includes('/users')"
+          />
+          <q-icon
+            name="edit"
+            size="sm"
+            @click="router.push('/addpost')"
+            class="q-mr-md"
+            v-if="
+              !route.fullPath.includes('/users') &&
+              !route.fullPath.includes('/finduser') &&
+              !route.fullPath.includes('/addpost') &&
+              !route.fullPath.includes('/settings') &&
+              !route.fullPath.includes('/chat')
+            "
+          />
+          <q-icon
+            name="settings"
+            size="sm"
+            @click="toggleLeftDrawer"
+            class="justify-end"
+            v-if="
+              !route.fullPath.includes('/users') &&
+              !route.fullPath.includes('/finduser') &&
+              !route.fullPath.includes('/addpost') &&
+              !route.fullPath.includes('/settings') &&
+              !route.fullPath.includes('/chat')
+            "
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -78,6 +90,7 @@
       side="right"
       bordered
     >
+      123
     </q-drawer>
 
     <q-drawer
@@ -96,7 +109,7 @@
               : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
           "
           alt="my avatar"
-          style="width: 90px; border-radius: 50%;"
+          style="width: 90px; border-radius: 50%"
         />
       </div>
 
@@ -157,8 +170,17 @@
       </q-list>
     </q-drawer>
 
+    <q-footer elevated>
+      <q-tabs v-model="tab" no-caps class="flex row justify-evenly">
+        <q-tab name="home" icon="home" @click="router.push('/')" />
+        <q-tab name="chat" icon="chat" @click="router.push('/users')" />
+      </q-tabs>
+    </q-footer>
+
     <q-page-container>
-      <router-view />
+      <!-- <transition enter-active-class="animated fadeIn" appear> -->
+      <router-view class="constraint" />
+      <!-- </transition> -->
     </q-page-container>
   </q-layout>
 </template>
@@ -177,17 +199,23 @@ export default {
     const userPage = ref(false);
     const chatPage = ref(false);
     const online = ref(true);
+    const tab = ref("home");
 
     // computed
     const title = computed(() => {
       let currentPath = route.fullPath;
-      if (currentPath === "/") return "Chat";
+      if (currentPath === "/") return store.state.userDetails.name;
       if (
         currentPath ===
         `/chat/${store.state.userDetails.name}/${route.params.to}`
       )
         return route.params.to;
       if (currentPath === "/auth") return "Login";
+      if (currentPath === "/users") return "Chat Room";
+      if (currentPath === "/finduser") return "Find User";
+      if (currentPath === "/addpost") return "Add Post";
+      if (currentPath === "/settings") return "Settings";
+      if (currentPath === "/chat") return store.state.user.name;
       return "";
     });
 
@@ -204,6 +232,17 @@ export default {
       console.log("hi");
     };
 
+    const checkRoute = () => {
+      if (route.fullPath.includes("/addpost")) {
+        router.push("/");
+      }
+      if (route.fullPath.includes("/chat")) {
+        router.push("/users");
+      }
+      if (route.fullPath.includes("/finduser")) {
+        router.push("/users");
+      }
+    };
     // watch
     watchEffect(() => {
       if (route.fullPath.includes(`/chat/`)) {
@@ -213,7 +252,7 @@ export default {
       if (!route.fullPath.includes(`/chat/`)) {
         userPage.value = true;
         chatPage.value = false;
-      } 
+      }
     });
 
     return {
@@ -224,6 +263,8 @@ export default {
       online,
       userPage,
       chatPage,
+      tab,
+      checkRoute,
       toggleLeftDrawer,
       toggleRightDrawer,
       sayHi,
@@ -259,9 +300,10 @@ export default {
 .title {
   border: 1px solid white;
 }
-.q-item {
+.q-tab {
+  // margin: 0;
 }
-.q-item__section {
-  // text-align: center;
+.q-tab_content.self-stretch {
+  // margin-top: 0;
 }
 </style>

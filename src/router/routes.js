@@ -5,9 +5,12 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "/", component: () => import("src/pages/Users.vue") },
+      { path: "/", component: () => import("src/pages/Post.vue") },
+      { path: "/users", component: () => import("src/pages/Users.vue") },
+      { path: "/finduser", component: () => import("src/pages/FindUser.vue") },
+      { path: "/addpost", component: () => import("src/pages/AddPost.vue") },
       { path: "/auth", component: () => import("src/pages/Auth.vue") },
-      { path: "/config", component: () => import("src/pages/Config.vue") },
+      { path: "/settings", component: () => import("src/pages/Settings.vue") },
       {
         path: "/chat/:from/:to",
         component: () => import("src/pages/Chat.vue"),
