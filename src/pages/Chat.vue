@@ -22,6 +22,7 @@
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
       />
     </div>
+
     <q-footer elevated class="constraint">
       <q-form class="flex row">
         <div class="flex full-width">
