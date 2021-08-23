@@ -171,9 +171,9 @@
     </q-drawer>
 
     <q-footer elevated>
-      <q-tabs v-model="tab" no-caps class="flex row justify-evenly">
-        <q-tab name="home" icon="home" @click="router.push('/')" />
-        <q-tab name="chat" icon="chat" @click="router.push('/users')" />
+      <q-tabs v-model="tab" no-caps class="flex row justify-evenly full-width">
+        <q-tab name="home" icon="home" style="width: 50%;" @click="router.push('/')" />
+        <q-tab name="chat" icon="chat" style="width: 50%;" @click="router.push('/users')" />
       </q-tabs>
     </q-footer>
 
