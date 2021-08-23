@@ -198,7 +198,13 @@
     </q-footer>
 
     <q-page-container class="bg-grey-2">
-      <router-view class="constraint" />
+      <transition-group
+        appear
+        :enter-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated slideInRight' : ''"
+        :leave-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated slideOutLeft' : ''"
+      >
+        <router-view class="constraint" />
+      </transition-group>
     </q-page-container>
   </q-layout>
 </template>

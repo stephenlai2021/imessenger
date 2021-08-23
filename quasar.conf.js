@@ -99,6 +99,8 @@ module.exports = configure(function (ctx) {
     animations: [
       'fadeIn',
       'fadeOut',
+      'slideInUp',
+      'slideOutDown',
       'slideInRight',
       'slideOutLeft'
     ],
