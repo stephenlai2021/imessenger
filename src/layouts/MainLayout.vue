@@ -8,7 +8,7 @@
             !route.fullPath.includes('/finduser') &&
             !route.fullPath.includes('/addpost') &&
             !route.fullPath.includes('/settings') &&
-            !route.fullPath.includes('/chat') 
+            !route.fullPath.includes('/chat')
           "
         >
           <img
@@ -41,7 +41,7 @@
             route.fullPath.includes('/finduser') ||
             route.fullPath.includes('/addpost') ||
             route.fullPath.includes('/settings') ||
-            route.fullPath.includes('/chat') 
+            route.fullPath.includes('/chat')
           "
         >
           {{ title }}
@@ -172,17 +172,7 @@
       </q-list>
     </q-drawer>
 
-    <q-footer
-      elevated
-      v-if="
-        !route.fullPath.includes('/users') &&
-        !route.fullPath.includes('/finduser') &&
-        !route.fullPath.includes('/addpost') &&
-        !route.fullPath.includes('/settings') &&
-        !route.fullPath.includes('/chat') &&
-        !route.fullPath.includes('/auth')
-      "
-    >
+    <q-footer elevated v-if="!route.fullPath.includes('/auth')">
       <q-tabs v-model="tab" no-caps class="flex row justify-evenly full-width">
         <q-tab
           name="home"
