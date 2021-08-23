@@ -37,13 +37,7 @@
         <span
           class="q-ml-sm"
           style="font-size: 21px; width: 100%"
-          v-if="
-            route.fullPath.includes('/users') ||
-            route.fullPath.includes('/finduser') ||
-            route.fullPath.includes('/addpost') ||
-            route.fullPath.includes('/settings') ||
-            route.fullPath.includes('/chat')
-          "
+         
         >
           {{ title }}
         </span>

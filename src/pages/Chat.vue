@@ -5,12 +5,12 @@
       :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
     >
+        <!-- :name="
+          message.from === 'me' ? store.state.userDetails.name : route.params.to"-->
       <q-chat-message
         v-for="(message, index) in store.state.messages"
         :key="index"
-        :name="
-          message.from === 'me' ? store.state.userDetails.name : route.params.to
-        "
+        
         :avatar="
           message.from === 'me'
             ? store.state.userDetails.avatar
