@@ -8,8 +8,7 @@
             !route.fullPath.includes('/finduser') &&
             !route.fullPath.includes('/addpost') &&
             !route.fullPath.includes('/settings') &&
-            !route.fullPath.includes('/chat') &&
-            !route.fullPath.includes('/auth')
+            !route.fullPath.includes('/chat') 
           "
         >
           <img
@@ -42,8 +41,7 @@
             route.fullPath.includes('/finduser') ||
             route.fullPath.includes('/addpost') ||
             route.fullPath.includes('/settings') ||
-            route.fullPath.includes('/chat') ||
-            route.fullPath.includes('/auth')
+            route.fullPath.includes('/chat') 
           "
         >
           {{ title }}
