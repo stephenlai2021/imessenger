@@ -23,10 +23,13 @@
           />
         </q-avatar>
 
-        <q-icon
-          name="eva-arrow-ios-back-outline"
+        <q-btn
+          round
+          dense
+          flat
           color="primary"
-          size="md"
+          size="18px"
+          icon="eva-arrow-ios-back-outline"
           @click="checkRoute"
           v-if="
             route.fullPath.includes('/chat') ||
@@ -36,7 +39,7 @@
           class="pointer"
         />
         <span
-          class="q-ml-sm text-primary text-bold"
+          class="text-primary text-bold"
           style="font-size: 18px; width: 100%"
         >
           {{ title }}

@@ -24,6 +24,7 @@
           <q-btn-group
             v-if="!inputFocus"
             flat
+            round
             class="flex row justify-evenly q-mx-sm"
             style="width: 40%"
           >
