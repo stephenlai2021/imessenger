@@ -179,6 +179,7 @@
       bordered
       side="left"
       class="bg-grey-1"
+      style="overflow: hidden"
     >
       <div
         v-if="store.state.userDetails && store.state.online"
