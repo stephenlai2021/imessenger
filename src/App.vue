@@ -11,6 +11,7 @@ export default {
 
     onMounted(() => {
       store.methods.handleAuthStateChanged();
+      store.methods.getUsers();
     });
   },
 };

@@ -114,7 +114,7 @@ export default {
     });
 
     onMounted(() => {
-      store.methods.getUsers();
+      // store.methods.getUsers();
       console.log("all users: ", store.state.users);
 
       setTimeout(() => {

@@ -44,9 +44,11 @@ const methods = {
                 state.online = true;
                 state.login = false;
 
-                if (router.currentRoute.value.name === 'chat') {                 
-                  router.push('/users')
-                }
+                // router.push('/')
+
+                // if (router.currentRoute.value.name === 'chat') {                 
+                //   router.push('/users')
+                // }
               });
           })
           .catch((err) => {

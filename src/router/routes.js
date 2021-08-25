@@ -1,4 +1,5 @@
 import { auth } from 'src/boot/firebase'
+import store from '../store'
 
 const routes = [
   {
