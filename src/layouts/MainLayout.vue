@@ -174,7 +174,7 @@
               style="background: red"
             />
           </q-item-section>
-          
+
           <q-item-section>{{
             !store.state.online ? "" : "Logout"
           }}</q-item-section>
@@ -257,7 +257,7 @@ export default {
         `/chat/${store.state.userDetails.name}/${route.params.to}`
       )
         return route.params.to;
-      if (currentPath === "/auth") return "Login";
+      if (currentPath === "/auth") return "Smackchat";
       if (currentPath === "/users") return "Chat Room";
       if (currentPath === "/finduser") return "Find User";
       if (currentPath === "/addpost") return "Add Post";
