@@ -40,7 +40,7 @@
         </span>
         <div class="flex row justify-end full-width">
           <q-icon
-            name="eva-search-outline"
+            name="eva-person-add-outline"
             size="sm"
             @click="router.push('/finduser')"
             class="pointer"

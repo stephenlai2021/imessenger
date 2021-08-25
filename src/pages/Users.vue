@@ -19,7 +19,7 @@
         label="Search"
         dense
         bg-color="grey-2"
-        class="q-mx-sm q-mt-xs q-mb-md"
+        class="q-mx-sm q-mt-xs q-mb-sm"
       >
         <template v-slot:prepend>
           <q-icon name="eva-search-outline" class="q-ml-sm" @click="findUser" style="cursor: pointer" />
