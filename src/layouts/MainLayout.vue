@@ -181,9 +181,8 @@
       class="bg-grey-1"
       style="overflow: hidden"
     >
-      <div
-        v-if="store.state.userDetails && store.state.online"
-      >
+      <!-- <div v-if="store.state.userDetails && store.state.online"> -->
+      <div>
         <q-toolbar></q-toolbar>
         <div class="flex row justify-center">
           <img
@@ -253,9 +252,9 @@
           </q-item>
         </q-list>
       </div>
-       <div class="spinner" v-else>
+      <!-- <div class="spinner" v-else>
         <q-spinner-ios color="primary" size="3em" />
-      </div>
+      </div> -->
     </q-drawer>
 
     <q-footer
