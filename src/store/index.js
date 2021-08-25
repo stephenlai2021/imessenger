@@ -85,6 +85,8 @@ const methods = {
       .then((cred) => {
         const user = cred.user;
         console.log("user: ", user);
+        
+        state.tab = 'home'
         router.push('/')
       })
       .catch((err) => {

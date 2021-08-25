@@ -193,7 +193,6 @@ export default {
     // lifecycle
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
-      // store.methods.getTypingIndicator(route.params.from, route.params.to);
       store.methods.getOnlineStatus(route.params.to);
       store.methods.getToday();
 
