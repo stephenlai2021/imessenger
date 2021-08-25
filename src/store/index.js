@@ -44,9 +44,7 @@ const methods = {
                 state.online = true;
                 state.login = false;
 
-                // router.push('/')
-
-                // if (router.currentRoute.value.name === 'chat') {                 
+                // if (router.currentRoute.value.fullPath.includes('/chat')) {                 
                 //   router.push('/users')
                 // }
               });

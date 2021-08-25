@@ -289,6 +289,7 @@ export default {
         router.push("/users");
       }
     };
+    
     // watch
     watchEffect(() => {
       if (route.fullPath.includes(`/chat/`)) {
@@ -300,7 +301,7 @@ export default {
         chatPage.value = false;
       }
 
-      if (route.fullPath.includes('/')) store.state.tab = 'home'
+      // if (route.fullPath.includes('/')) store.state.tab = 'home'
       if (route.fullPath.includes('/users')) store.state.tab = 'chat'
     });
 
