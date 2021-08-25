@@ -5,15 +5,11 @@
       :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
     >
-      <!-- :name="
-          message.from === 'me' ? store.state.userDetails.name : route.params.to"-->
       <q-chat-message
         v-for="(message, index) in store.state.messages"
         :key="index"
         :avatar="
-          message.from === 'me'
-            ? store.state.userDetails.avatar
-            : store.state.avatar
+          message.from === 'me' ? store.state.userDetails.avatar : store.state.user.avatar
         "
         :text="[message.text]"
         :sent="message.from === 'me'"
@@ -107,7 +103,7 @@
 </q-fab> -->
 
 <script>
-import { ref, onMounted, inject, watch, watchEffect } from "vue";
+import { ref, onMounted, inject, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
@@ -127,7 +123,21 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
+    const him = ref(null);
     const icons = ref(["videocam", "image", "phone", "photo_camera", "place"]);
+
+    // getters
+    // const getUser = () => {
+    //   him.value = store.state.users().map(user => {
+    //     return user.includes(route.params.to)
+    //   })
+    // }
+
+    // const him = computed(() => {
+    //   return store.state.users.filter((user) => {
+    //     return (user.name = route.params.to);
+    //   });
+    // });
 
     // watch
     watch(
@@ -139,16 +149,6 @@ export default {
         }, 20);
       }
     );
-
-    // watch(
-    //   () => input.value,
-    //   () => {
-    //     if (input.value.focus()) {
-    //       console.log("input focus");
-    //     }
-    //   }
-    // );
-
     watch(
       () => indicator.value,
       (newVal, oldVal) => {
@@ -157,6 +157,13 @@ export default {
     );
 
     // methods
+    const getUser = () => {
+      him.value = store.state.users.map((user) => {
+        // return user.includes(route.params.to);
+        return (user.name = route.params.to);
+      });
+    };
+
     const sendTypingIndicator = () => {
       indicator.value = true;
 
@@ -173,7 +180,7 @@ export default {
         text: newMessage.value,
         from: "me",
         to: route.params.to,
-        createdAt: new Date().toLocaleTimeString(),
+        createdAt: timestamp(),
       });
       newMessage.value = "";
     };
@@ -206,20 +213,29 @@ export default {
     });
 
     return {
+      //
       store,
       route,
       router,
+
+      // ref
       chats,
       input,
       icons,
       desktop,
       inputFocus,
+      him,
+
+      // methods
       showMessages,
       newMessage,
       sendMessage,
       sendTypingIndicator,
       onFocus,
       onBlur,
+
+      // computed
+      him,
     };
   },
 };

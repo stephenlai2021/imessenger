@@ -18,9 +18,11 @@ firebase.initializeApp(firebaseConfig)
 const auth = firebase.auth()
 const db = firebase.firestore()
 const rtdb = firebase.database()
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 export {
   auth,
   db,
-  rtdb
+  rtdb,
+  timestamp
 }

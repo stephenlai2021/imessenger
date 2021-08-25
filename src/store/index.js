@@ -208,6 +208,7 @@ const methods = {
       state.users = snap.docs.map((doc) => {
         return { ...doc.data(), userId: doc.id };
       });
+      console.log('init users | store: ', state.users)
     });
 
     watchEffect((onInvalidate) => {
