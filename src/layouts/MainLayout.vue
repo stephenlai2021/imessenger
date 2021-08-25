@@ -263,7 +263,7 @@ export default {
       if (currentPath === "/addpost") return "Add Post";
       if (currentPath === "/settings") return "Settings";
       if (currentPath === "/chat") return store.state.user.name;
-      return "";
+      return route.params.to;
     });
 
     // methods
