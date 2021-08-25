@@ -10,7 +10,8 @@ const state = reactive({
   userDetails: {},
   online: false,
   today: null,
-  leftDrawerOpen: false,
+  // leftDrawerOpen: window.localStorage.getItem('leftDrawerOpen') || false,
+  // leftDrawerOpen: false,
   rightatDrawerOpen: false,
   typing: {
     from: null,
@@ -26,6 +27,7 @@ const state = reactive({
 });
 
 const methods = {
+  // setLeftDrawerOpenState() {},
   handleAuthStateChanged() {
     console.log("handle auth state change | store");
     auth.onAuthStateChanged((user) => {

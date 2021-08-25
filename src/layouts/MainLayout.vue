@@ -105,7 +105,7 @@
     </q-drawer>
 
     <q-drawer
-      v-model="store.state.leftDrawerOpen"
+      v-model="leftDrawerOpen"
       show-if-above
       bordered
       side="left"
@@ -236,6 +236,7 @@
 <script>
 import { ref, computed, inject, watch, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { localdb } from "src/boot/localbase";
 
 export default {
   setup() {
@@ -247,6 +248,8 @@ export default {
     const userPage = ref(false);
     const chatPage = ref(false);
     const online = ref(true);
+    // const leftDrawerOpen = ref(window.localStorage.getItem('leftDrawerOpen'))
+    const leftDrawerOpen = ref(null);
 
     // computed
     const title = computed(() => {
@@ -268,7 +271,7 @@ export default {
 
     // methods
     const toggleLeftDrawer = () => {
-      store.state.leftDrawerOpen = !store.state.leftDrawerOpen;
+      leftDrawerOpen.value = !leftDrawerOpen.value;
     };
 
     const toggleRightDrawer = () => {
@@ -283,15 +286,30 @@ export default {
       if (route.fullPath.includes("/addpost")) {
         router.push("/");
       }
-      if (route.fullPath.includes("/chat")) {
+      if (
+        route.fullPath.includes("/chat") ||
+        route.fullPath.includes("/finduser")
+      ) {
         router.push("/users");
       }
-      if (route.fullPath.includes("/finduser")) {
-        router.push("/users");
-      }
+      // if (route.fullPath.includes("/finduser")) {
+      //   router.push("/users");
+      // }
     };
 
     // watch
+    watch(
+      () => leftDrawerOpen.value,
+      (newVal, oldVal) => {
+        console.log("left drawer open state: ", newVal);
+        
+        localdb
+          .collection("leftDrawerOpen")
+          .doc("imessenger")
+          .set({ state: newVal });
+      }
+    );
+
     watchEffect(() => {
       if (route.fullPath.includes(`/chat/`)) {
         userPage.value = false;
@@ -303,17 +321,36 @@ export default {
       }
 
       // if (route.fullPath.includes('/')) store.state.tab = 'home'
-      if (route.fullPath.includes('/users')) store.state.tab = 'chat'
+      if (route.fullPath.includes("/users")) store.state.tab = "chat";
+    });
+
+    // lifecycle
+    onMounted(() => {
+      localdb
+        .collection("leftDrawerOpen")
+        .doc("imessenger")
+        .get()
+        .then((result) => {
+          console.log("left open drawer state | onMounted ", result.state);
+          leftDrawerOpen.value = result.state;
+        });
+      console.log(
+        "left drawer open state: | main layout: ",
+        leftDrawerOpen.value
+      );
     });
 
     return {
       store,
-      title,
       route,
       router,
+
+      title,
       online,
       userPage,
       chatPage,
+      leftDrawerOpen,
+
       checkRoute,
       toggleLeftDrawer,
       toggleRightDrawer,

@@ -22,13 +22,21 @@
 </template>
 
 <script>
+import { inject, onMounted } from 'vue'
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const store = inject('store')
+
     const router = useRouter();
 
+    onMounted(() => {
+      // console.log('left drawer open status: ', store.state.leftDrawerOpen)
+    })
+
     return {
+      store,
       router,
     };
   },
