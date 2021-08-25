@@ -67,11 +67,14 @@ const methods = {
       .then((cred) => {
         const user = cred.user;
         console.log("user: ", user);
+
         db.collection("chat-users").doc(user.uid).set({
           name: data.name,
           email: data.email,
           online: true,
         });
+        
+        state.tab = 'home'
         router.push("/");
       })
       .catch((err) => {
@@ -85,7 +88,7 @@ const methods = {
       .then((cred) => {
         const user = cred.user;
         console.log("user: ", user);
-        
+
         state.tab = 'home'
         router.push('/')
       })
