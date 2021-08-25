@@ -164,6 +164,7 @@
               ? router.push('/auth')
               : store.methods.logoutUser()
           "
+          v-if="store.state.online"
         >
           <q-item-section avatar>
             <q-icon
@@ -173,9 +174,9 @@
               style="background: red"
             />
           </q-item-section>
-
+          
           <q-item-section>{{
-            !store.state.online ? "Login/Register" : "Logout"
+            !store.state.online ? "" : "Logout"
           }}</q-item-section>
         </q-item>
       </q-list>
