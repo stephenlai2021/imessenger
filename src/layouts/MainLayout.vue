@@ -35,7 +35,7 @@
           "
           class="pointer"
         />
-        <span class="q-ml-sm text-primary" style="font-size: 18px; width: 100%">
+        <span class="q-ml-sm text-primary text-bold" style="font-size: 18px; width: 100%">
           {{ title }}
         </span>
         <div class="flex row justify-end full-width">
@@ -302,7 +302,7 @@ export default {
       () => leftDrawerOpen.value,
       (newVal, oldVal) => {
         console.log("left drawer open state: ", newVal);
-        
+
         localdb
           .collection("leftDrawerOpen")
           .doc("imessenger")
