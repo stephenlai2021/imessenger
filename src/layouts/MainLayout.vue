@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHr lpR lFr">
-    <q-header class="bg-white">
+    <q-header class="bg-white" elevated>
       <q-toolbar class="constraint">
         <q-avatar
           v-if="
