@@ -157,13 +157,6 @@ export default {
     );
 
     // methods
-    const getUser = () => {
-      him.value = store.state.users.map((user) => {
-        // return user.includes(route.params.to);
-        return (user.name = route.params.to);
-      });
-    };
-
     const sendTypingIndicator = () => {
       indicator.value = true;
 
@@ -224,7 +217,6 @@ export default {
       icons,
       desktop,
       inputFocus,
-      him,
 
       // methods
       showMessages,
@@ -233,9 +225,6 @@ export default {
       sendTypingIndicator,
       onFocus,
       onBlur,
-
-      // computed
-      him,
     };
   },
 };

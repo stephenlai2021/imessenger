@@ -1,6 +1,6 @@
 <template>
-  <q-page
-    ><div class="q-ma-md">
+  <q-page>
+    <div class="q-ma-md">
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi ullam
         nobis omnis dignissimos vitae quisquam a natus sint ipsa explicabo

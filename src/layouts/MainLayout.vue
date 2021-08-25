@@ -35,7 +35,10 @@
           "
           class="pointer"
         />
-        <span class="q-ml-sm text-primary text-bold" style="font-size: 18px; width: 100%">
+        <span
+          class="q-ml-sm text-primary text-bold"
+          style="font-size: 18px; width: 100%"
+        >
           {{ title }}
         </span>
         <div class="flex row justify-end full-width">
@@ -101,7 +104,73 @@
       side="right"
       bordered
     >
-      123
+      <div class="q-ma-md">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+          ullam nobis omnis dignissimos vitae quisquam a natus sint ipsa
+          explicabo debitis expedita optio voluptatem illo sed facilis eos
+          suscipit ex, dolorum harum eius. Earum accusamus recusandae et
+          inventore nostrum fugit placeat fugiat velit reprehenderit odit harum,
+          sunt animi. Aperiam sunt unde tenetur eos, iusto illo perspiciatis
+          minima fugit! Ex neque quam quisquam sunt labore eius, fugiat at, quod
+          tenetur dolorum voluptate, vitae maiores doloremque nulla a totam est
+          molestias minima. Id itaque consequuntur architecto neque inventore,
+          quisquam magnam voluptatibus est deleniti officiis iure fuga,
+          blanditiis nostrum libero animi veritatis harum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+          ullam nobis omnis dignissimos vitae quisquam a natus sint ipsa
+          explicabo debitis expedita optio voluptatem illo sed facilis eos
+          suscipit ex, dolorum harum eius. Earum accusamus recusandae et
+          inventore nostrum fugit placeat fugiat velit reprehenderit odit harum,
+          sunt animi. Aperiam sunt unde tenetur eos, iusto illo perspiciatis
+          minima fugit! Ex neque quam quisquam sunt labore eius, fugiat at, quod
+          tenetur dolorum voluptate, vitae maiores doloremque nulla a totam est
+          molestias minima. Id itaque consequuntur architecto neque inventore,
+          quisquam magnam voluptatibus est deleniti officiis iure fuga,
+          blanditiis nostrum libero animi veritatis harum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+          ullam nobis omnis dignissimos vitae quisquam a natus sint ipsa
+          explicabo debitis expedita optio voluptatem illo sed facilis eos
+          suscipit ex, dolorum harum eius. Earum accusamus recusandae et
+          inventore nostrum fugit placeat fugiat velit reprehenderit odit harum,
+          sunt animi. Aperiam sunt unde tenetur eos, iusto illo perspiciatis
+          minima fugit! Ex neque quam quisquam sunt labore eius, fugiat at, quod
+          tenetur dolorum voluptate, vitae maiores doloremque nulla a totam est
+          molestias minima. Id itaque consequuntur architecto neque inventore,
+          quisquam magnam voluptatibus est deleniti officiis iure fuga,
+          blanditiis nostrum libero animi veritatis harum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+          ullam nobis omnis dignissimos vitae quisquam a natus sint ipsa
+          explicabo debitis expedita optio voluptatem illo sed facilis eos
+          suscipit ex, dolorum harum eius. Earum accusamus recusandae et
+          inventore nostrum fugit placeat fugiat velit reprehenderit odit harum,
+          sunt animi. Aperiam sunt unde tenetur eos, iusto illo perspiciatis
+          minima fugit! Ex neque quam quisquam sunt labore eius, fugiat at, quod
+          tenetur dolorum voluptate, vitae maiores doloremque nulla a totam est
+          molestias minima. Id itaque consequuntur architecto neque inventore,
+          quisquam magnam voluptatibus est deleniti officiis iure fuga,
+          blanditiis nostrum libero animi veritatis harum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+          ullam nobis omnis dignissimos vitae quisquam a natus sint ipsa
+          explicabo debitis expedita optio voluptatem illo sed facilis eos
+          suscipit ex, dolorum harum eius. Earum accusamus recusandae et
+          inventore nostrum fugit placeat fugiat velit reprehenderit odit harum,
+          sunt animi. Aperiam sunt unde tenetur eos, iusto illo perspiciatis
+          minima fugit! Ex neque quam quisquam sunt labore eius, fugiat at, quod
+          tenetur dolorum voluptate, vitae maiores doloremque nulla a totam est
+          molestias minima. Id itaque consequuntur architecto neque inventore,
+          quisquam magnam voluptatibus est deleniti officiis iure fuga,
+          blanditiis nostrum libero animi veritatis harum.
+        </p>
+      </div>
     </q-drawer>
 
     <q-drawer
@@ -111,75 +180,81 @@
       side="left"
       class="bg-grey-1"
     >
-      <q-toolbar></q-toolbar>
-      <div class="flex row justify-center">
-        <img
-          :src="
-            store.state.userDetails.avatar
-              ? store.state.userDetails.avatar
-              : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
-          "
-          alt="my avatar"
-          style="width: 90px; border-radius: 50%"
-        />
+      <div
+        v-if="store.state.userDetails && store.state.online"
+      >
+        <q-toolbar></q-toolbar>
+        <div class="flex row justify-center">
+          <img
+            :src="
+              store.state.userDetails.avatar
+                ? store.state.userDetails.avatar
+                : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+            "
+            alt="my avatar"
+            style="width: 90px; border-radius: 50%"
+          />
+        </div>
+        <p class="text-center q-mt-sm text-h5 text-bold">
+          {{ store.state.userDetails.name }}
+        </p>
+
+        <q-list class="q-mt-md">
+          <span class="q-ml-md text-grey">Settings</span>
+          <q-item>
+            <q-item-section avatar>
+              <q-icon
+                color="white"
+                name="dark_mode"
+                class="icon"
+                style="background: black"
+              />
+            </q-item-section>
+
+            <q-item-section>Dark Mode</q-item-section>
+            <q-toggle v-model="store.state.dark" color="black" />
+          </q-item>
+          <q-item>
+            <q-item-section avatar>
+              <q-icon
+                color="white"
+                name="translate"
+                class="icon"
+                style="background: #2196f3"
+              />
+            </q-item-section>
+
+            <q-item-section>Chinese</q-item-section>
+            <q-toggle v-model="store.state.chinese" color="blue" />
+          </q-item>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              !store.state.online
+                ? router.push('/auth')
+                : store.methods.logoutUser()
+            "
+            v-if="store.state.online"
+          >
+            <q-item-section avatar>
+              <q-icon
+                color="white"
+                :name="!store.state.online ? 'login' : 'logout'"
+                class="icon"
+                style="background: red"
+              />
+            </q-item-section>
+
+            <q-item-section>{{
+              !store.state.online ? "" : "Logout"
+            }}</q-item-section>
+          </q-item>
+        </q-list>
       </div>
-
-      <p class="text-center q-mt-sm text-h5 text-bold">
-        {{ store.state.userDetails.name }}
-      </p>
-
-      <q-list class="q-mt-md">
-        <span class="q-ml-md text-grey">Settings</span>
-        <q-item>
-          <q-item-section avatar>
-            <q-icon
-              color="white"
-              name="dark_mode"
-              class="icon"
-              style="background: black"
-            />
-          </q-item-section>
-
-          <q-item-section>Dark Mode</q-item-section>
-          <q-toggle v-model="store.state.dark" color="black" />
-        </q-item>
-        <q-item>
-          <q-item-section avatar>
-            <q-icon
-              color="white"
-              name="translate"
-              class="icon"
-              style="background: #2196f3"
-            />
-          </q-item-section>
-
-          <q-item-section>Chinese</q-item-section>
-          <q-toggle v-model="store.state.chinese" color="blue" />
-        </q-item>
-        <q-item
-          clickable
-          v-ripple
-          @click="
-            !store.state.online
-              ? router.push('/auth')
-              : store.methods.logoutUser()
-          "
-          v-if="store.state.online"
-        >
-          <q-item-section avatar>
-            <q-icon
-              color="white"
-              :name="!store.state.online ? 'login' : 'logout'"
-              class="icon"
-              style="background: red"
-            />
-          </q-item-section>
-
-          <q-item-section>{{
-            !store.state.online ? "" : "Logout"
-          }}</q-item-section>
-        </q-item>
-      </q-list>
+       <div class="spinner" v-else>
+        <q-spinner-ios color="primary" size="3em" />
+      </div>
     </q-drawer>
 
     <q-footer
@@ -248,7 +323,6 @@ export default {
     const userPage = ref(false);
     const chatPage = ref(false);
     const online = ref(true);
-    // const leftDrawerOpen = ref(window.localStorage.getItem('leftDrawerOpen'))
     const leftDrawerOpen = ref(null);
 
     // computed
@@ -334,6 +408,7 @@ export default {
           console.log("left open drawer state | onMounted ", result.state);
           leftDrawerOpen.value = result.state;
         });
+
       console.log(
         "left drawer open state: | main layout: ",
         leftDrawerOpen.value
@@ -361,6 +436,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.spinner {
+  width: calc(100vw - 60px);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .icon {
   border-radius: 50%;
   width: 30px;
