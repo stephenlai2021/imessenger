@@ -14,6 +14,8 @@
     <q-list v-else class="full-width">
       <q-input
         v-model="search"
+        rounded
+        standout
         label="Search"
         dense
         bg-color="grey-2"

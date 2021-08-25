@@ -14,7 +14,7 @@ const state = reactive({
   rightatDrawerOpen: false,
   typing: {
     from: null,
-    typing: false
+    typing: false,
   },
   avatar: null,
   user: {},
@@ -22,7 +22,7 @@ const state = reactive({
   chinese: false,
   desktop: false,
   login: false,
-  tab: 'home'
+  tab: "home",
 });
 
 const methods = {
@@ -42,9 +42,11 @@ const methods = {
               .update({ online: true })
               .then(() => {
                 state.online = true;
-                state.login = false
-                state.tab = 'home'
-                router.push("/");
+                state.login = false;
+
+                if (router.currentRoute.value.name === 'chat') {                 
+                  router.push('/users')
+                }
               });
           })
           .catch((err) => {
@@ -70,6 +72,7 @@ const methods = {
           email: data.email,
           online: true,
         });
+        router.push("/");
       })
       .catch((err) => {
         console.log("err message: ", err.message);
@@ -142,7 +145,7 @@ const methods = {
       from: "them",
       text: data.text,
       createdAt: data.createdAt,
-    });    
+    });
   },
   sendTypingIndicator(data) {
     let from = state.userDetails.name;
@@ -152,19 +155,19 @@ const methods = {
       .collection(data.to)
       .doc("typing indicator")
       .set({
-        from: 'me',
+        from: "me",
         typing: false,
-      })
-    
+      });
+
     db.collection("chat-messages")
       .doc(data.to)
       .collection(from)
       .doc("typing indicator")
       .set({
-        from: 'them',
+        from: "them",
         typing: true,
       });
-    
+
     setTimeout(() => {
       db.collection("chat-messages")
         .doc(data.to)
@@ -176,7 +179,7 @@ const methods = {
         .then(() => {
           state.typing.typing = false;
         });
-    }, 1000)
+    }, 1000);
   },
   getTypingIndicator(from, to) {
     const unsub = db
@@ -184,14 +187,14 @@ const methods = {
       .doc(from)
       .collection(to)
       .doc("typing indicator")
-      .onSnapshot(doc => {
+      .onSnapshot((doc) => {
         // state.typing = doc.data()
-        state.typing.typing = doc.data().typing
+        state.typing.typing = doc.data().typing;
       });
-    
-     watchEffect((onInvalidate) => {
-       onInvalidate(() => unsub());
-     });
+
+    watchEffect((onInvalidate) => {
+      onInvalidate(() => unsub());
+    });
   },
   getUsers() {
     const unsub = db.collection("chat-users").onSnapshot((snap) => {

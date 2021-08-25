@@ -68,6 +68,7 @@ const routes = [
       { path: "/auth", component: () => import("src/pages/Auth.vue") },
       {
         path: "/chat/:from/:to",
+        name : 'chat',
         component: () => import("src/pages/Chat.vue"),
         beforeEnter: (to, from, next) => {
           auth.onAuthStateChanged((user) => {

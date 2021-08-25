@@ -35,10 +35,7 @@
           "
           class="pointer"
         />
-        <span
-          class="q-ml-sm text-primary"
-          style="font-size: 21px; width: 100%"         
-        >
+        <span class="q-ml-sm text-primary" style="font-size: 21px; width: 100%">
           {{ title }}
         </span>
         <div class="flex row justify-end full-width">
@@ -185,7 +182,7 @@
     </q-drawer>
 
     <q-footer
-    class="bg-white constraint"
+      class="bg-white constraint"
       elevated
       v-if="
         !route.fullPath.includes('/auth') &&
@@ -193,7 +190,11 @@
         !route.fullPath.includes('/addpost')
       "
     >
-      <q-tabs v-model="store.state.tab" no-caps class="flex row justify-evenly full-width text-primary">
+      <q-tabs
+        v-model="store.state.tab"
+        no-caps
+        class="flex row justify-evenly full-width text-primary"
+      >
         <q-tab
           name="home"
           icon="eva-home-outline"
@@ -212,8 +213,18 @@
     <q-page-container>
       <transition-group
         appear
-        :enter-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated fadeIn' : ''"
-        :leave-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated fadeOut' : ''"
+        :enter-active-class="
+          route.fullPath.includes('/addpost') ||
+          route.fullPath.includes('/finduser')
+            ? 'animated fadeIn'
+            : ''
+        "
+        :leave-active-class="
+          route.fullPath.includes('/addpost') ||
+          route.fullPath.includes('/finduser')
+            ? 'animated fadeOut'
+            : ''
+        "
       >
         <router-view class="constraint" />
       </transition-group>
@@ -288,6 +299,9 @@ export default {
         userPage.value = true;
         chatPage.value = false;
       }
+
+      if (route.fullPath.includes('/')) store.state.tab = 'home'
+      if (route.fullPath.includes('/users')) store.state.tab = 'chat'
     });
 
     return {
