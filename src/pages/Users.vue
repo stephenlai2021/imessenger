@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex q-pa-sm">
+  <q-page class="flex q-py-sm">
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner-ios color="primary" size="3em" />
     </div>
@@ -19,7 +19,7 @@
         label="Search"
         dense
         bg-color="grey-2"
-        class="q-mx-sm q-mt-xs q-mb-sm"
+        class="q-mx-md q-mt-xs q-mb-sm"
       >
         <template v-slot:prepend>
           <q-icon name="eva-search-outline" class="q-ml-sm" @click="findUser" style="cursor: pointer" />
@@ -28,7 +28,6 @@
       <q-item
         v-for="(user, index) in matchingUsers"
         :key="index"
-        class="q-my-sm"
         clickable
         v-ripple
         @click="goChat(user)"
