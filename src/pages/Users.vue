@@ -14,12 +14,12 @@
     <q-list v-else class="full-width">
       <q-input
         v-model="search"
-        rounded
+        
         standout
         label="Search"
         dense
         bg-color="grey-2"
-        class="q-mx-md q-mt-xs q-mb-sm"
+        class="q-mx-md q-mt-sm q-mb-sm"
       >
         <template v-slot:prepend>
           <q-icon name="eva-search-outline" class="q-ml-sm" @click="findUser" style="cursor: pointer" />
