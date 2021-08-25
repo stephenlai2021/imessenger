@@ -85,6 +85,7 @@ const methods = {
       .then((cred) => {
         const user = cred.user;
         console.log("user: ", user);
+        router.push('/')
       })
       .catch((err) => {
         console.log("err message: ", err.message);
