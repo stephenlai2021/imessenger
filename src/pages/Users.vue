@@ -114,9 +114,6 @@ export default {
     });
 
     onMounted(() => {
-      // store.methods.getUsers();
-      console.log("all users: ", store.state.users);
-
       setTimeout(() => {
         if (!store.state.users.length) {
           noUserMessages.value = true;

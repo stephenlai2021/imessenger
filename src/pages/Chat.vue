@@ -33,8 +33,6 @@
           >
             <q-btn round dense flat color="primary" icon="eva-image-outline" />
             <q-btn round dense flat color="primary" icon="eva-camera-outline" />
-            <!-- <q-btn round dense flat color="primary" icon="eva-pin-outline" />
-            <q-btn round dense flat color="primary" icon="eva-video-outline" /> -->
             <q-btn
               round
               dense
@@ -45,45 +43,45 @@
           </q-btn-group>
 
           <!-- <div class="" style="width: 60%;"> -->
-            <q-input
-              ref="input"
-              v-model="newMessage"
-              class="q-pa-xs"
-              style="width: 60%;"
-              outlined
-              rounded
-              label="Message"
-              dense
-              focus="false"
-              bg-color="grey-2"
-              @keydown.enter="sendMessage"
-              @keydown="sendTypingIndicator()"
-              @focus="onFocus"
-              @blur="onBlur"
-              :style="{ width: inputFocus ? '100%' : '50%' }"
-            >
-              <template v-slot:prepend v-if="inputFocus">
-                <q-btn
-                  icon="navigate_next"
-                  size="md"
-                  dense
-                  flat
-                  color="primary"
-                  @click="inputFocus = false"
-                />
-              </template>
-              <template v-slot:append>
-                <q-btn
-                  icon="eva-navigation-2-outline"
-                  :color="inputFocus ? 'primary' : 'grey-6'"
-                  size="md"
-                  dense
-                  flat
-                  @click="sendMessage"
-                />
-              </template>
-            </q-input>
-          </div>
+          <q-input
+            ref="input"
+            v-model="newMessage"
+            class="q-pa-xs"
+            style="width: 60%"
+            outlined
+            rounded
+            label="Message"
+            dense
+            focus="false"
+            bg-color="grey-2"
+            @keydown.enter="sendMessage"
+            @keydown="sendTypingIndicator()"
+            @focus="onFocus"
+            @blur="onBlur"
+            :style="{ width: inputFocus ? '100%' : '50%' }"
+          >
+            <template v-slot:prepend v-if="inputFocus">
+              <q-btn
+                icon="navigate_next"
+                size="md"
+                dense
+                flat
+                color="primary"
+                @click="inputFocus = false"
+              />
+            </template>
+            <template v-slot:append>
+              <q-btn
+                icon="eva-navigation-2-outline"
+                :color="inputFocus ? 'primary' : 'grey-6'"
+                size="md"
+                dense
+                flat
+                @click="sendMessage"
+              />
+            </template>
+          </q-input>
+        </div>
         <!-- </div> -->
       </q-form>
     </q-footer>

@@ -35,7 +35,7 @@
           "
           class="pointer"
         />
-        <span class="q-ml-sm text-primary" style="font-size: 21px; width: 100%">
+        <span class="q-ml-sm text-primary" style="font-size: 18px; width: 100%">
           {{ title }}
         </span>
         <div class="flex row justify-end full-width">
@@ -289,7 +289,7 @@ export default {
         router.push("/users");
       }
     };
-    
+
     // watch
     watchEffect(() => {
       if (route.fullPath.includes(`/chat/`)) {
