@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHr lpR lFr">
-    <q-header elevated>
+    <q-header class="bg-white">
       <q-toolbar class="constraint">
         <q-avatar
           v-if="
@@ -24,7 +24,8 @@
         </q-avatar>
 
         <q-icon
-          name="chevron_left"
+          name="eva-arrow-ios-back-outline"
+          color="primary"
           size="md"
           @click="checkRoute"
           v-if="
@@ -35,23 +36,24 @@
           class="pointer"
         />
         <span
-          class="q-ml-sm"
-          style="font-size: 21px; width: 100%"
-         
+          class="q-ml-sm text-primary"
+          style="font-size: 21px; width: 100%"         
         >
           {{ title }}
         </span>
         <div class="flex row justify-end full-width">
           <q-icon
-            name="person_search"
+            name="eva-search-outline"
             size="sm"
             @click="router.push('/finduser')"
             class="pointer"
+            color="primary"
             v-if="route.fullPath.includes('/users')"
           />
           <q-icon
-            name="edit"
+            name="eva-edit-2-outline"
             size="sm"
+            color="primary"
             @click="router.push('/addpost')"
             class="q-mr-md pointer"
             v-if="
@@ -64,8 +66,9 @@
             "
           />
           <q-icon
-            name="settings"
+            name="eva-settings-2-outline"
             size="sm"
+            color="primary"
             @click="toggleLeftDrawer"
             class="justify-end pointer"
             v-if="
@@ -76,6 +79,20 @@
               !route.fullPath.includes('/chat') &&
               !route.fullPath.includes('/auth')
             "
+          />
+          <q-icon
+            name="eva-pin-outline"
+            size="sm"
+            color="primary"
+            class="justify-end pointer q-mr-md"
+            v-if="route.fullPath.includes('/chat')"
+          />
+          <q-icon
+            name="eva-camera-outline"
+            size="sm"
+            color="primary"
+            class="justify-end pointer"
+            v-if="route.fullPath.includes('/chat')"
           />
         </div>
       </q-toolbar>
@@ -168,6 +185,7 @@
     </q-drawer>
 
     <q-footer
+    class="bg-white constraint"
       elevated
       v-if="
         !route.fullPath.includes('/auth') &&
@@ -175,23 +193,23 @@
         !route.fullPath.includes('/addpost')
       "
     >
-      <q-tabs v-model="store.state.tab" no-caps class="flex row justify-evenly full-width">
+      <q-tabs v-model="store.state.tab" no-caps class="flex row justify-evenly full-width text-primary">
         <q-tab
           name="home"
-          icon="home"
+          icon="eva-home-outline"
           style="width: 50%"
           @click="router.push('/')"
         />
         <q-tab
           name="chat"
-          icon="chat"
+          icon="eva-message-circle-outline"
           style="width: 50%"
           @click="router.push('/users')"
         />
       </q-tabs>
     </q-footer>
 
-    <q-page-container class="bg-grey-2">
+    <q-page-container>
       <transition-group
         appear
         :enter-active-class="route.fullPath.includes('/addpost') || route.fullPath.includes('/finduser') ? 'animated fadeIn' : ''"

@@ -5,12 +5,11 @@
       :class="{ invisible: !showMessages }"
       class="q-pa-md column col justify-end messages"
     >
-        <!-- :name="
+      <!-- :name="
           message.from === 'me' ? store.state.userDetails.name : route.params.to"-->
       <q-chat-message
         v-for="(message, index) in store.state.messages"
         :key="index"
-        
         :avatar="
           message.from === 'me'
             ? store.state.userDetails.avatar
@@ -23,61 +22,69 @@
       />
     </div>
 
-    <q-footer elevated class="constraint">
+    <q-footer class="constraint bg-white">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
             v-if="!inputFocus"
             flat
-            class="flex row justify-evenly"
-            style="width: 50%"
+            class="flex row justify-evenly q-mx-sm"
+            style="width: 40%"
           >
-            <q-btn round dense flat icon="image" />
-            <q-btn round dense flat icon="photo_camera" />
-            <q-btn round dense flat icon="place" />
-            <q-btn round dense flat icon="videocam" />
-            <q-btn round dense flat icon="emoji_emotions" />
+            <q-btn round dense flat color="primary" icon="eva-image-outline" />
+            <q-btn round dense flat color="primary" icon="eva-camera-outline" />
+            <!-- <q-btn round dense flat color="primary" icon="eva-pin-outline" />
+            <q-btn round dense flat color="primary" icon="eva-video-outline" /> -->
+            <q-btn
+              round
+              dense
+              flat
+              color="primary"
+              icon="eva-smiling-face-outline"
+            />
           </q-btn-group>
 
-          <q-input
-            ref="input"
-            v-model="newMessage"
-            class="q-pa-xs"
-            style="width: 50%"
-            outlined
-            rounded
-            label="Message"
-            dense
-            focus="false"
-            bg-color="white"
-            @keydown.enter="sendMessage"
-            @keydown="sendTypingIndicator()"
-            @focus="onFocus"
-            @blur="onBlur"
-            :style="{ width: inputFocus ? '100%' : '50%' }"
-          >
-            <template v-slot:prepend v-if="inputFocus">
-              <q-btn
-                icon="navigate_next"
-                size="md"
-                dense
-                flat
-                color="primary"
-                @click="inputFocus = false"
-              />
-            </template>
-            <template v-slot:append>
-              <q-btn
-                icon="send"
-                size="md"
-                dense
-                flat
-                color="primary"
-                @click="sendMessage"
-              />
-            </template>
-          </q-input>
-        </div>
+          <!-- <div class="" style="width: 60%;"> -->
+            <q-input
+              ref="input"
+              v-model="newMessage"
+              class="q-pa-xs"
+              style="width: 60%;"
+              outlined
+              rounded
+              label="Message"
+              dense
+              focus="false"
+              bg-color="grey-2"
+              @keydown.enter="sendMessage"
+              @keydown="sendTypingIndicator()"
+              @focus="onFocus"
+              @blur="onBlur"
+              :style="{ width: inputFocus ? '100%' : '50%' }"
+            >
+              <template v-slot:prepend v-if="inputFocus">
+                <q-btn
+                  icon="navigate_next"
+                  size="md"
+                  dense
+                  flat
+                  color="primary"
+                  @click="inputFocus = false"
+                />
+              </template>
+              <template v-slot:append>
+                <q-btn
+                  icon="eva-navigation-2-outline"
+                  :color="inputFocus ? 'primary' : 'grey-6'"
+                  size="md"
+                  dense
+                  flat
+                  @click="sendMessage"
+                />
+              </template>
+            </q-input>
+          </div>
+        <!-- </div> -->
       </q-form>
     </q-footer>
   </q-page>
