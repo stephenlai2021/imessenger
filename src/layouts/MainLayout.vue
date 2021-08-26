@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHr lpR lFr">
-    <q-header class="bg-white" elevated>
+    <q-header class="bg-white" elevated reveal>
       <q-toolbar class="constraint">
         <q-avatar
           v-if="
@@ -262,6 +262,7 @@
 
     <q-footer
       class="bg-white constraint"
+      reveal
       elevated
       v-if="
         !route.fullPath.includes('/auth') &&

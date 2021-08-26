@@ -20,7 +20,7 @@
         <!-- :stamp="formatDistanceToNow(message.createdAt.toDate())" -->
     </div>
 
-    <q-footer class="constraint bg-white">
+    <q-footer class="constraint bg-white" reveal>
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
