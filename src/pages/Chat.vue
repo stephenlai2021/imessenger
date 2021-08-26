@@ -63,7 +63,8 @@
       />
     </div>
 
-    <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);">
+    <!-- <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);"> -->
+    <q-footer class="constraint bg-transparent" style="backdrop-filter: blur(20px);">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
