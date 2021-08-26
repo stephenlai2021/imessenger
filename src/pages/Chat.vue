@@ -17,10 +17,9 @@
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
         class="q-my-sm"
       />
-        <!-- :stamp="formatDistanceToNow(message.createdAt.toDate())" -->
     </div>
 
-    <q-footer class="constraint bg-white" reveal>
+    <q-footer class="constraint bg-white">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
