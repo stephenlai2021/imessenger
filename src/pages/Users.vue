@@ -83,7 +83,7 @@
           <q-badge
             class="q-pa-xs"
             :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
-            >{{ user.online ? "上線" : "下線" }}</q-badge
+            >{{ user.online ? t('online') : t('offline') }}</q-badge
           >
         </q-item-section>
       </q-item>

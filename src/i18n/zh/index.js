@@ -19,4 +19,6 @@ export default {
   password: "密碼",
   reset: "清除",
   name: "姓名",
+  online: "上線",
+  offline: "下線",
 };
