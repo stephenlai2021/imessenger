@@ -20,6 +20,6 @@ export default {
   password: 'Password',
   reset: 'Reset',
   name: 'Name',
-  online: 'onine',
-  offline: 'offline',
+  online: 'Online',
+  offline: 'Offline',
 };
