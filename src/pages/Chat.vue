@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex column page-chat">
-    <q-header class="bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px); z-index: 500;">
+    <q-header class="bg-transparent" style="border-bottom: 1px solid #eeeeee; backdrop-filter: blur(20px); z-index: 500;">
       <q-toolbar class="constraint" style="padding: 0; backdrop-filter: blur(8px);">
         <q-btn
           round
@@ -63,8 +63,7 @@
       />
     </div>
 
-    <!-- <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);"> -->
-    <q-footer class="constraint bg-transparent" style="backdrop-filter: blur(20px);">
+    <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
