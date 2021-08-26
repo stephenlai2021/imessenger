@@ -26,6 +26,12 @@
         :text="[message.text]"
         :sent="message.from === 'me'"
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
+        :label="new Date().toLocaleDateString()"
+        :name="
+          message.from === 'me'
+            ? store.state.userDetails.name
+            : store.state.user.name
+        "
         :avatar="
           message.from === 'me'
             ? store.state.userDetails.avatar
@@ -33,22 +39,12 @@
         "
         class="q-my-sm"
       >
-        <!-- <template v-slot:name>{{
-          message.from === "me"
-            ? store.state.userDetails.name
-            : store.state.user.name
-        }}</template> -->
-        <!-- <template v-slot:avatar>
-          <img
-            class="q-message-avatar"
-            :src="
-              message.from === 'me'
-                ? store.state.userDetails.avatar
-                : store.state.user.avatar
-            "
-          />
-        </template> -->
         <template v-slot:stamp>{{ message.createdAt }}</template>
+        <!-- <div>
+          Already building an app with it...
+          <img src="https://cdn.quasar.dev/img/discord-qeart.png" class="my-emoji">
+        </div> -->
+        <!-- <q-spinner-dots size="2rem" /> -->
       </q-chat-message>
     </div>
 
