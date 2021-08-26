@@ -45,7 +45,7 @@
     <div
       ref="chats"
       :class="{ invisible: !showMessages }"
-      class="q-mx-md q-my-lg column col justify-end messages"
+      class="q-mx-md q-my-md column col justify-end messages"
     >
       <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
@@ -55,13 +55,12 @@
             ? store.state.userDetails.avatar
             : store.state.user.avatar
         "
-        :label="new Date().toLocaleDateString()"
         :text="[message.text]"
         :sent="message.from === 'me'"
         :stamp="message.createdAt"
-        :bg-color="message.from === 'me' ? 'amber-7' : '#69f0ae'"
+        :bg-color="message.from === 'me' ? 'amber-3' : '#69f0ae'"
         :text-color="message.from === 'me' ? 'black' : 'white'"
-        class="q-my-sm"
+        class="q-my-md"
       />
     </div>
 
