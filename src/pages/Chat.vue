@@ -26,6 +26,11 @@
         :text="[message.text]"
         :sent="message.from === 'me'"
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
+        :avatar="
+          message.from === 'me'
+            ? store.state.userDetails.avatar
+            : store.state.user.avatar
+        "
         class="q-my-sm"
       >
         <!-- <template v-slot:name>{{
@@ -33,8 +38,7 @@
             ? store.state.userDetails.name
             : store.state.user.name
         }}</template> -->
-        <template v-slot:stamp>{{ message.createdAt }}</template>
-        <template v-slot:avatar>
+        <!-- <template v-slot:avatar>
           <img
             class="q-message-avatar"
             :src="
@@ -43,7 +47,8 @@
                 : store.state.user.avatar
             "
           />
-        </template>
+        </template> -->
+        <template v-slot:stamp>{{ message.createdAt }}</template>
       </q-chat-message>
     </div>
 
