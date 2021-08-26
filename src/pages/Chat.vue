@@ -3,10 +3,10 @@
     <div
       ref="chats"
       :class="{ invisible: !showMessages }"
-      class="q-pa-md column col justify-end messages"
+      class="q-mx-md q-my-lg column col justify-end messages"
     >
       <q-chat-message
-        v-for="(message, index) in store.state.messages"
+        v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
         :avatar="
           message.from === 'me' ? store.state.userDetails.avatar : store.state.user.avatar
@@ -17,6 +17,7 @@
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
         class="q-my-sm"
       />
+        <!-- :stamp="formatDistanceToNow(message.createdAt.toDate())" -->
     </div>
 
     <q-footer class="constraint bg-white">
@@ -107,6 +108,8 @@
 <script>
 import { ref, onMounted, inject, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { formatDistanceToNow } from "date-fns";
+import { timestamp } from "src/boot/firebase";
 import { useQuasar } from "quasar";
 
 export default {
@@ -128,25 +131,12 @@ export default {
     const him = ref(null);
     const icons = ref(["videocam", "image", "phone", "photo_camera", "place"]);
 
-    // getters
-    // const getUser = () => {
-    //   him.value = store.state.users().map(user => {
-    //     return user.includes(route.params.to)
-    //   })
-    // }
-
-    // const him = computed(() => {
-    //   return store.state.users.filter((user) => {
-    //     return (user.name = route.params.to);
-    //   });
-    // });
-
     // watch
     watch(
       () => store.state.messages,
       () => {
         setTimeout(() => {
-          window.scrollTo(0, chats.value.scrollHeight);
+          // window.scrollTo(0, chats.value.scrollHeight);
           showMessages.value = true;
         }, 20);
       }
@@ -177,6 +167,7 @@ export default {
         to: route.params.to,
         createdAt: timestamp(),
       });
+
       newMessage.value = "";
     };
 
@@ -221,12 +212,13 @@ export default {
       inputFocus,
 
       // methods
-      showMessages,
-      newMessage,
-      sendMessage,
-      sendTypingIndicator,
       onFocus,
       onBlur,
+      newMessage,
+      sendMessage,
+      showMessages,
+      sendTypingIndicator,
+      formatDistanceToNow,
     };
   },
 };

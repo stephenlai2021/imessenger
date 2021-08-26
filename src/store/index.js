@@ -1,5 +1,6 @@
 import { reactive, watchEffect } from "vue";
 import { auth, db } from "src/boot/firebase";
+import { formatDistanceToNow } from "date-fns";
 import router from "../router";
 
 const state = reactive({
@@ -46,7 +47,7 @@ const methods = {
                 state.online = true;
                 state.login = false;
 
-                // if (router.currentRoute.value.fullPath.includes('/chat')) {                 
+                // if (router.currentRoute.value.fullPath.includes('/chat')) {
                 //   router.push('/users')
                 // }
               });
@@ -75,8 +76,8 @@ const methods = {
           email: data.email,
           online: true,
         });
-        
-        state.tab = 'home'
+
+        state.tab = "home";
         router.push("/");
       })
       .catch((err) => {
@@ -91,8 +92,8 @@ const methods = {
         const user = cred.user;
         console.log("user: ", user);
 
-        state.tab = 'home'
-        router.push('/')
+        state.tab = "home";
+        router.push("/");
       })
       .catch((err) => {
         console.log("err message: ", err.message);
@@ -118,14 +119,19 @@ const methods = {
       .onSnapshot((snapshot) => {
         console.log("snapshot: getMessages");
 
-        state.messages = snapshot.docs.map((doc) => {
-          return doc.data();
-        });
-
-        // state.messages.length = 0;
-        // snapshot.docs.forEach((doc) => {
-        //   state.messages.push({ ...doc.data() });
+        // state.messages = snapshot.docs.map((doc) => {
+        //   // let time = formatDistanceToNow(doc.createdAt.toDate())
+        //   // return { ...doc.data(), createdAt: time }
+        //   return doc.data()
         // });
+
+        let results = []
+        snapshot.docs.forEach((doc) => {
+          doc.data().createdAt && results.unshift(doc.data());
+        });
+        state.messages = results
+
+        console.log("messages | store: ", state.messages);
       });
 
     watchEffect((onInvalidate) => {
@@ -210,7 +216,7 @@ const methods = {
       state.users = snap.docs.map((doc) => {
         return { ...doc.data(), userId: doc.id };
       });
-      console.log('init users | store: ', state.users)
+      console.log("init users | store: ", state.users);
     });
 
     watchEffect((onInvalidate) => {
@@ -242,6 +248,13 @@ const getters = {
   filteredUsers() {
     return state.users.filter((user) => {
       return user.userId !== state.userDetails.userId;
+    });
+  },
+  formattedMessages() {
+    return state.messages.map((doc) => {
+      let time = formatDistanceToNow(doc.createdAt.toDate());
+
+      return { ...doc, createdAt: time };
     });
   },
 };
