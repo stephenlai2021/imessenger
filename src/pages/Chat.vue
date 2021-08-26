@@ -59,7 +59,8 @@
         :text="[message.text]"
         :sent="message.from === 'me'"
         :stamp="message.createdAt"
-        :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
+        :bg-color="message.from === 'me' ? 'amber-7' : '#69f0ae'"
+        :text-color="message.from === 'me' ? 'black' : 'white'"
         class="q-my-sm"
       />
     </div>
