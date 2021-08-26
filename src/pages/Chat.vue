@@ -5,18 +5,46 @@
       :class="{ invisible: !showMessages }"
       class="q-mx-md q-my-lg column col justify-end messages"
     >
-      <q-chat-message
+      <!-- <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
         :avatar="
-          message.from === 'me' ? store.state.userDetails.avatar : store.state.user.avatar
+          message.from === 'me'
+            ? store.state.userDetails.avatar
+            : store.state.user.avatar
         "
         :text="[message.text]"
         :sent="message.from === 'me'"
         :stamp="message.createdAt"
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
         class="q-my-sm"
-      />
+      > -->
+
+      <q-chat-message
+        v-for="(message, index) in store.getters.formattedMessages()"
+        :key="index"
+        :text="[message.text]"
+        :sent="message.from === 'me'"
+        :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
+        class="q-my-sm"
+      >
+        <!-- <template v-slot:name>{{
+          message.from === "me"
+            ? store.state.userDetails.name
+            : store.state.user.name
+        }}</template> -->
+        <template v-slot:stamp>{{ message.createdAt }}</template>
+        <template v-slot:avatar>
+          <img
+            class="q-message-avatar"
+            :src="
+              message.from === 'me'
+                ? store.state.userDetails.avatar
+                : store.state.user.avatar
+            "
+          />
+        </template>
+      </q-chat-message>
     </div>
 
     <q-footer class="constraint bg-white">
