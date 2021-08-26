@@ -22,4 +22,6 @@ export default {
   name: 'Name',
   online: 'Online',
   offline: 'Offline',
+  posts: 'Posts',
+  chat: 'Chat',
 };

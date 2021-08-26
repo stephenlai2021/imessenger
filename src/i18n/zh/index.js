@@ -21,4 +21,6 @@ export default {
   name: "姓名",
   online: "上線",
   offline: "下線",
+  posts: "貼文",
+  chat: "聊天",
 };

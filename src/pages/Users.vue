@@ -90,7 +90,6 @@
     </q-list>
     <q-footer
       class="bg-white constraint"
-      reveal
       style="border-top: 1px solid #eeeeee"
     >
       <q-tabs
@@ -100,12 +99,14 @@
       >
         <q-tab
           name="home"
+          :label="t('posts')"
           icon="eva-home-outline"
           style="width: 50%"
           @click="router.push('/')"
         />
         <q-tab
           name="chat"
+          :label="t('chat')"
           icon="eva-message-circle-outline"
           style="width: 50%"
           @click="router.push('/users')"

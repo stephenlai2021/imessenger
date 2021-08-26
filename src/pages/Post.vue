@@ -27,7 +27,7 @@
             flat
             color="primary"
             size="md"
-            icon="eva-edit-2-outline"
+            icon="post_add"
             class="q-mr-sm"
             @click="router.push('/addpost')"
           />
@@ -73,12 +73,14 @@
       >
         <q-tab
           name="home"
+          :label="t('posts')"
           icon="eva-home-outline"
           style="width: 50%"
           @click="router.push('/')"
         />
         <q-tab
           name="chat"
+          :label="t('chat')"
           icon="eva-message-circle-outline"
           style="width: 50%"
           @click="router.push('/users')"
@@ -89,12 +91,15 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { inject, onMounted, ref } from "vue";
 import { localdb } from "src/boot/localbase";
 
 export default {
   setup() {
+    const { t, locale } = useI18n()
+
     const store = inject("store");
 
     const router = useRouter();
@@ -122,6 +127,11 @@ export default {
     });
 
     return {
+      // i18n,
+      t,
+      locale,
+
+      // others
       store,
       router,
 
