@@ -1,14 +1,15 @@
 <template>
   <q-page class="flex column page-chat">
-    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
-      <q-toolbar class="constraint" style="padding: 0;">
+    <q-header class="bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px); z-index: 500;">
+      <q-toolbar class="constraint" style="padding: 0; backdrop-filter: blur(8px);">
         <q-btn
           round
           dense
           flat
           color="primary"
           size="18px"
-          class="q-ml-"
+          class=""
+          style="position: relative; z-index: 500;"
           icon="eva-arrow-ios-back-outline"
           @click="router.push('/users')"
         />
@@ -63,7 +64,7 @@
       />
     </div>
 
-    <q-footer class="constraint bg-white" style="border-top: 1px solid #eeeeee">
+    <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
@@ -285,8 +286,11 @@ export default {
   text-align: center;
   padding-left: -300px;
 }
+// .q-header,
+// .q-toolbar,
 .page-chat {
-  background: #e2dfd5;
+  // background: #e2dfd5;
+  // background: transparent;
   &:after {
     content: "";
     display: block;
