@@ -1,5 +1,24 @@
 <template>
   <q-page>
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <q-btn
+          round
+          dense
+          flat
+          color="primary"
+          size="18px"
+          icon="eva-arrow-ios-back-outline"
+          @click="router.push('/users')"
+        />
+        <span
+          class="text-primary text-bold"
+          style="font-size: 18px; width: 100%"
+        >
+          {{ t('findUser') }}
+        </span>
+      </q-toolbar>
+    </q-header>
     <div class="q-ma-md">
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi ullam
@@ -71,7 +90,22 @@
 </template>
 
 <script>
-export default {};
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const router = useRouter();
+
+    const { t, locale } = useI18n();
+
+    return {
+      t,
+      locale,
+      router,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

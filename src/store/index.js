@@ -12,7 +12,7 @@ const state = reactive({
   online: false,
   today: null,
   // leftDrawerOpen: window.localStorage.getItem('leftDrawerOpen') || false,
-  // leftDrawerOpen: false,
+  leftDrawerOpen: false,
   rightatDrawerOpen: false,
   typing: {
     from: null,
@@ -193,7 +193,7 @@ const methods = {
         .then(() => {
           state.typing.typing = false;
         });
-    }, 1000);
+    }, 2000);
   },
   getTypingIndicator(from, to) {
     const unsub = db

@@ -1,8 +1,8 @@
 <template>
   <q-layout view="lHr lpR lFr">
-    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee;">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
       <q-toolbar class="constraint">
-        <q-avatar
+        <!-- <q-avatar
           v-if="
             !route.fullPath.includes('/users') &&
             !route.fullPath.includes('/finduser') &&
@@ -97,7 +97,7 @@
             class="justify-end pointer"
             v-if="route.fullPath.includes('/chat')"
           />
-        </div>
+        </div> -->
       </q-toolbar>
     </q-header>
 
@@ -177,14 +177,13 @@
     </q-drawer>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      v-model="store.state.leftDrawerOpen"
       show-if-above
       bordered
       side="left"
       class="bg-grey-1"
       style="overflow: hidden"
     >
-      <!-- <div v-if="store.state.userDetails && store.state.online"> -->
       <div>
         <q-toolbar></q-toolbar>
         <div class="flex row justify-center">
@@ -203,7 +202,7 @@
         </p>
 
         <q-list class="q-mt-md">
-          <span class="q-ml-md text-grey">Settings</span>
+          <span class="q-ml-md text-grey">{{ t("settings") }}</span>
           <q-item>
             <q-item-section avatar>
               <q-icon
@@ -214,7 +213,7 @@
               />
             </q-item-section>
 
-            <q-item-section>Dark Mode</q-item-section>
+            <q-item-section>{{ t("dark") }}</q-item-section>
             <q-toggle v-model="store.state.dark" color="black" />
           </q-item>
           <q-item>
@@ -227,8 +226,25 @@
               />
             </q-item-section>
 
-            <q-item-section>Chinese</q-item-section>
-            <q-toggle v-model="store.state.chinese" color="blue" />
+            <q-item-section>{{ t("chinese") }}</q-item-section>
+            <q-btn-group flat dense round>
+              <q-btn
+                label="Eng"
+                size="md"
+                dense
+                flat
+                rounded
+                @click="locale = 'en-US'"
+              />
+              <q-btn
+                label="Chn"
+                size="md"
+                dense
+                flat
+                rounded
+                @click="locale = 'zh'"
+              />
+            </q-btn-group>
           </q-item>
           <q-item
             clickable
@@ -250,20 +266,17 @@
             </q-item-section>
 
             <q-item-section>{{
-              !store.state.online ? "" : "Logout"
+              !store.state.online ? "" : t("logout")
             }}</q-item-section>
           </q-item>
         </q-list>
       </div>
-      <!-- <div class="spinner" v-else>
-        <q-spinner-ios color="primary" size="3em" />
-      </div> -->
     </q-drawer>
 
-    <q-footer
+    <!-- <q-footer
       class="bg-white constraint"
       reveal
-      style="border-top: 1px solid #eeeeee;"
+      style="border-top: 1px solid #eeeeee"
       v-if="
         !route.fullPath.includes('/auth') &&
         !route.fullPath.includes('/finduser') &&
@@ -288,26 +301,10 @@
           @click="router.push('/users')"
         />
       </q-tabs>
-    </q-footer>
+    </q-footer> -->
 
     <q-page-container>
-      <transition-group
-        appear
-        :enter-active-class="
-          route.fullPath.includes('/addpost') ||
-          route.fullPath.includes('/finduser')
-            ? 'animated fadeIn'
-            : ''
-        "
-        :leave-active-class="
-          route.fullPath.includes('/addpost') ||
-          route.fullPath.includes('/finduser')
-            ? 'animated fadeOut'
-            : ''
-        "
-      >
-        <router-view class="constraint" />
-      </transition-group>
+      <router-view class="constraint" />
     </q-page-container>
   </q-layout>
 </template>
@@ -316,11 +313,14 @@
 import { ref, computed, inject, watch, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { localdb } from "src/boot/localbase";
+import { useI18n } from "vue-i18n";
 
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+
+    const { t, locale } = useI18n();
 
     const store = inject("store");
 
@@ -388,6 +388,16 @@ export default {
       }
     );
 
+    watch(
+      () => store.state.chinese,
+      (newVal, oldVal) => {
+        console.log("is chinese ? ", newVal);
+
+        // if (store.state.chinese) { locale = 'zh' }
+        // if (!store.state.chinese) { locale = 'en-US' }
+      }
+    );
+
     watchEffect(() => {
       if (route.fullPath.includes(`/chat/`)) {
         userPage.value = false;
@@ -398,8 +408,10 @@ export default {
         chatPage.value = false;
       }
 
-      // if (route.fullPath.includes('/')) store.state.tab = 'home'
       if (route.fullPath.includes("/users")) store.state.tab = "chat";
+
+      // if (store.state.chinese) { locale = 'zh' }
+      // if (!store.state.chinese) { locale = 'en-US' }
     });
 
     // lifecycle
@@ -420,6 +432,9 @@ export default {
     });
 
     return {
+      t,
+      locale,
+
       store,
       route,
       router,

@@ -1,5 +1,20 @@
 <template>
   <q-page class="flex q-pa-md">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <q-avatar>
+          <img
+            style="width: 30px; height: 30px"
+            :src="
+              !store.state.userDetails.avatar
+                ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                : store.state.userDetails.avatar
+            "
+            alt="user avatar"
+          />
+        </q-avatar>
+      </q-toolbar>
+    </q-header>
     <div class="spinner" v-if="store.state.login">
       <q-spinner-ios color="primary" size="3em" />
     </div>
@@ -13,8 +28,8 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab name="login" label="Login" />
-        <q-tab name="register" label="Register" />
+        <q-tab name="login" :label="t('login')" />
+        <q-tab name="register" :label="t('register')" />
       </q-tabs>
 
       <q-separator />
@@ -34,17 +49,22 @@
 
 <script>
 import { ref, inject } from "vue";
+import { useI18n } from "vue-i18n";
 
 export default {
   components: {
     "login-register": require("components/LoginRegister.vue").default,
   },
   setup() {
-    const store = inject('store')
+    const store = inject("store");
+
+    const { t, locale } = useI18n();
 
     const tab = ref("login");
 
     return {
+      t,
+      locale,
       store,
       tab,
     };

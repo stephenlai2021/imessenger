@@ -1,11 +1,51 @@
 <template>
   <q-page class="flex column page-chat">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <q-btn
+          round
+          dense
+          flat
+          color="primary"
+          size="18px"
+          icon="eva-arrow-ios-back-outline"
+          @click="router.push('/users')"
+        />
+        <span
+          class="text-primary text-bold"
+          style="font-size: 18px; width: 100%"
+        >
+          {{ store.state.user.name }}
+        </span>
+        <div class="flex row justify-end full-width">
+          <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-pin-outline"
+            class="q-mr-sm"
+          />
+          <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-video-outline"
+            class="q-mr-sm"
+          />
+        </div>
+      </q-toolbar>
+    </q-header>
+
     <div
       ref="chats"
       :class="{ invisible: !showMessages }"
       class="q-mx-md q-my-lg column col justify-end messages"
     >
-      <!-- <q-chat-message
+      <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
         :avatar="
@@ -18,37 +58,10 @@
         :stamp="message.createdAt"
         :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
         class="q-my-sm"
-      > -->
-
-      <q-chat-message
-        v-for="(message, index) in store.getters.formattedMessages()"
-        :key="index"
-        :text="[message.text]"
-        :sent="message.from === 'me'"
-        :bg-color="message.from === 'me' ? 'white' : 'light-green-2'"
-        :label="new Date().toLocaleDateString()"
-        :name="
-          message.from === 'me'
-            ? store.state.userDetails.name
-            : store.state.user.name
-        "
-        :avatar="
-          message.from === 'me'
-            ? store.state.userDetails.avatar
-            : store.state.user.avatar
-        "
-        class="q-my-sm"
-      >
-        <template v-slot:stamp>{{ message.createdAt }}</template>
-        <!-- <div>
-          Already building an app with it...
-          <img src="https://cdn.quasar.dev/img/discord-qeart.png" class="my-emoji">
-        </div> -->
-        <!-- <q-spinner-dots size="2rem" /> -->
-      </q-chat-message>
+      />
     </div>
 
-    <q-footer class="constraint bg-white" style="border-top: 1px solid #eeeeee;">
+    <q-footer class="constraint bg-white" style="border-top: 1px solid #eeeeee">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
@@ -77,7 +90,7 @@
             style="width: 60%"
             outlined
             rounded
-            label="Message"
+            :label="t('message')"
             dense
             focus="false"
             bg-color="grey-2"
@@ -139,12 +152,15 @@ import { useRoute, useRouter } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
 import { timestamp } from "src/boot/firebase";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 
 export default {
   setup() {
+    const $q = useQuasar();
+
     const store = inject("store");
 
-    const $q = useQuasar();
+    const { t, locale } = useI18n();
 
     const route = useRoute();
     const router = useRouter();
@@ -227,7 +243,10 @@ export default {
     });
 
     return {
-      //
+      // i18n
+      t,
+      locale,
+
       store,
       route,
       router,

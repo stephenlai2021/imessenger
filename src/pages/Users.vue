@@ -1,5 +1,26 @@
 <template>
   <q-page class="flex q-py-sm">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <span
+          class="text-primary text-bold q-ml-sm"
+          style="font-size: 18px; width: 100%"
+        >
+          {{ t("chatRoom") }}
+        </span>
+        <div class="flex row justify-end full-width">
+          <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-person-add-outline"
+            @click="router.push('/finduser')"
+          />
+        </div>
+      </q-toolbar>
+    </q-header>
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner-ios color="primary" size="3em" />
     </div>
@@ -14,15 +35,19 @@
     <q-list v-else class="full-width">
       <q-input
         v-model="search"
-        
         standout
-        label="Search"
+        :label="t('searchUser')"
         dense
         bg-color="grey-2"
         class="q-mx-md q-mt-sm q-mb-sm"
       >
         <template v-slot:prepend>
-          <q-icon name="eva-search-outline" class="q-ml-sm" @click="findUser" style="cursor: pointer" />
+          <q-icon
+            name="eva-search-outline"
+            class="q-ml-sm"
+            @click="findUser"
+            style="cursor: pointer"
+          />
         </template>
       </q-input>
       <q-item
@@ -37,7 +62,9 @@
             <img
               :src="user.avatar"
               alt="user avatar"
-              :style="{border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0'}"
+              :style="{
+                border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0',
+              }"
             />
           </q-avatar>
           <q-badge
@@ -61,18 +88,45 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <q-footer
+      class="bg-white constraint"
+      reveal
+      style="border-top: 1px solid #eeeeee"
+    >
+      <q-tabs
+        v-model="store.state.tab"
+        no-caps
+        class="flex row justify-evenly full-width text-primary"
+      >
+        <q-tab
+          name="home"
+          icon="eva-home-outline"
+          style="width: 50%"
+          @click="router.push('/')"
+        />
+        <q-tab
+          name="chat"
+          icon="eva-message-circle-outline"
+          style="width: 50%"
+          @click="router.push('/users')"
+        />
+      </q-tabs>
+    </q-footer>
   </q-page>
 </template>
 
 <script>
-import { ref, onMounted, computed, inject, watch, watchEffect } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import { ref, onMounted, computed, inject, watch, watchEffect } from "vue";
 
 export default {
   setup() {
     const store = inject("store");
 
     const router = useRouter();
+
+    const { t, locale } = useI18n();
 
     const search = ref("");
     const noUserMessages = ref(false);
@@ -123,7 +177,12 @@ export default {
     });
 
     return {
+      // i18n
+      t,
+      locale,
+
       store,
+      router,
 
       // ref
       search,

@@ -1,5 +1,48 @@
 <template>
   <q-page class="constraint">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <q-avatar>
+          <img
+            style="width: 30px; height: 30px"
+            :src="
+              !store.state.userDetails.avatar
+                ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                : store.state.userDetails.avatar
+            "
+            alt="user avatar"
+          />
+        </q-avatar>
+
+        <span
+          class="text-primary text-bold"
+          style="font-size: 18px; width: 100%"
+        >
+          {{ store.state.userDetails.name }}
+        </span>
+        <div class="flex row justify-end full-width">
+           <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-edit-2-outline"
+            class="q-mr-sm"
+            @click="router.push('/addpost')"
+          />
+           <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-settings-2-outline"
+            @click="toggleLeftDrawer"
+          />
+        </div>
+      </q-toolbar>
+    </q-header>
     <div class="q-pa-md">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae commodi
       eligendi aspernatur a ullam! Illo quod excepturi cumque debitis esse odio
@@ -18,26 +61,72 @@
       ducimus soluta modi, nemo tenetur nostrum vitae. Debitis est vero
       asperiores architecto. Consequuntur consectetur similique quod?
     </div>
+     <q-footer
+      class="bg-white constraint"
+      reveal
+      style="border-top: 1px solid #eeeeee"
+    >
+      <q-tabs
+        v-model="store.state.tab"
+        no-caps
+        class="flex row justify-evenly full-width text-primary"
+      >
+        <q-tab
+          name="home"
+          icon="eva-home-outline"
+          style="width: 50%"
+          @click="router.push('/')"
+        />
+        <q-tab
+          name="chat"
+          icon="eva-message-circle-outline"
+          style="width: 50%"
+          @click="router.push('/users')"
+        />
+      </q-tabs>
+    </q-footer>
   </q-page>
 </template>
 
 <script>
-import { inject, onMounted } from 'vue'
 import { useRouter } from "vue-router";
+import { inject, onMounted, ref } from "vue";
+import { localdb } from "src/boot/localbase";
 
 export default {
   setup() {
-    const store = inject('store')
+    const store = inject("store");
 
     const router = useRouter();
 
+    const leftDrawerOpen = ref(false)
+
+    const toggleLeftDrawer = () => {
+      store.state.leftDrawerOpen = !store.state.leftDrawerOpen;
+    };
+
     onMounted(() => {
-      // console.log('left drawer open status: ', store.state.leftDrawerOpen)
-    })
+      // localdb
+      //   .collection("leftDrawerOpen")
+      //   .doc("imessenger")
+      //   .get()
+      //   .then((result) => {
+      //     console.log("left open drawer state | onMounted ", result.state);
+      //     leftDrawerOpen.value = result.state;
+      //   });
+
+      // console.log(
+      //   "left drawer open state: | main layout: ",
+      //   leftDrawerOpen.value
+      // );
+    });
 
     return {
       store,
       router,
+
+      // methods
+      toggleLeftDrawer,
     };
   },
 };
