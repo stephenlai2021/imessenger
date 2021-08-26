@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
-      <q-toolbar class="constraint">
+      <q-toolbar class="constraint" style="padding: 0;">
         <q-btn
           round
           dense

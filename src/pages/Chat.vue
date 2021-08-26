@@ -1,13 +1,14 @@
 <template>
   <q-page class="flex column page-chat">
     <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
-      <q-toolbar class="constraint">
+      <q-toolbar class="constraint" style="padding: 0;">
         <q-btn
           round
           dense
           flat
           color="primary"
           size="18px"
+          class="q-ml-"
           icon="eva-arrow-ios-back-outline"
           @click="router.push('/users')"
         />
@@ -53,6 +54,7 @@
             ? store.state.userDetails.avatar
             : store.state.user.avatar
         "
+        :label="new Date().toLocaleDateString()"
         :text="[message.text]"
         :sent="message.from === 'me'"
         :stamp="message.createdAt"

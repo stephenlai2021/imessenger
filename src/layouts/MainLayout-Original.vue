@@ -1,5 +1,106 @@
 <template>
   <q-layout view="lHr lpR lFr">
+    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+      <q-toolbar class="constraint">
+        <!-- <q-avatar
+          v-if="
+            !route.fullPath.includes('/users') &&
+            !route.fullPath.includes('/finduser') &&
+            !route.fullPath.includes('/addpost') &&
+            !route.fullPath.includes('/settings') &&
+            !route.fullPath.includes('/chat')
+          "
+        >
+          <img
+            style="width: 30px; height: 30px"
+            :src="
+              !store.state.userDetails.avatar
+                ? 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+                : store.state.userDetails.avatar
+            "
+            alt="user avatar"
+            @click="toggleLeftDrawer"
+          />
+        </q-avatar>
+
+        <q-btn
+          round
+          dense
+          flat
+          color="primary"
+          size="18px"
+          icon="eva-arrow-ios-back-outline"
+          @click="checkRoute"
+          v-if="
+            route.fullPath.includes('/chat') ||
+            route.fullPath.includes('/addpost') ||
+            route.fullPath.includes('/finduser')
+          "
+          class="pointer"
+        />
+        <span
+          class="text-primary text-bold"
+          style="font-size: 18px; width: 100%"
+        >
+          {{ title }}
+        </span>
+        <div class="flex row justify-end full-width">
+          <q-icon
+            name="eva-person-add-outline"
+            size="sm"
+            @click="router.push('/finduser')"
+            class="pointer"
+            color="primary"
+            v-if="route.fullPath.includes('/users')"
+          />
+          <q-icon
+            name="eva-edit-2-outline"
+            size="sm"
+            color="primary"
+            @click="router.push('/addpost')"
+            class="q-mr-md pointer"
+            v-if="
+              !route.fullPath.includes('/users') &&
+              !route.fullPath.includes('/finduser') &&
+              !route.fullPath.includes('/addpost') &&
+              !route.fullPath.includes('/settings') &&
+              !route.fullPath.includes('/chat') &&
+              !route.fullPath.includes('/auth')
+            "
+          />
+          <q-icon
+            name="eva-settings-2-outline"
+            size="sm"
+            color="primary"
+            @click="toggleLeftDrawer"
+            class="justify-end pointer"
+            v-if="
+              !route.fullPath.includes('/users') &&
+              !route.fullPath.includes('/finduser') &&
+              !route.fullPath.includes('/addpost') &&
+              !route.fullPath.includes('/settings') &&
+              !route.fullPath.includes('/chat') &&
+              !route.fullPath.includes('/auth')
+            "
+          />
+          <q-icon
+            name="eva-pin-outline"
+            size="sm"
+            color="primary"
+            class="justify-end pointer q-mr-md"
+            v-if="route.fullPath.includes('/chat')"
+          />
+          <q-icon
+            name="eva-camera-outline"
+            size="sm"
+            color="primary"
+            class="justify-end pointer"
+            v-if="route.fullPath.includes('/chat')"
+          />
+        </div> -->
+      </q-toolbar>
+    </q-header>
+
     <q-drawer
       show-if-above
       v-model="store.state.rightDrawerOpen"
@@ -126,6 +227,7 @@
             </q-item-section>
 
             <q-item-section>{{ t("chinese") }}</q-item-section>
+             <q-toggle v-model="store.state.chinese" color="blue" />
             <q-btn-group flat dense round>
               <q-btn
                 label="Eng"
@@ -171,6 +273,36 @@
         </q-list>
       </div>
     </q-drawer>
+
+    <!-- <q-footer
+      class="bg-white constraint"
+      reveal
+      style="border-top: 1px solid #eeeeee"
+      v-if="
+        !route.fullPath.includes('/auth') &&
+        !route.fullPath.includes('/finduser') &&
+        !route.fullPath.includes('/addpost')
+      "
+    >
+      <q-tabs
+        v-model="store.state.tab"
+        no-caps
+        class="flex row justify-evenly full-width text-primary"
+      >
+        <q-tab
+          name="home"
+          icon="eva-home-outline"
+          style="width: 50%"
+          @click="router.push('/')"
+        />
+        <q-tab
+          name="chat"
+          icon="eva-message-circle-outline"
+          style="width: 50%"
+          @click="router.push('/users')"
+        />
+      </q-tabs>
+    </q-footer> -->
 
     <q-page-container>
       <router-view class="constraint" />
