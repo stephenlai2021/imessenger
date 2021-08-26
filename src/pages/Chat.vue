@@ -48,7 +48,7 @@
       </q-chat-message>
     </div>
 
-    <q-footer class="constraint bg-white" style="border-top: 1px solid rgba(7, 94, 84, 0.3);">
+    <q-footer class="constraint bg-white" style="border-top: 1px solid #eeeeee;">
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
