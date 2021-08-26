@@ -94,6 +94,7 @@
     >
       <q-tabs
         v-model="store.state.tab"
+        inline-label
         no-caps
         class="flex row justify-evenly full-width text-primary"
       >

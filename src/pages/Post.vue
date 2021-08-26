@@ -69,6 +69,7 @@
       <q-tabs
         v-model="store.state.tab"
         no-caps
+        inline-label
         class="flex row justify-evenly full-width text-primary"
       >
         <q-tab
