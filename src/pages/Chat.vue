@@ -64,7 +64,7 @@
       :class="{ invisible: !showMessages }"
       class="q-mx-md q-my-md column col justify-end messages"
     >
-            <!-- : store.state.user.avatar -->
+      <!-- : store.state.user.avatar -->
       <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
@@ -85,31 +85,33 @@
       class="constraint bg-transparent"
       style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px)"
     >
-      <q-form :class="{ 'q-mx-sm': inputFocus }">
-        <div class="flex" >
-          <q-btn-group
-            v-if="!inputFocus"
-            flat
+      <q-form
+        class="flex row justify-center"
+        :class="{ 'q-mx-sm': inputFocus }"
+      >
+        <q-btn-group
+          v-if="!inputFocus"
+          flat
+          round
+          class="flex row justify-evenly"
+          style="width: 50%"
+        >
+          <q-btn round dense flat color="primary" icon="eva-image-outline" />
+          <q-btn round dense flat color="primary" icon="eva-camera-outline" />
+          <q-btn
             round
-            class="flex row justify-evenly q-mr-lg"
-            style="width: 40%"
-          >
-            <q-btn round dense flat color="primary" icon="eva-image-outline" />
-            <q-btn round dense flat color="primary" icon="eva-camera-outline" />
-            <q-btn
-              round
-              dense
-              flat
-              color="primary"
-              icon="eva-smiling-face-outline"
-            />
-          </q-btn-group>
+            dense
+            flat
+            color="primary"
+            icon="eva-smiling-face-outline"
+          />
+        </q-btn-group>
 
+        <div style="width: 50%" :style="{ width: inputFocus ? '100%' : '50%' }">
           <q-input
             ref="input"
             v-model="newMessage"
-            class="q-pa-xs"
-            style="width: 60%"
+            class="q-px-md q-py-sm full-width"
             outlined
             rounded
             :label="t('message')"
@@ -175,7 +177,7 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
-    const to = ref({})
+    const to = ref({});
 
     // watch
     watch(
@@ -253,7 +255,6 @@ export default {
       // console.log('to user: ', to.value)
       // console.log('from url: ', route.params.from)
       // console.log('to url: ', route.params.to)
-
     });
 
     return {
