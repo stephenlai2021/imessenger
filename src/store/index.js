@@ -11,7 +11,6 @@ const state = reactive({
   userDetails: {},
   online: false,
   today: null,
-  // leftDrawerOpen: window.localStorage.getItem('leftDrawerOpen') || false,
   leftDrawerOpen: false,
   rightatDrawerOpen: false,
   typing: {

@@ -1,7 +1,17 @@
 <template>
   <q-page class="flex column page-chat">
-    <q-header class="bg-transparent" style="border-bottom: 1px solid #eeeeee; backdrop-filter: blur(20px); z-index: 500;">
-      <q-toolbar class="constraint" style="padding: 0; backdrop-filter: blur(8px);">
+    <q-header
+      class="bg-transparent"
+      style="
+        border-bottom: 1px solid #eeeeee;
+        backdrop-filter: blur(20px);
+        z-index: 500;
+      "
+    >
+      <q-toolbar
+        class="constraint"
+        style="padding: 0; backdrop-filter: blur(8px)"
+      >
         <q-btn
           round
           dense
@@ -9,7 +19,7 @@
           color="primary"
           size="18px"
           class=""
-          style="position: relative; z-index: 500;"
+          style="position: relative; z-index: 500"
           icon="eva-arrow-ios-back-outline"
           @click="router.push('/users')"
         />
@@ -20,6 +30,12 @@
           {{ store.state.user.name }}
         </span>
         <div class="flex row justify-end full-width">
+          <q-spinner-dots
+            size="2rem"
+            color="primary"
+            v-if="store.state.typing.typing"
+          />
+            <!-- v-if="store.state.typing.typing && indicator" -->
           <q-btn
             round
             dense
@@ -63,7 +79,10 @@
       />
     </div>
 
-    <q-footer class="constraint bg-transparent" style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px);">
+    <q-footer
+      class="constraint bg-transparent"
+      style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px)"
+    >
       <q-form class="flex row">
         <div class="flex full-width">
           <q-btn-group
@@ -97,7 +116,7 @@
             focus="false"
             bg-color="grey-2"
             @keydown.enter="sendMessage"
-            @keydown="sendTypingIndicator()"
+            @keyup="sendTypingIndicator()"
             @focus="onFocus"
             @blur="onBlur"
             :style="{ width: inputFocus ? '100%' : '50%' }"
@@ -130,24 +149,6 @@
   </q-page>
 </template>
 
-<!-- <q-fab
-  color="primary"
-  icon="list"
-  direction="left"
-  flat
-  padding="2px"
->
-  <q-fab-action
-    color="primary"
-    padding="2px"
-    flat
-    @click="onClick"
-    v-for="item in icons"
-    :key="item"
-    :icon="item"
-  />
-</q-fab> -->
-
 <script>
 import { ref, onMounted, inject, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -174,8 +175,6 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
-    const him = ref(null);
-    const icons = ref(["videocam", "image", "phone", "photo_camera", "place"]);
 
     // watch
     watch(
@@ -189,8 +188,10 @@ export default {
     );
     watch(
       () => indicator.value,
+      // () => store.state.typing.typing,
       (newVal, oldVal) => {
         store.methods.getTypingIndicator(route.params.from, route.params.to);
+        // newVal = false
       }
     );
 
@@ -256,8 +257,8 @@ export default {
       // ref
       chats,
       input,
-      icons,
       desktop,
+      indicator,
       inputFocus,
 
       // methods
