@@ -23,7 +23,7 @@
     </q-header>
 
     <q-page-sticky expand position="top" style="z-index: 500" class="q-py-sm">
-      <q-toolbar class="constraint" style="margin-top: -1px">
+      <q-toolbar class="constraint">
         <q-input
           v-model="search"
           standout
@@ -49,7 +49,7 @@
       v-for="(user, index) in matchingUsers"
       :key="index"
       class="q-ml-md"
-      style="margin-top: 75px; padding: 0; height: 65px;"     
+      style="margin-top: 66px; padding: 0; height: 65px;"     
     >
       <q-avatar size="45px" style="position: relative">
         <img
@@ -99,7 +99,7 @@
       </p>
     </div>
 
-    <q-list v-else class="full-width q-mt-md">
+    <q-list v-else class="full-width q-mt-sm">
       <q-item
         v-for="(user, index) in matchingUsers"
         :key="index"
