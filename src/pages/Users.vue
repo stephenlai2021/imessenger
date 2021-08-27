@@ -50,7 +50,7 @@
       class="q-ml-md q-mt-xl"
       style="overflow: none; white-space: nowrap"
     >
-      <q-avatar size="50px" style="position: relative">
+      <q-avatar size="45px" style="position: relative">
         <img
           :src="user.avatar"
           alt="user avatar"
@@ -62,7 +62,7 @@
         <q-badge
           rounded
           class="float-right"
-          style="position: absolute; left: 35px; top: 40px"
+          style="position: absolute; left: 35px; top: 35px"
           :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
         />
       </q-avatar>
@@ -105,7 +105,7 @@
         @click="goChat(user)"
       >
         <q-item-section avatar>
-          <q-avatar size="50px" style="position: relative">
+          <q-avatar size="55px" style="position: relative">
             <img
               :src="user.avatar"
               alt="user avatar"
@@ -117,7 +117,7 @@
           <q-badge
             rounded
             class="float-right"
-            style="position: absolute; left: 55px; top: 45px"
+            style="position: absolute; left: 57px; top: 50px"
             :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
           />
         </q-item-section>
