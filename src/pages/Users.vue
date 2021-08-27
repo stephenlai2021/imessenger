@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex q-pt" style="min-height: 0px;">
+  <q-page class="flex q-pt" style="min-height: 0px">
     <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee">
       <q-toolbar class="constraint">
         <span
@@ -49,7 +49,7 @@
       v-for="(user, index) in matchingUsers"
       :key="index"
       class="q-ml-md"
-      style="margin-top: 66px; padding: 0; height: 65px;"     
+      style="margin-top: 66px; padding: 0; height: 65px"
     >
       <q-avatar size="45px" style="position: relative">
         <img
@@ -63,11 +63,11 @@
         <q-badge
           rounded
           class="float-right"
-          style="position: absolute; left: 32px; top: 32px;"
+          style="position: absolute; left: 32px; top: 32px"
           :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
         />
       </q-avatar>
-      <div class="flex ">
+      <div class="flex">
         <span
           style="
             white-space: break-spaces;
@@ -79,7 +79,7 @@
         >
           {{
             user.name.split(" ")[0].length > 6
-              ? user.name.split(" ")[0].substring(6, 0) + '.'
+              ? user.name.split(" ")[0].substring(6, 0) + "."
               : user.name.split(" ")[0]
           }}
         </span>
@@ -89,7 +89,7 @@
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner-ios color="primary" size="3em" />
     </div>
-    
+
     <div
       v-else-if="!store.state.users.length && noUserMessages"
       class="spinner"
@@ -139,29 +139,30 @@
       </q-item>
     </q-list>
 
-   
-    <q-footer class="bg-white constraint" style="border-top: 1px solid #eeeeee">
-      <q-tabs
-        v-model="store.state.tab"
-        inline-label
-        no-caps
-        class="flex row justify-evenly full-width text-primary"
-      >
-        <q-tab
-          name="home"
-          :label="t('posts')"
-          icon="eva-home-outline"
-          style="width: 50%"
-          @click="router.push('/')"
-        />
-        <q-tab
-          name="chat"
-          :label="t('chat')"
-          icon="eva-message-circle-outline"
-          style="width: 50%"
-          @click="router.push('/users')"
-        />
-      </q-tabs>
+    <q-footer class="bg-white" style="border-top: 1px solid #eeeeee">
+      <div class="constraint">
+        <q-tabs
+          v-model="store.state.tab"
+          inline-label
+          no-caps
+          class="flex row justify-evenly full-width text-primary"
+        >
+          <q-tab
+            name="home"
+            :label="t('posts')"
+            icon="eva-home-outline"
+            style="width: 50%"
+            @click="router.push('/')"
+          />
+          <q-tab
+            name="chat"
+            :label="t('chat')"
+            icon="eva-message-circle-outline"
+            style="width: 50%"
+            @click="router.push('/users')"
+          />
+        </q-tabs>
+      </div>
     </q-footer>
   </q-page>
 </template>

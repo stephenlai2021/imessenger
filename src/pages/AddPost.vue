@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="overflow: hidden;">
     <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
       <q-toolbar class="constraint" style="padding: 0;">
         <q-btn

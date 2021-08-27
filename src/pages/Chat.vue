@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex column page-chat">
+  <q-page class="page-chat">
     <q-header
       class="bg-transparent"
       style="
@@ -85,8 +85,8 @@
       class="constraint bg-transparent"
       style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px)"
     >
-      <q-form class="flex row">
-        <div class="flex full-width">
+      <q-form :class="{ 'q-mx-sm': inputFocus }">
+        <div class="flex" >
           <q-btn-group
             v-if="!inputFocus"
             flat
@@ -301,11 +301,8 @@ export default {
   text-align: center;
   padding-left: -300px;
 }
-// .q-header,
-// .q-toolbar,
 .page-chat {
-  // background: #e2dfd5;
-  // background: transparent;
+  overflow: hidden;
   &:after {
     content: "";
     display: block;
