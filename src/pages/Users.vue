@@ -78,7 +78,7 @@
         >
           {{
             user.name.split(" ")[0].length > 6
-              ? user.name.split(" ")[0].substring(6, 0) + '...'
+              ? user.name.split(" ")[0].substring(6, 0) + '.'
               : user.name.split(" ")[0]
           }}
         </span>
