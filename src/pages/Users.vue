@@ -62,7 +62,7 @@
         <q-badge
           rounded
           class="float-right"
-          style="position: absolute; left: 35px; top: 35px"
+          style="position: absolute; left: 32px; top: 32px;"
           :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
         />
       </q-avatar>
