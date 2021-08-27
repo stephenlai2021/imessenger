@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex q-py-sm">
-    <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee">
+    <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee"> -->
+    <q-header reveal class="bg-white">
       <q-toolbar class="constraint">
         <span
           class="text-primary text-bold q-ml-sm"
