@@ -27,7 +27,8 @@
           class="text-primary text-bold"
           style="font-size: 18px; width: 100%"
         >
-          {{ store.state.user.name }}
+          <!-- {{ store.state.user.name }} -->
+          {{ route.params.to }}
         </span>
         <div class="flex row justify-end full-width">
           <q-spinner-dots
@@ -63,6 +64,7 @@
       :class="{ invisible: !showMessages }"
       class="q-mx-md q-my-md column col justify-end messages"
     >
+            <!-- : store.state.user.avatar -->
       <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
@@ -173,6 +175,7 @@ export default {
     const input = ref(null);
     const newMessage = ref("");
     const showMessages = ref(false);
+    const to = ref({})
 
     // watch
     watch(
@@ -243,6 +246,14 @@ export default {
         console.log("you are not running on desktop | chat page");
         store.state.desktop = false;
       }
+
+      // store.methods.getUsers()
+      // to.value = store.state.users.find(user => user.name === route.params.to)
+      // to.value = store.getters.filteredUsers().find(user => user.name === route.params.to)
+      // console.log('to user: ', to.value)
+      // console.log('from url: ', route.params.from)
+      // console.log('to url: ', route.params.to)
+
     });
 
     return {
@@ -255,11 +266,15 @@ export default {
       router,
 
       // ref
+      to,
       chats,
       input,
       desktop,
       indicator,
       inputFocus,
+
+      // computed
+      // getUser,
 
       // methods
       onFocus,

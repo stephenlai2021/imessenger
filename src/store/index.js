@@ -24,6 +24,7 @@ const state = reactive({
   desktop: false,
   login: false,
   tab: "home",
+  to: null,
 });
 
 const methods = {
