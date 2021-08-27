@@ -1,6 +1,5 @@
 <template>
   <q-page class="flex q-py-sm">
-    <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee"> -->
     <q-header reveal class="bg-white">
       <q-toolbar class="constraint">
         <span
@@ -22,8 +21,8 @@
         </div>
       </q-toolbar>
     </q-header>
-    <q-page-sticky expand position="top" style="z-index: 500;">
-      <q-toolbar class="constraint" style="margin-top: -1px;">
+    <q-page-sticky expand position="top" style="z-index: 500">
+      <q-toolbar class="constraint" style="margin-top: -1px">
         <q-input
           v-model="search"
           standout
@@ -43,6 +42,45 @@
         </q-input>
       </q-toolbar>
     </q-page-sticky>
+
+    <div
+      @click="goChat(user)"
+      v-for="(user, index) in matchingUsers"
+      :key="index"
+      class="q-ml-md q-mt-xl"
+      style="overflow: none; white-space: nowrap"
+    >
+      <q-avatar size="50px" style="position: relative">
+        <img
+          :src="user.avatar"
+          alt="user avatar"
+          :style="{
+            border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0',
+          }"
+        />
+
+        <q-badge
+          rounded
+          class="float-right"
+          style="position: absolute; left: 35px; top: 40px"
+          :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
+        />
+      </q-avatar>
+      <div class="flex q-mb-md">
+        <span
+          style="
+            white-space: break-spaces;
+            word-wrap: break-word;
+            height: 21px;
+            width: 50px;
+            text-align: center;
+          "
+        >
+          {{ user.name.split(" ")[0] }}
+        </span>
+      </div>
+    </div>
+
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner-ios color="primary" size="3em" />
     </div>
@@ -54,24 +92,7 @@
         Sorry, we can't find any user in database, please try again later !
       </p>
     </div>
-    <q-list v-else class="full-width" style="margin-top: 40px;">
-      <!-- <q-input
-        v-model="search"
-        standout
-        :label="t('searchUser')"
-        dense
-        bg-color="grey-2"
-        class="q-mx-md q-mt-sm q-mb-sm"
-      >
-        <template v-slot:prepend>
-          <q-icon
-            name="eva-search-outline"
-            class="q-ml-sm"
-            @click="findUser"
-            style="cursor: pointer"
-          />
-        </template>
-      </q-input> -->
+    <q-list v-else class="full-width" style="">
       <q-item
         v-for="(user, index) in matchingUsers"
         :key="index"
@@ -110,6 +131,7 @@
         </q-item-section>
       </q-item>
     </q-list>
+
     <div class="q-ma-md">
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
@@ -302,10 +324,16 @@ export default {
 
 <style lang="scss" scoped>
 .spinner {
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 100vw;
+  height: 100vh;
+  z-index: 500;
   height: cal(100vh -98px);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: white;
 }
 </style>
