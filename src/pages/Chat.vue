@@ -9,7 +9,6 @@
       "
     >
       <q-toolbar
-      
         class="constraint"
         style="padding: 0; backdrop-filter: blur(8px)"
       >
@@ -36,7 +35,7 @@
             color="primary"
             v-if="store.state.typing.typing"
           />
-            <!-- v-if="store.state.typing.typing && indicator" -->
+          <!-- v-if="store.state.typing.typing && indicator" -->
           <q-btn
             round
             dense
@@ -90,7 +89,7 @@
             v-if="!inputFocus"
             flat
             round
-            class="flex row justify-evenly q-mx-sm"
+            class="flex row justify-evenly q-mr-lg"
             style="width: 40%"
           >
             <q-btn round dense flat color="primary" icon="eva-image-outline" />
@@ -104,7 +103,6 @@
             />
           </q-btn-group>
 
-          <!-- <div class="full-width"> -->
           <q-input
             ref="input"
             v-model="newMessage"
@@ -144,8 +142,6 @@
             </template>
           </q-input>
         </div>
-        <!-- </d
-        iv> -->
       </q-form>
     </q-footer>
   </q-page>
@@ -219,7 +215,7 @@ export default {
 
       newMessage.value = "";
 
-      inputFocus.value = false
+      inputFocus.value = false;
     };
 
     const onFocus = () => {
