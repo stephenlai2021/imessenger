@@ -9,6 +9,7 @@
       "
     >
       <q-toolbar
+      
         class="constraint"
         style="padding: 0; backdrop-filter: blur(8px)"
       >
@@ -103,7 +104,7 @@
             />
           </q-btn-group>
 
-          <!-- <div class="" style="width: 60%;"> -->
+          <!-- <div class="full-width"> -->
           <q-input
             ref="input"
             v-model="newMessage"
@@ -143,7 +144,8 @@
             </template>
           </q-input>
         </div>
-        <!-- </div> -->
+        <!-- </d
+        iv> -->
       </q-form>
     </q-footer>
   </q-page>
@@ -216,6 +218,8 @@ export default {
       });
 
       newMessage.value = "";
+
+      inputFocus.value = false
     };
 
     const onFocus = () => {

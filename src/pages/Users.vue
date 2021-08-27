@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex q-py-sm">
-    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+    <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee">
       <q-toolbar class="constraint">
         <span
           class="text-primary text-bold q-ml-sm"
@@ -21,6 +21,27 @@
         </div>
       </q-toolbar>
     </q-header>
+    <q-page-sticky expand position="top" style="z-index: 500;">
+      <q-toolbar class="constraint" style="margin-top: -1px;">
+        <q-input
+          v-model="search"
+          standout
+          :label="t('searchUser')"
+          dense
+          bg-color="grey-2"
+          class="q-mb-sm full-width"
+        >
+          <template v-slot:prepend>
+            <q-icon
+              name="eva-search-outline"
+              class="q-ml-sm"
+              @click="findUser"
+              style="cursor: pointer"
+            />
+          </template>
+        </q-input>
+      </q-toolbar>
+    </q-page-sticky>
     <div class="spinner" v-if="!store.state.users.length && !noUserMessages">
       <q-spinner-ios color="primary" size="3em" />
     </div>
@@ -32,8 +53,8 @@
         Sorry, we can't find any user in database, please try again later !
       </p>
     </div>
-    <q-list v-else class="full-width">
-      <q-input
+    <q-list v-else class="full-width" style="margin-top: 40px;">
+      <!-- <q-input
         v-model="search"
         standout
         :label="t('searchUser')"
@@ -49,7 +70,7 @@
             style="cursor: pointer"
           />
         </template>
-      </q-input>
+      </q-input> -->
       <q-item
         v-for="(user, index) in matchingUsers"
         :key="index"
@@ -83,15 +104,92 @@
           <q-badge
             class="q-pa-xs"
             :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
-            >{{ user.online ? t('online') : t('offline') }}</q-badge
+            >{{ user.online ? t("online") : t("offline") }}</q-badge
           >
         </q-item-section>
       </q-item>
     </q-list>
-    <q-footer
-      class="bg-white constraint"
-      style="border-top: 1px solid #eeeeee"
-    >
+    <div class="q-ma-md">
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci
+        molestias quibusdam minima fuga neque iure cumque, molestiae quisquam
+        rem perspiciatis id unde, accusamus vel, possimus dolore. Magnam omnis
+        porro quam sint aliquid consequatur, quaerat dolor ex ratione, excepturi
+        labore iste rerum? Soluta suscipit, adipisci beatae alias dolor, ut
+        deleniti recusandae quam mollitia eveniet repellat iste quos, qui
+        incidunt sed temporibus maxime? Aut, quaerat vero unde sint itaque
+        tempore dignissimos rem voluptates impedit explicabo tenetur inventore
+        soluta voluptatibus illo provident nisi reprehenderit magni totam ut est
+        minus. Harum aliquid recusandae soluta quas amet cum, nam veniam
+        cupiditate quaerat magnam officiis dolore!
+      </p>
+    </div>
+    <q-footer class="bg-white constraint" style="border-top: 1px solid #eeeeee">
       <q-tabs
         v-model="store.state.tab"
         inline-label
