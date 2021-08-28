@@ -46,6 +46,7 @@
             size="md"
             icon="eva-pin-outline"
             class="q-mr-sm"
+            @click="router.push('/map')"
           />
           <q-btn
             round

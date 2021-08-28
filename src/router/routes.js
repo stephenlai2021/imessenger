@@ -67,6 +67,7 @@ const routes = [
         },
       },
       { path: "/auth", component: () => import("src/pages/Auth.vue") },
+      { path: "/map", component: () => import("src/pages/Map.vue") },
       {
         path: "/chat/:from/:to",
         name : 'chat',
