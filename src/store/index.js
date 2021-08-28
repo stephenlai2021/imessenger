@@ -25,6 +25,7 @@ const state = reactive({
   login: false,
   tab: "home",
   to: null,
+  geoLocation: null
 });
 
 const methods = {

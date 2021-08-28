@@ -58,7 +58,7 @@
           :src="user.avatar"
           alt="user avatar"
           :style="{
-            border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0',
+            border: user.online ? '2px solid #e6ee9c' : '2px solid #e0e0e0',
           }"
         />
 
@@ -66,7 +66,7 @@
           rounded
           class="float-right"
           style="position: absolute; left: 32px; top: 32px"
-          :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
+          :style="{ background: user.online ? '#dcedc8' : '#e0e0e0' }"
         />
       </q-avatar>
       <div class="flex">
@@ -115,7 +115,7 @@
               :src="user.avatar"
               alt="user avatar"
               :style="{
-                border: user.online ? '2px solid #69f0ae' : '2px solid #e0e0e0',
+                border: user.online ? '2px solid #e6ee9c' : '2px solid #e0e0e0',
               }"
             />
           </q-avatar>
@@ -123,7 +123,7 @@
             rounded
             class="float-right"
             style="position: absolute; left: 57px; top: 50px"
-            :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
+            :style="{ background: user.online ? '#e6ee9c' : '#e0e0e0' }"
           />
         </q-item-section>
 
@@ -134,7 +134,7 @@
         <q-item-section side>
           <q-badge
             class="q-pa-xs"
-            :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
+            :style="{ background: user.online ? '#e6ee9c' : '#e0e0e0' }"
           >
             <span class="text-primary">
               {{ user.online ? t("online") : t("offline") }}
@@ -209,6 +209,7 @@ export default {
       store.state.online = user.online;
       store.state.user = user;
       store.state.avatar = user.avatar;
+      // store.state.geoLocation = user.geoLocation
 
       router.push(`/chat/${store.state.userDetails.name}/${user.name}`);
     };

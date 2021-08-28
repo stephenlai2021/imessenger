@@ -66,11 +66,25 @@ const routes = [
           });
         },
       },
-      { path: "/auth", component: () => import("src/pages/Auth.vue") },
+      {
+        path: "/auth",
+        component: () => import("src/pages/Auth.vue"),
+        beforeEnter: (to, from, next) => {
+          auth.onAuthStateChanged((user) => {
+            if (user) {
+              console.log("user is logged in | route guard");
+              next('/');
+            } else {
+              console.log("user logged out | route guard");
+              next("");
+            }
+          });
+        },
+      },
       { path: "/map", component: () => import("src/pages/Map.vue") },
       {
         path: "/chat/:from/:to",
-        name : 'chat',
+        name: "chat",
         component: () => import("src/pages/Chat.vue"),
         beforeEnter: (to, from, next) => {
           auth.onAuthStateChanged((user) => {

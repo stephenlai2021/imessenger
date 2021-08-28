@@ -13,8 +13,18 @@
         size="md"
         class="bg-amber-2"
         icon="eva-arrow-ios-back-outline"
-        style="position: fixed; left: 50%; transform: translate(-50%); top: 10px; z-index: 500"
-        @click="router.push(`/chat/${store.state.userDetails.name}/${store.state.user.name}`)"
+        style="
+          position: fixed;
+          left: 50%;
+          transform: translate(-50%);
+          top: 10px;
+          z-index: 500;
+        "
+        @click="
+          router.push(
+            `/chat/${store.state.userDetails.name}/${store.state.user.name}`
+          )
+        "
       />
     </div>
     <div id="map"></div>
@@ -23,20 +33,21 @@
 
 <script>
 import { ref, onMounted, inject } from "vue";
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   setup() {
-    const route = useRoute()
-    const router = useRouter()
+    const route = useRoute();
+    const router = useRouter();
 
-    const store = inject('store')
-    
+    const store = inject("store");
+
     // ref
     const lat = ref(null);
     const lng = ref(null);
     const map = ref(null);
     const me = ref(null);
+    const user = ref(null);
 
     // init zoom
     const zoom = ref(7);
@@ -49,6 +60,30 @@ export default {
     const icon = ref(null);
 
     // methods
+    const getUserGeoLocation = () => {
+      map.value = L.map("map", {
+        center: [store.state.geoLocation.lat, store.state.geoLocation.lng],
+        zoom: zoom.value,
+        maxZoom: 18,
+        zoomControl: false,
+      });
+
+      setControl();
+
+      user.value = L.marker([store.state.user.geoLocation.lat, store.state.user.geoLocation.lng])
+        .addTo(map.value)
+        .bindPopup(`${store.state.user.name} is here`)
+        .openPopup();
+
+      // addStores();
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
+        maxZoom: 18,
+      }).addTo(map.value);
+    };
+
     const initMap = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
@@ -121,6 +156,8 @@ export default {
 
     onMounted(() => {
       initMap();
+
+      // getUserGeoLocation()
     });
 
     return {
