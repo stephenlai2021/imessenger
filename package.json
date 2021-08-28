@@ -9,6 +9,7 @@
     "push": "git add . && git commit -m commit && git push origin master"
   },
   "dependencies": {
+    "@joeattardi/emoji-button": "^4.6.0",
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "date-fns": "^2.23.0",

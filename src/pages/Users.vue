@@ -3,9 +3,10 @@
     <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid red;"> -->
     <q-header reveal class="bg-white">
       <q-toolbar class="constraint">
+        
         <span
           class="text-primary text-bold q-ml-sm"
-          style="font-size: 18px; width: 100%"
+          style="font-size: 20px; width: 100%"
         >
           {{ t("chatRoom") }}
         </span>

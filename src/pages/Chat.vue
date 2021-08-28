@@ -98,14 +98,22 @@
           class="flex row justify-evenly"
           style="width: 50%"
         >
-          <q-btn round dense flat color="primary" icon="eva-image-outline" />
-          <q-btn round dense flat color="primary" icon="eva-camera-outline" />
           <q-btn
             round
             dense
             flat
             color="primary"
+            icon="eva-image-outline"           
+          />
+          <q-btn round dense flat color="primary" icon="eva-camera-outline" />
+          <q-btn
+            round
+            dense
+            flat
+            ref="btnEmoji"
+            color="primary"
             icon="eva-smiling-face-outline"
+             @click="showEmojiPicker"
           />
         </q-btn-group>
 
@@ -155,6 +163,7 @@
 
 <script>
 import { ref, onMounted, inject, watch, computed } from "vue";
+import { EmojiButton } from '@joeattardi/emoji-button';
 import { useRoute, useRouter } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
 import { timestamp } from "src/boot/firebase";
@@ -172,12 +181,14 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    const desktop = ref(false);
-    const indicator = ref(false);
-    const inputFocus = ref(false);
+    const btnEmoji = ref(null)
     const chats = ref(null);
     const input = ref(null);
+    const picker = ref(null);
+    const desktop = ref(false);
     const newMessage = ref("");
+    const indicator = ref(false);
+    const inputFocus = ref(false);
     const showMessages = ref(false);
     const to = ref({});
 
@@ -237,6 +248,26 @@ export default {
       }
     };
 
+    // picker.value = new EmojiButton({
+    //   position: {
+    //     top: '50px',
+    //   },
+    // });
+
+    picker.value = new EmojiButton();
+
+    picker.value.on("emoji", (selection) => {
+      newMessage.value += selection.emoji;
+    });
+
+    const showEmojiPicker = () => {
+      // picker.value.pickerVisible
+      //   ? picker.hidePicker()
+      //   : picker.value.showPicker(newMessage.value);
+
+      picker.value.togglePicker(btnEmoji.value)
+    };
+
     // lifecycle
     onMounted(() => {
       store.methods.getMessages(route.params.from, route.params.to);
@@ -273,6 +304,7 @@ export default {
       chats,
       input,
       desktop,
+      btnEmoji,
       indicator,
       inputFocus,
 
@@ -280,11 +312,12 @@ export default {
       // getUser,
 
       // methods
-      onFocus,
       onBlur,
+      onFocus,
       newMessage,
       sendMessage,
       showMessages,
+      showEmojiPicker,
       sendTypingIndicator,
       formatDistanceToNow,
     };
