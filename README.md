@@ -1,4 +1,4 @@
-# Quasar App (chatapp)
+# Quasar App 
 
 A Quasar Framework app
 
