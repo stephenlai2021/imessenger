@@ -1,6 +1,7 @@
 <template>
-  <q-page class="flex q-pt" style="min-height: 0px">
-    <q-header reveal class="bg-white" style="border-bottom: 1px solid #eeeeee">
+  <q-page class="flex" style="min-height: 0px">
+    <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid red;"> -->
+    <q-header reveal class="bg-white">
       <q-toolbar class="constraint">
         <span
           class="text-primary text-bold q-ml-sm"
@@ -22,8 +23,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-sticky expand position="top" style="z-index: 500" class="q-py-sm">
-      <q-toolbar class="constraint">
+    <q-page-sticky expand position="top" style="z-index: 500;">
+      <q-toolbar class="constraint" >
         <q-input
           v-model="search"
           standout
@@ -138,6 +139,10 @@
         </q-item-section>
       </q-item>
     </q-list>
+
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn round size="15px" icon="eva-arrow-ios-upward-outline" style="background: #69f0ae;" />
+    </q-page-sticky>
 
     <q-footer class="bg-white" style="border-top: 1px solid #eeeeee">
       <div class="constraint">

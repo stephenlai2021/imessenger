@@ -225,10 +225,6 @@ export default {
       store.state.rightDrawerOpen = !store.state.rightDrawerOpen;
     };
 
-    const sayHi = () => {
-      console.log("hi");
-    };
-
     const checkRoute = () => {
       if (route.fullPath.includes("/addpost")) {
         router.push("/");
@@ -308,10 +304,10 @@ export default {
       chatPage,
       leftDrawerOpen,
 
+      // methods
       checkRoute,
       toggleLeftDrawer,
       toggleRightDrawer,
-      sayHi,
     };
   },
 };

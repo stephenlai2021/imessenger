@@ -7,6 +7,7 @@
         backdrop-filter: blur(20px);
         z-index: 500;
       "
+      reveal
     >
       <q-toolbar
         class="constraint"
@@ -84,6 +85,7 @@
     <q-footer
       class="constraint bg-transparent"
       style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px)"
+      reveal
     >
       <q-form
         class="flex row justify-center"
