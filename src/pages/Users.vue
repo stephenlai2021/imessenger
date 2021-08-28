@@ -23,8 +23,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-sticky expand position="top" style="z-index: 500;">
-      <q-toolbar class="constraint" >
+    <q-page-sticky expand position="top" style="z-index: 500">
+      <q-toolbar class="constraint">
         <q-input
           v-model="search"
           standout
@@ -134,14 +134,22 @@
           <q-badge
             class="q-pa-xs"
             :style="{ background: user.online ? '#69f0ae' : '#e0e0e0' }"
-            >{{ user.online ? t("online") : t("offline") }}</q-badge
           >
+            <span class="text-primary">
+              {{ user.online ? t("online") : t("offline") }}
+            </span>
+          </q-badge>
         </q-item-section>
       </q-item>
     </q-list>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn round size="15px" icon="eva-arrow-ios-upward-outline" style="background: #69f0ae;" />
+      <q-btn
+        round
+        size="15px"
+        icon="eva-arrow-ios-upward-outline"
+        style="background: #69f0ae"
+      />
     </q-page-sticky>
 
     <q-footer class="bg-white" style="border-top: 1px solid #eeeeee">
