@@ -26,11 +26,9 @@ const state = reactive({
   tab: "home",
   to: null,
   geoLocation: null,
-  // url: null,
 });
 
 const methods = {
-  // setLeftDrawerOpenState() {},
   handleAuthStateChanged() {
     console.log("handle auth state change | store");
     auth.onAuthStateChanged((user) => {
@@ -62,7 +60,7 @@ const methods = {
         console.log("there is no user | auth state change");
         state.userDetails = {};
         state.online = false;
-        state.url = null
+        // state.url = null
 
         router.push("/auth");
       }
