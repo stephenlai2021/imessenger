@@ -101,6 +101,7 @@ const methods = {
       .catch((err) => {
         console.log("err message: ", err.message);
         state.errorMessage = err.message;
+        router.push("/auth");
       });
   },
   logoutUser() {
