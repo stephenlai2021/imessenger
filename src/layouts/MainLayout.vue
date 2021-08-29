@@ -85,22 +85,27 @@
     >
       <div>
         <q-toolbar></q-toolbar>
-        <div class="flex row justify-center">
-          <img
-            :src="
-              store.state.userDetails.avatar
-                ? store.state.userDetails.avatar
-                : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
-            "
-            alt="my avatar"
-            style="width: 90px; border-radius: 50%"
-          />
+        <div
+          class="flex row justify-center"
+        >
+          <div style="position: relative;">
+            <img
+              :src="
+                store.state.userDetails.avatar
+                  ? store.state.userDetails.avatar
+                  : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
+              "
+              alt="my avatar"
+              style="width: 90px; border-radius: 50%; border: 2px solid #e6ee9c;"
+            />
+            <q-btn dense round flat size="md" icon="eva-camera-outline" style="position: absolute; bottom: -5px; right: -10px;" />
+          </div>
         </div>
         <p class="text-center q-mt-sm text-h5 text-bold">
           {{ store.state.userDetails.name }}
         </p>
 
-        <q-list class="q-mt-md">
+        <q-list class="q-mt-lg">
           <span class="q-ml-md text-grey">{{ t("settings") }}</span>
           <q-item>
             <q-item-section avatar>
@@ -283,7 +288,6 @@ export default {
       //     console.log("left open drawer state | onMounted ", result.state);
       //     leftDrawerOpen.value = result.state;
       //   });
-
       // console.log(
       //   "left drawer open state: | main layout: ",
       //   leftDrawerOpen.value
