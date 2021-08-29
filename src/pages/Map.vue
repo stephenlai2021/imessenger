@@ -1,11 +1,5 @@
 <template>
   <q-page>
-    <!-- <q-header class="bg-transparent">
-      <q-toolbar>
-        123
-        <q-btn flat dense icon="home" />
-      </q-toolbar>
-    </q-header> -->
     <div>
       <q-btn
         round

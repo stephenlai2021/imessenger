@@ -1,5 +1,5 @@
 import { reactive, watchEffect } from "vue";
-import { auth, db } from "src/boot/firebase";
+import { auth, db, disk } from "src/boot/firebase";
 import { formatDistanceToNow } from "date-fns";
 import router from "../router";
 
@@ -25,7 +25,8 @@ const state = reactive({
   login: false,
   tab: "home",
   to: null,
-  geoLocation: null
+  geoLocation: null,
+  // url: null,
 });
 
 const methods = {
@@ -61,6 +62,8 @@ const methods = {
         console.log("there is no user | auth state change");
         state.userDetails = {};
         state.online = false;
+        state.url = null
+
         router.push("/auth");
       }
     });
@@ -76,6 +79,7 @@ const methods = {
           name: data.name,
           email: data.email,
           online: true,
+          avatar: data.avatar
         });
 
         state.tab = "home";
@@ -243,6 +247,18 @@ const methods = {
   getToday() {
     state.today = new Date().toLocaleString();
   },
+  // upLoadFile(file) {
+  //   const storageRef = disk.ref('images/' + file.name)
+
+  //   storageRef.put(file).on('state_change', snap => {
+  //     console.log(snap)
+  //   }, err => {
+  //     console.log(err.message)
+  //   }, async () => {
+  //     state.url = await storageRef.getDownloadURL()
+  //     console.log('image url: ', state.url)
+  //   })
+  // }
 };
 
 const getters = {

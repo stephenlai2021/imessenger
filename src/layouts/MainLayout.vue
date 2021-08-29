@@ -275,19 +275,19 @@ export default {
 
     // lifecycle
     onMounted(() => {
-      localdb
-        .collection("leftDrawerOpen")
-        .doc("imessenger")
-        .get()
-        .then((result) => {
-          console.log("left open drawer state | onMounted ", result.state);
-          leftDrawerOpen.value = result.state;
-        });
+      // localdb
+      //   .collection("leftDrawerOpen")
+      //   .doc("imessenger")
+      //   .get()
+      //   .then((result) => {
+      //     console.log("left open drawer state | onMounted ", result.state);
+      //     leftDrawerOpen.value = result.state;
+      //   });
 
-      console.log(
-        "left drawer open state: | main layout: ",
-        leftDrawerOpen.value
-      );
+      // console.log(
+      //   "left drawer open state: | main layout: ",
+      //   leftDrawerOpen.value
+      // );
     });
 
     return {
