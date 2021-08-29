@@ -30,7 +30,7 @@
         class="q-mr-sm"
         @click="resetData"
       />
-      <q-btn color="primary" :label="t('register')" type="submit" />
+      <q-btn color="primary" :label="tab === 'register' ? t('register') : t('login')" type="submit" />
     </div>
   </q-form>
 </template>
