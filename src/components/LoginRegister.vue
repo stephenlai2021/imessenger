@@ -59,10 +59,11 @@ export default {
     // methods
     const submitForm = () => {
       if (props.tab === "login") {
-        store.state.login = true;
+        store.state.login = true
         store.methods.loginUser(formData.value);
 
         if (store.state.successMessage === "user login successfully") {
+          store.state.login = false
           router.push("/");
         }
       }

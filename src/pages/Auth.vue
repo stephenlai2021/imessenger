@@ -13,6 +13,17 @@
             alt="user avatar"
           />
         </q-avatar>
+        <div class="flex row justify-end full-width">
+          <q-btn
+            round
+            dense
+            flat
+            color="primary"
+            size="md"
+            icon="eva-settings-2-outline"
+            @click="store.methods.toggleLeftDrawer()"
+          />
+        </div>
       </q-toolbar>
     </q-header>
     <div class="spinner" v-if="store.state.login">

@@ -77,7 +77,7 @@ const methods = {
           name: data.name,
           email: data.email,
           online: true,
-          avatar: data.avatar
+          avatar: data.avatar,
         });
 
         state.tab = "home";
@@ -96,12 +96,15 @@ const methods = {
         console.log("user: ", user);
 
         state.tab = "home";
+        state.login = true;
+        state.errorMessage = null;
+
         router.push("/");
       })
       .catch((err) => {
         console.log("err message: ", err.message);
         state.errorMessage = err.message;
-        router.push("/auth");
+        state.login = false;
       });
   },
   logoutUser() {
@@ -129,11 +132,11 @@ const methods = {
         //   return doc.data()
         // });
 
-        let results = []
+        let results = [];
         snapshot.docs.forEach((doc) => {
           doc.data().createdAt && results.unshift(doc.data());
         });
-        state.messages = results
+        state.messages = results;
 
         console.log("messages | store: ", state.messages);
       });
@@ -245,6 +248,9 @@ const methods = {
   },
   getToday() {
     state.today = new Date().toLocaleString();
+  },
+  toggleLeftDrawer() {
+    state.leftDrawerOpen = !state.leftDrawerOpen;
   },
   // upLoadFile(file) {
   //   const storageRef = disk.ref('images/' + file.name)
