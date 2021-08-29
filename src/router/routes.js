@@ -75,7 +75,7 @@ const routes = [
               next('/');
             } else {
               console.log("user logged out | route guard");
-              next("");
+              next();
             }
           });
         },
