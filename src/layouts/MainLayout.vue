@@ -76,6 +76,7 @@
       </div>
     </q-drawer>
 
+      <!-- v-model="leftDrawerOpen" -->
     <q-drawer
       v-model="store.state.leftDrawerOpen"
       show-if-above
@@ -95,7 +96,7 @@
                   : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
               "
               alt="my avatar"
-              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae"
+              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae;"
             />
             <q-btn
               dense
