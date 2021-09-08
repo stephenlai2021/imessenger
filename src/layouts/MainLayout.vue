@@ -107,7 +107,7 @@
             />
           </div>
         </div>
-        <p class="text-center q-mt-sm text-h5 text-grey-8 text-bold">
+        <p class="text-center q-mt-sm text-h5 text-grey-6 text-bold">
           {{ store.state.userDetails.name }}
         </p>
 

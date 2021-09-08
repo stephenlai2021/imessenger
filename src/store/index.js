@@ -134,7 +134,7 @@ const methods = {
 
         let results = [];
         snapshot.docs.forEach((doc) => {
-          doc.data().createdAt && results.unshift(doc.data());
+          doc.data().createdAt && results.push(doc.data());
         });
         state.messages = results;
 

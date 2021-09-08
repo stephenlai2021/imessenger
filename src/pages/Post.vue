@@ -14,14 +14,11 @@
           />
         </q-avatar>
 
-        <span
-          class="text-bold q-ml-sm"
-          style="font-size: 18px; width: 100%"
-        >
+        <span class="text-bold q-ml-sm" style="font-size: 18px; width: 100%">
           {{ store.state.userDetails.name }}
         </span>
         <div class="flex row justify-end full-width">
-           <q-btn
+          <q-btn
             round
             dense
             flat
@@ -31,7 +28,7 @@
             class="q-mr-sm"
             @click="router.push('/addpost')"
           />
-           <q-btn
+          <q-btn
             round
             dense
             flat
@@ -61,31 +58,30 @@
       ducimus soluta modi, nemo tenetur nostrum vitae. Debitis est vero
       asperiores architecto. Consequuntur consectetur similique quod?
     </div>
-     <q-footer
-      class=" constraint"
-      reveal
-    >
-      <q-tabs
-        v-model="store.state.tab"
-        no-caps
-        inline-label
-        class="flex row justify-evenly full-width "
-      >
-        <q-tab
-          name="home"
-          :label="t('posts')"
-          icon="eva-home-outline"
-          style="width: 50%"
-          @click="router.push('/')"
-        />
-        <q-tab
-          name="chat"
-          :label="t('chat')"
-          icon="eva-message-circle-outline"
-          style="width: 50%"
-          @click="router.push('/users')"
-        />
-      </q-tabs>
+    <q-footer>
+      <div class="constraint">
+        <q-tabs
+          v-model="store.state.tab"
+          no-caps
+          inline-label
+          class="flex row justify-evenly full-width"
+        >
+          <q-tab
+            name="home"
+            :label="t('posts')"
+            icon="eva-home-outline"
+            style="width: 50%"
+            @click="router.push('/')"
+          />
+          <q-tab
+            name="chat"
+            :label="t('chat')"
+            icon="eva-message-circle-outline"
+            style="width: 50%"
+            @click="router.push('/users')"
+          />
+        </q-tabs>
+      </div>
     </q-footer>
   </q-page>
 </template>
@@ -98,13 +94,13 @@ import { localdb } from "src/boot/localbase";
 
 export default {
   setup() {
-    const { t, locale } = useI18n()
+    const { t, locale } = useI18n();
 
     const store = inject("store");
 
     const router = useRouter();
 
-    const leftDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
 
     const toggleLeftDrawer = () => {
       store.state.leftDrawerOpen = !store.state.leftDrawerOpen;
@@ -119,7 +115,6 @@ export default {
       //     console.log("left open drawer state | onMounted ", result.state);
       //     leftDrawerOpen.value = result.state;
       //   });
-
       // console.log(
       //   "left drawer open state: | main layout: ",
       //   leftDrawerOpen.value

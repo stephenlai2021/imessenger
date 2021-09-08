@@ -1,13 +1,9 @@
 <template>
-  <q-page class="flex" style="min-height: 0px">
+  <q-page class="" >
     <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid red;"> -->
     <q-header reveal class="">
       <q-toolbar class="constraint">
-        
-        <span
-          class=" text-bold q-ml-sm"
-          style="font-size: 20px; width: 100%"
-        >
+        <span class="text-bold q-ml-sm" style="font-size: 20px; width: 100%">
           {{ t("chatRoom") }}
         </span>
         <div class="flex row justify-end full-width">
@@ -24,34 +20,36 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-sticky expand position="top" style="z-index: 500" class="q-my-sm">
-      <q-toolbar class="constraint">
-        <q-input
-          v-model="search"
-          standout
-          :label="t('searchUser')"
-          dense
-          bg-color=""
-          class="q-mb- full-width"
-        >
-          <template v-slot:prepend>
-            <q-icon
-              name="eva-search-outline"
-              class="q-ml-sm"
-              @click="findUser"
-              style="cursor: pointer"
-            />
-          </template>
-        </q-input>
-      </q-toolbar>
-    </q-page-sticky>
+    <!-- <q-page-sticky expand position="top" style="z-index: 500" class="q-my-sm"> -->
+    <!-- <q-toolbar class="constraint"> -->
+    <div class="full-width q-px-md" style="display: inline-block; ">
+      <q-input
+        v-model="search"
+        standout
+        :label="t('searchUser')"
+        dense
+        bg-color=""
+        class="q-my-md "
+      >
+        <template v-slot:prepend>
+          <q-icon
+            name="eva-search-outline"
+            class="q-ml-sm"
+            @click="findUser"
+            style="cursor: pointer"
+          />
+        </template>
+      </q-input>
+    </div>
+    <!-- </q-toolbar> -->
+    <!-- </q-page-sticky> -->
 
     <div
       @click="goChat(user)"
       v-for="(user, index) in matchingUsers"
       :key="index"
-      class="q-ml-md"
-      style="margin-top: 76px; padding: 0; height: 65px"
+      style="display: inline-block;"
+      class="flex row q-ml-md q-my-sm"
     >
       <q-avatar size="45px" style="position: relative">
         <img
@@ -144,16 +142,22 @@
       </q-item>
     </q-list>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-btn
+      round
+      color="orange"
+      icon="eva-arrow-circle-up-outline"
+      style="position: absolute; right: 16px; bottom: 20px"
+    />
+
+    <!-- <q-page-sticky class="constraint" position="bottom-right" :offset="[18, 18]">
       <q-btn
         round
         size="15px"
         icon="eva-arrow-ios-upward-outline"
         style="background: #69f0ae"
       />
-    </q-page-sticky>
+    </q-page-sticky> -->
 
-    <!-- <q-footer class="" style="border-top: 1px solid #eeeeee"> -->
     <q-footer>
       <div class="constraint">
         <q-tabs

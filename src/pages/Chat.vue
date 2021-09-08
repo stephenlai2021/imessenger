@@ -81,10 +81,10 @@
     </div>
 
     <q-footer
-      class="constraint bg-transparent"
+      class=" bg-transparent"
       style="backdrop-filter: blur(20px)"
     >
-      <q-form class="flex" :class="{ 'q-mx-sm': inputFocus }">
+      <q-form class="flex constraint" :class="{ 'q-mx-sm': inputFocus }">
         <q-btn-group
           v-if="!inputFocus"
           flat
@@ -236,7 +236,7 @@ export default {
       () => store.state.messages,
       () => {
         setTimeout(() => {
-          // window.scrollTo(0, chats.value.scrollHeight);
+          window.scrollTo(0, chats.value.scrollHeight);
           showMessages.value = true;
         }, 20);
       }
