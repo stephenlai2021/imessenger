@@ -41,7 +41,7 @@
             color="blue"
             size="md"
             icon="eva-pin-outline"
-            class="q-mr-sm"
+            class="q-mr-md"
             @click="router.push('/map')"
           />
           <q-btn
@@ -50,7 +50,7 @@
             color="red"
             size="md"
             icon="eva-phone-outline"
-            class="q-mr-sm"
+            class="q-mr-md"
             @click="call"
           />
         </div>
