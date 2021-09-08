@@ -19,7 +19,7 @@ const state = reactive({
   },
   avatar: null,
   user: {},
-  dark: false,
+  darkMode: false,
   chinese: false,
   desktop: false,
   login: false,
@@ -252,18 +252,7 @@ const methods = {
   toggleLeftDrawer() {
     state.leftDrawerOpen = !state.leftDrawerOpen;
   },
-  // upLoadFile(file) {
-  //   const storageRef = disk.ref('images/' + file.name)
 
-  //   storageRef.put(file).on('state_change', snap => {
-  //     console.log(snap)
-  //   }, err => {
-  //     console.log(err.message)
-  //   }, async () => {
-  //     state.url = await storageRef.getDownloadURL()
-  //     console.log('image url: ', state.url)
-  //   })
-  // }
 };
 
 const getters = {

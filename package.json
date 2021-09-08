@@ -1,8 +1,8 @@
 {
-  "name": "messenger",
+  "name": "smackchat",
   "version": "0.0.1",
   "description": "an instant messenger app",
-  "productName": "instant messenger",
+  "productName": "Smackchat",
   "author": "stephenlaichaowen <stephenlaitest@gmail.com>",
   "private": true,
   "scripts": {

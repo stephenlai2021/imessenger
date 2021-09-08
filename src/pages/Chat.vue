@@ -2,12 +2,7 @@
   <q-page class="page-chat">
     <q-header
       class="bg-transparent"
-      style="
-        border-bottom: 1px solid #eeeeee;
-        backdrop-filter: blur(20px);
-        z-index: 500;
-      "
-      reveal
+      style="backdrop-filter: blur(20px); z-index: 500"
     >
       <q-toolbar
         class="constraint"
@@ -15,9 +10,8 @@
       >
         <q-btn
           round
-          dense
           flat
-          color="primary"
+          color="grey-5"
           size="18px"
           class=""
           style="position: relative; z-index: 500"
@@ -25,24 +19,26 @@
           @click="router.push('/users')"
         />
         <span
-          class="text-primary text-bold"
-          style="font-size: 18px; width: 100%"
+          class="text-grey-5 text-bold"
+          style="font-size: 14px; width: 100%"
+          color=""
         >
+          <!-- style="font-size: 18px; width: 100%" -->
           <!-- {{ store.state.user.name }} -->
-          {{ route.params.to }}
+          <!-- {{ route.params.to }} -->
+          {{ myId }}
         </span>
         <div class="flex row justify-end full-width">
           <q-spinner-dots
             size="2rem"
-            color="primary"
+            color="grey-5"
             v-if="store.state.typing.typing"
           />
           <!-- v-if="store.state.typing.typing && indicator" -->
           <q-btn
             round
             dense
-            flat
-            color="primary"
+            color="blue"
             size="md"
             icon="eva-pin-outline"
             class="q-mr-sm"
@@ -51,22 +47,23 @@
           <q-btn
             round
             dense
-            flat
-            color="primary"
+            color="red"
             size="md"
-            icon="eva-video-outline"
+            icon="eva-phone-outline"
             class="q-mr-sm"
+            @click="call"
           />
         </div>
       </q-toolbar>
     </q-header>
+
+    <div class="video-chat"></div>
 
     <div
       ref="chats"
       :class="{ invisible: !showMessages }"
       class="q-mx-md q-my-md column col justify-end messages"
     >
-      <!-- : store.state.user.avatar -->
       <q-chat-message
         v-for="(message, index) in store.getters.formattedMessages()"
         :key="index"
@@ -85,13 +82,9 @@
 
     <q-footer
       class="constraint bg-transparent"
-      style="border-top: 1px solid #eeeeee; backdrop-filter: blur(20px)"
-      reveal
+      style="backdrop-filter: blur(20px)"
     >
-      <q-form
-        class="flex row justify-center"
-        :class="{ 'q-mx-sm': inputFocus }"
-      >
+      <q-form class="flex" :class="{ 'q-mx-sm': inputFocus }">
         <q-btn-group
           v-if="!inputFocus"
           flat
@@ -103,18 +96,27 @@
             round
             dense
             flat
-            color="primary"
-            icon="eva-image-outline"           
+            class="q-ml-lg q-mr-sm"
+            color="green-12"
+            icon="eva-image-outline"
           />
-          <q-btn round dense flat color="primary" icon="eva-camera-outline" />
           <q-btn
             round
             dense
             flat
+            class="q-mx-sm"
+            color="green-12"
+            icon="eva-camera-outline"
+          />
+          <q-btn
+            round
+            dense
+            flat
+            class="q-mr-md q-ma-sm"
             ref="btnEmoji"
-            color="primary"
+            color="green-12"
             icon="eva-smiling-face-outline"
-             @click="showEmojiPicker"
+            @click="showEmojiPicker"
           />
         </q-btn-group>
 
@@ -128,7 +130,7 @@
             :label="t('message')"
             dense
             focus="false"
-            bg-color="grey-2"
+            bg-color=""
             @keydown.enter="sendMessage"
             @keyup="sendTypingIndicator()"
             @focus="onFocus"
@@ -164,7 +166,7 @@
 
 <script>
 import { ref, onMounted, inject, watch, computed } from "vue";
-import { EmojiButton } from '@joeattardi/emoji-button';
+import { EmojiButton } from "@joeattardi/emoji-button";
 import { useRoute, useRouter } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
 import { timestamp } from "src/boot/firebase";
@@ -182,7 +184,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    const btnEmoji = ref(null)
+    const btnEmoji = ref(null);
     const chats = ref(null);
     const input = ref(null);
     const picker = ref(null);
@@ -192,6 +194,42 @@ export default {
     const inputFocus = ref(false);
     const showMessages = ref(false);
     const to = ref({});
+
+    /* webRTC */
+    const myId = ref(null);
+
+    // connect to Peer server
+    const peer = new Peer();
+
+    // get a random id assigned by Peer server
+    peer.on("open", (id) => {
+      myId.value = id;
+      store.state.peerId = id;
+
+      // write peer id into firestore
+    });
+
+    // remote receiving call
+    peer.on("call", (call) => {
+      $q.dialog({
+        title: "Confirm",
+        message: "Would you like to answer this call ?",
+        cancel: true,
+        persistent: true,
+      })
+        .onOk(() => {
+          remoteVideoShow.value = true;
+
+          call.answer(localStream.value);
+
+          call.on("stream", (remoteStream) => {
+            remoteVideo.value.srcObject = remoteStream;
+          });
+        })
+        .onCancel(() => {
+          console.log(">>>> Cancel");
+        });
+    });
 
     // watch
     watch(
@@ -213,6 +251,108 @@ export default {
     );
 
     // methods
+
+    /* webRTC */
+    const call = () => {
+      const call = peer.call(idInput.value, localStream.value);
+
+      remoteVideoShow.value = true;
+
+      call.on("stream", (remoteStream) => {
+        remoteVideo.value.srcObject = remoteStream;
+      });
+    };
+
+    const hangUp = () => {
+      console.log("close connection");
+
+      peer.destroy();
+    };
+
+    const pauseVideo = () => {
+      console.log("pause video");
+
+      pause.value = true;
+
+      localVideo.value.srcObject.getTracks().forEach((track) => {
+        track.enabled = false;
+      });
+    };
+
+    const resumeVideo = () => {
+      console.log("resume video");
+
+      pause.value = false;
+
+      localVideo.value.srcObject.getTracks().forEach((track) => {
+        track.enabled = true;
+      });
+    };
+
+    const toggleVideo = () => {
+      videoOn.value = !videoOn.value;
+
+      if (videoOn.value) {
+        openCamera();
+      }
+
+      if (!videoOn.value) {
+        closeCamera();
+      }
+
+      console.log("video on: ", videoOn.value);
+    };
+
+    const toggleAudio = () => {
+      audioOn.value = !audioOn.value;
+
+      if (audioOn.value) {
+        openAudio();
+      }
+
+      if (!audioOn.value) {
+        closeAudio();
+      }
+
+      console.log("video on: ", videoOn.value);
+    };
+
+    const openCamera = () => {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          localVideo.value.srcObject = localStream.value = stream;
+
+          cameraEnabled.value = true;
+          videoOn.value = true;
+          audioOn.value = true;
+
+          console.log("local stream: ", stream);
+        });
+    };
+
+    const closeCamera = () => {
+      localVideo.value.srcObject.getTracks().forEach((track) => {
+        track.stop();
+
+        cameraEnabled.value = false;
+      });
+    };
+
+    const openAudio = () => {
+      localVideo.value.srcObject.getAudioTracks().forEach((track) => {
+        track.enabled = true;
+      });
+    };
+
+    const closeAudio = () => {
+      localVideo.value.srcObject.getAudioTracks().forEach((track) => {
+        track.enabled = false;
+      });
+    };
+
+    /* end of webRTC */
+
     const sendTypingIndicator = () => {
       indicator.value = true;
 
@@ -266,7 +406,7 @@ export default {
       //   ? picker.hidePicker()
       //   : picker.value.showPicker(newMessage.value);
 
-      picker.value.togglePicker(btnEmoji.value)
+      picker.value.togglePicker(btnEmoji.value);
     };
 
     // lifecycle
@@ -300,7 +440,7 @@ export default {
       route,
       router,
 
-      // ref
+      /* ref */
       to,
       chats,
       input,
@@ -309,12 +449,16 @@ export default {
       indicator,
       inputFocus,
 
+      // webRTC
+      myId,
+
       // computed
       // getUser,
 
       // methods
       onBlur,
       onFocus,
+      call,
       newMessage,
       sendMessage,
       showMessages,

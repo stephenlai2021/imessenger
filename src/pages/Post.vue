@@ -1,6 +1,6 @@
 <template>
   <q-page class="constraint">
-    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+    <q-header reveal>
       <q-toolbar class="constraint">
         <q-avatar>
           <img
@@ -15,7 +15,7 @@
         </q-avatar>
 
         <span
-          class="text-primary text-bold"
+          class="text-bold q-ml-sm"
           style="font-size: 18px; width: 100%"
         >
           {{ store.state.userDetails.name }}
@@ -25,7 +25,7 @@
             round
             dense
             flat
-            color="primary"
+            color=""
             size="md"
             icon="post_add"
             class="q-mr-sm"
@@ -35,7 +35,7 @@
             round
             dense
             flat
-            color="primary"
+            color=""
             size="md"
             icon="eva-settings-2-outline"
             @click="toggleLeftDrawer"
@@ -62,15 +62,14 @@
       asperiores architecto. Consequuntur consectetur similique quod?
     </div>
      <q-footer
-      class="bg-white constraint"
+      class=" constraint"
       reveal
-      style="border-top: 1px solid #eeeeee"
     >
       <q-tabs
         v-model="store.state.tab"
         no-caps
         inline-label
-        class="flex row justify-evenly full-width text-primary"
+        class="flex row justify-evenly full-width "
       >
         <q-tab
           name="home"

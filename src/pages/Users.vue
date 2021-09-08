@@ -1,11 +1,11 @@
 <template>
   <q-page class="flex" style="min-height: 0px">
     <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid red;"> -->
-    <q-header reveal class="bg-white">
+    <q-header reveal class="">
       <q-toolbar class="constraint">
         
         <span
-          class="text-primary text-bold q-ml-sm"
+          class=" text-bold q-ml-sm"
           style="font-size: 20px; width: 100%"
         >
           {{ t("chatRoom") }}
@@ -15,7 +15,7 @@
             round
             dense
             flat
-            color="primary"
+            color=""
             size="md"
             icon="eva-person-add-outline"
             @click="router.push('/finduser')"
@@ -24,14 +24,14 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-sticky expand position="top" style="z-index: 500">
+    <q-page-sticky expand position="top" style="z-index: 500" class="q-my-sm">
       <q-toolbar class="constraint">
         <q-input
           v-model="search"
           standout
           :label="t('searchUser')"
           dense
-          bg-color="grey-2"
+          bg-color=""
           class="q-mb- full-width"
         >
           <template v-slot:prepend>
@@ -51,7 +51,7 @@
       v-for="(user, index) in matchingUsers"
       :key="index"
       class="q-ml-md"
-      style="margin-top: 66px; padding: 0; height: 65px"
+      style="margin-top: 76px; padding: 0; height: 65px"
     >
       <q-avatar size="45px" style="position: relative">
         <img
@@ -101,7 +101,7 @@
       </p>
     </div>
 
-    <q-list v-else class="full-width q-mt-sm">
+    <q-list v-else class="full-width q-mt-md">
       <q-item
         v-for="(user, index) in matchingUsers"
         :key="index"
@@ -153,13 +153,14 @@
       />
     </q-page-sticky>
 
-    <q-footer class="bg-white" style="border-top: 1px solid #eeeeee">
+    <!-- <q-footer class="" style="border-top: 1px solid #eeeeee"> -->
+    <q-footer>
       <div class="constraint">
         <q-tabs
           v-model="store.state.tab"
           inline-label
           no-caps
-          class="flex row justify-evenly full-width text-primary"
+          class="flex row justify-evenly full-width"
         >
           <q-tab
             name="home"

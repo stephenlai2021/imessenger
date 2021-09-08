@@ -1,18 +1,18 @@
 <template>
   <q-page style="overflow: hidden;">
-    <q-header class="bg-white" reveal style="border-bottom: 1px solid #eeeeee">
+    <q-header>
       <q-toolbar class="constraint" style="padding: 0;">
         <q-btn
           round
           dense
           flat
-          color="primary"
+          color=""
           size="18px"
           icon="eva-arrow-ios-back-outline"
           @click="router.push('/')"
         />
         <span
-          class="text-primary text-bold"
+          class=" text-bold"
           style="font-size: 18px; width: 100%"
         >
           {{ t('addPost') }}

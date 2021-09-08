@@ -5,6 +5,7 @@
       v-model="store.state.rightDrawerOpen"
       side="right"
       bordered
+      class=""
     >
       <div class="q-ma-md">
         <p>
@@ -80,15 +81,13 @@
       show-if-above
       bordered
       side="left"
-      class="bg-grey-1"
+      
       style="overflow: hidden"
     >
       <div>
         <q-toolbar></q-toolbar>
-        <div
-          class="flex row justify-center"
-        >
-          <div style="position: relative;">
+        <div class="flex row justify-center">
+          <div style="position: relative">
             <img
               :src="
                 store.state.userDetails.avatar
@@ -96,12 +95,19 @@
                   : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
               "
               alt="my avatar"
-              style="width: 90px; border-radius: 50%; border: 2px solid #e6ee9c;"
+              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae"
             />
-            <q-btn dense round flat size="md" icon="eva-camera-outline" style="position: absolute; bottom: -5px; right: -10px;" />
+            <q-btn
+              dense
+              round
+              flat
+              size="md"
+              icon="eva-camera-outline"
+              style="position: absolute; bottom: -5px; right: -10px"
+            />
           </div>
         </div>
-        <p class="text-center q-mt-sm text-h5 text-bold">
+        <p class="text-center q-mt-sm text-h5 text-grey-8 text-bold">
           {{ store.state.userDetails.name }}
         </p>
 
@@ -118,7 +124,7 @@
             </q-item-section>
 
             <q-item-section>{{ t("dark") }}</q-item-section>
-            <q-toggle v-model="store.state.dark" color="black" />
+            <q-toggle v-model="store.state.darkMode" color="black" />
           </q-item>
           <q-item>
             <q-item-section avatar>
@@ -187,6 +193,7 @@
 import { ref, computed, inject, watch, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { localdb } from "src/boot/localbase";
+import { useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 
 export default {
@@ -194,13 +201,16 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
+    const $q = useQuasar();
+
     const { t, locale } = useI18n();
 
     const store = inject("store");
 
+    const online = ref(true);
+    // const darkMode = ref(false)
     const userPage = ref(false);
     const chatPage = ref(false);
-    const online = ref(true);
     const leftDrawerOpen = ref(null);
 
     // computed
@@ -222,6 +232,29 @@ export default {
     });
 
     // methods
+    watch(
+      () => store.state.darkMode,
+      () => {
+        if (store.state.darkMode) {
+          $q.dark.set(true);
+        }
+        if (!store.state.darkMode) {
+          $q.dark.set(false);
+        }
+      }
+    );
+
+    const toggleDark = () => {
+      store.state.darkMode.value = !store.state.darkMode.value;
+
+      if (store.state.darkMode.value) {
+        $q.dark.set(true);
+      }
+      if (!store.state.darkMode.value) {
+        $q.dark.set(false);
+      }
+    };
+
     const toggleLeftDrawer = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     };
@@ -309,6 +342,7 @@ export default {
       leftDrawerOpen,
 
       // methods
+      toggleDark,
       checkRoute,
       toggleLeftDrawer,
       toggleRightDrawer,
