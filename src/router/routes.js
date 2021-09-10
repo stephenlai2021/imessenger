@@ -72,7 +72,7 @@ const routes = [
           auth.onAuthStateChanged((user) => {
             if (user) {
               console.log("user is logged in | route guard");
-              next('/');
+              next();
             } else {
               console.log("user logged out | route guard");
               next();

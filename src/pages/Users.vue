@@ -214,7 +214,9 @@ export default {
       store.state.online = user.online;
       store.state.user = user;
       store.state.avatar = user.avatar;
-      // store.state.geoLocation = user.geoLocation
+
+      // store.state.otherUserId = user.userId
+      // console.log('otherUserId | Users: ', store.state.otherUserId)
 
       router.push(`/chat/${store.state.userDetails.name}/${user.name}`);
     };
@@ -245,7 +247,7 @@ export default {
 
           router.push("/auth");
         }
-      }, 10000);
+      }, 10000);     
     });
 
     return {

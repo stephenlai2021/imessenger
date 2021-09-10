@@ -76,13 +76,12 @@
       </div>
     </q-drawer>
 
-      <!-- v-model="leftDrawerOpen" -->
+    <!-- v-model="leftDrawerOpen" -->
     <q-drawer
       v-model="store.state.leftDrawerOpen"
       show-if-above
       bordered
       side="left"
-      
       style="overflow: hidden"
     >
       <div>
@@ -96,16 +95,30 @@
                   : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
               "
               alt="my avatar"
-              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae;"
+              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae"
             />
-            <q-btn
-              dense
-              round
-              flat
-              size="md"
-              icon="eva-camera-outline"
-              style="position: absolute; bottom: -5px; right: -10px"
-            />
+            <label class="full-width btn-1">
+              <input class="file-input" type="file" @change="handleChange" />
+              <q-icon
+                dense
+                round
+                flat
+                size="md"
+                name="eva-camera-outline"
+                style="position: absolute; bottom: -3px; right: -8px"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="row justify-center">
+          <div class="output-1 text-center q-mt-md" style="width: 150px">
+            <div v-if="fileError" class="error">{{ fileError }}</div>
+            <div v-if="file">{{ file.name }}</div>
+            <div
+              v-if="file"
+              class="progress-bar"
+              :style="{ width: store.state.progress + '%' }"
+            ></div>
           </div>
         </div>
         <p class="text-center q-mt-sm text-h5 text-grey-6 text-bold">
@@ -192,6 +205,7 @@
 
 <script>
 import { ref, computed, inject, watch, watchEffect, onMounted } from "vue";
+// import useStorage from "src/composables/useStorage";
 import { useRoute, useRouter } from "vue-router";
 import { localdb } from "src/boot/localbase";
 import { useQuasar } from "quasar";
@@ -209,10 +223,17 @@ export default {
     const store = inject("store");
 
     const online = ref(true);
-    // const darkMode = ref(false)
     const userPage = ref(false);
     const chatPage = ref(false);
     const leftDrawerOpen = ref(null);
+
+    const file = ref(null);
+    const fileError = ref(null);
+
+    // allowed file types
+    const types = ["image/png", "image/jpeg", "image/jpg"];
+
+    // const { url, error, progress } = useStorage(file.value, "smackchat");
 
     // computed
     const title = computed(() => {
@@ -232,7 +253,7 @@ export default {
       return route.params.to;
     });
 
-    // methods
+    // watch
     watch(
       () => store.state.darkMode,
       () => {
@@ -244,6 +265,43 @@ export default {
         }
       }
     );
+
+    watch(
+      () => file.value,
+      (newVal, oldVal) => {
+        console.log("You have selected: ", newVal);
+
+        if (file.value && types.includes(file.value.type)) {
+          console.log("file name: ", file.value.name);
+
+          fileError.value = null;
+          store.methods.useStorage(file.value, "smackchat");
+
+          setTimeout(() => {
+            if (store.state.uploadCompleted) {
+              file.value = null;
+            }
+          }, 2000);
+        } else {
+          file.value = null;
+          // fileError.value = "Please select an image file (png or jpeg/jpg)";
+        }
+      }
+    );
+
+    // methods
+    const handleChange = (e) => {
+      let selected = e.target.files[0];
+      console.log("You have selected: ", selected);
+
+      if (selected && types.includes(selected.type)) {
+        file.value = selected;
+        fileError.value = null;
+      } else {
+        file.value = null;
+        fileError.value = "Please select an image file (png or jpeg/jpg)";
+      }
+    };
 
     const toggleDark = () => {
       store.state.darkMode.value = !store.state.darkMode.value;
@@ -336,6 +394,9 @@ export default {
       route,
       router,
 
+      file,
+      fileError,
+
       title,
       online,
       userPage,
@@ -345,6 +406,7 @@ export default {
       // methods
       toggleDark,
       checkRoute,
+      handleChange,
       toggleLeftDrawer,
       toggleRightDrawer,
     };
@@ -353,6 +415,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.progress-bar {
+  display: block;
+  height: 6px;
+  background: #5ad8d2;
+  // padding: 20px;
+  border-radius: 6px;
+  // margin-top: 10px;
+  transition: width 0.3s ease;
+}
+.file-input {
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
 .spinner {
   width: calc(100vw - 60px);
   height: 100vh;

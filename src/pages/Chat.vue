@@ -20,21 +20,18 @@
         />
         <span
           class="text-grey-5 text-bold"
-          style="font-size: 14px; width: 100%"
+          style="font-size: 18px; width: 100%"
           color=""
+          v-if="store.state.otherUser"
         >
-          <!-- style="font-size: 18px; width: 100%" -->
-          <!-- {{ store.state.user.name }} -->
-          <!-- {{ route.params.to }} -->
-          {{ myId }}
+          {{ store.state.otherUser.name }}
         </span>
         <div class="flex row justify-end full-width">
-          <q-spinner-dots
+          <!-- <q-spinner-dots
             size="2rem"
             color="grey-5"
             v-if="store.state.typing.typing"
-          />
-          <!-- v-if="store.state.typing.typing && indicator" -->
+          /> -->
           <q-btn
             round
             dense
@@ -70,7 +67,7 @@
         :avatar="
           message.from === 'me'
             ? store.state.userDetails.avatar
-            : store.state.user.avatar
+            : store.state.otherUser.avatar
         "
         :text="[message.text]"
         :sent="message.from === 'me'"
@@ -80,10 +77,7 @@
       />
     </div>
 
-    <q-footer
-      class=" bg-transparent"
-      style="backdrop-filter: blur(20px)"
-    >
+    <q-footer class="bg-transparent" style="backdrop-filter: blur(20px)">
       <q-form class="flex constraint" :class="{ 'q-mx-sm': inputFocus }">
         <q-btn-group
           v-if="!inputFocus"
@@ -203,10 +197,18 @@ export default {
 
     // get a random id assigned by Peer server
     peer.on("open", (id) => {
-      myId.value = id;
-      store.state.peerId = id;
+      // myId.value = id;
+      // store.state.peerId = id;
 
-      // write peer id into firestore
+      /* write my peer id into firestore */
+      // store.methods.savePeerId()
+
+      /* write other peer id into firestore */
+      // if (store.state.otherUserId) {
+      console.log("other user id | chat: ", store.state.otherUserId);
+      console.log("peer id | chat: ", id);
+      // store.methods.saveOtherPeerId(route.params.to, id);
+      // }
     });
 
     // remote receiving call
@@ -241,6 +243,7 @@ export default {
         }, 20);
       }
     );
+
     watch(
       () => indicator.value,
       // () => store.state.typing.typing,
@@ -250,10 +253,29 @@ export default {
       }
     );
 
+    watch(
+      () => [store.state.typing.typing, store.state.messages],
+      (newVal, oldVal) => {
+        if (store.state.typing.typing) {
+          $q.notify({
+            message: (store.state.messages[0].from = "me"
+              ? store.state.otherUser.name + "Typing..."
+              : store.state.userDetails.name + "Typing..."),
+            color: "purple",
+            position: "top",
+            timeout: 1000,
+          });
+        }
+      }
+    );
+
     // methods
 
     /* webRTC */
     const call = () => {
+      // read other peer id from firestore
+      store.methods.getOtherPeerId(route.params.to);
+
       const call = peer.call(idInput.value, localStream.value);
 
       remoteVideoShow.value = true;
@@ -421,6 +443,12 @@ export default {
       } else {
         console.log("you are not running on desktop | chat page");
         store.state.desktop = false;
+      }
+
+      store.methods.getUser(route.params.to);
+
+      if (store.state.otherUser) {
+        console.log("getUser | Chat: ", store.state.otherUser);
       }
 
       // store.methods.getUsers()

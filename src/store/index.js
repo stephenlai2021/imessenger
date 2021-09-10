@@ -1,5 +1,5 @@
 import { reactive, watchEffect } from "vue";
-import { auth, db, disk } from "src/boot/firebase";
+import { auth, db, disk, timestamp } from "src/boot/firebase";
 import { formatDistanceToNow } from "date-fns";
 import router from "../router";
 
@@ -17,7 +17,7 @@ const state = reactive({
     from: null,
     typing: false,
   },
-  avatar: null,
+  // avatar: null,
   user: {},
   darkMode: false,
   chinese: false,
@@ -26,31 +26,82 @@ const state = reactive({
   tab: "home",
   to: null,
   geoLocation: null,
+  // userName: null,
+
+  // storeage
+  url: null,
+  error: null,
+  progress: null,
+
+  uploadCompleted: false,
 });
 
 const methods = {
+  useStorage(file, data) {
+    watchEffect(() => {
+      // references
+      const storageRef = disk.ref(data + "/" + file.name);
+
+      // upload file
+      storageRef.put(file).on(
+        "state_changed",
+        (snap) => {
+          // update the progress as file uploads
+          let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+
+          state.progress = percentage;
+          console.log('progress: ', state.progress);
+
+          if (state.progress >= 100) {
+            state.uploadCompleted = true
+            console.log('image upload completed: ', state.uploadCompleted)
+          }
+        },
+        (err) => {
+          state.error = err.message;
+        },
+        async () => {
+          state.url = await storageRef.getDownloadURL();
+          console.log("image url | store: ", state.url);
+
+          db.collection('chat-users').doc(state.userDetails.name).update({
+            avatar: state.url
+          })
+        }
+      );
+    });
+  },
+  // saveOtherPeerId(to, id) {
+  //   db.collection("chat-users").doc(to).update({
+  //     peerId: id,
+  //   });
+  // },
+  // savePeerId() {
+  //   db.collection("chat-users").doc(state.userDetails.userId).update({
+  //     peerId: state.peerId,
+  //   });
+  // },
   handleAuthStateChanged() {
     console.log("handle auth state change | store");
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(`${user.uid} is logged in`);
         db.collection("chat-users")
-          .doc(user.uid)
-          .get()
-          .then((doc) => {
-            state.userDetails = { ...doc.data(), userId: doc.id };
-            console.log("user details | store", state.userDetails);
-            db.collection("chat-users")
-              .doc(user.uid)
-              .update({ online: true })
-              .then(() => {
-                state.online = true;
-                state.login = false;
+          .where("userId", "==", user.uid)
+          // .get()
+          // .then((snapshot) => {
+          .onSnapshot((snapshot) => {
+            snapshot.docs.map((doc) => {
+              state.userDetails = doc.data();
+              console.log("user details | store", state.userDetails);
 
-                // if (router.currentRoute.value.fullPath.includes('/chat')) {
-                //   router.push('/users')
-                // }
-              });
+              db.collection("chat-users")
+                .doc(state.userDetails.name)
+                .update({ online: true })
+                .then(() => {
+                  state.online = true;
+                  state.login = false;
+                });
+            });
           })
           .catch((err) => {
             console.log("error message: ", err.message);
@@ -60,7 +111,6 @@ const methods = {
         console.log("there is no user | auth state change");
         state.userDetails = {};
         state.online = false;
-        // state.url = null
 
         router.push("/auth");
       }
@@ -73,14 +123,16 @@ const methods = {
         const user = cred.user;
         console.log("user: ", user);
 
-        db.collection("chat-users").doc(user.uid).set({
+        db.collection("chat-users").doc(data.name).set({
           name: data.name,
           email: data.email,
-          online: true,
           avatar: data.avatar,
+          userId: user.uid,
+          geolocation: null,
         });
 
         state.tab = "home";
+
         router.push("/");
       })
       .catch((err) => {
@@ -110,7 +162,7 @@ const methods = {
   logoutUser() {
     auth.signOut().then(() => {
       db.collection("chat-users")
-        .doc(state.userDetails.userId)
+        .doc(state.userDetails.name)
         .update({ online: false })
         .then(() => {
           console.log("user is offline");
@@ -221,10 +273,23 @@ const methods = {
     const unsub = db.collection("chat-users").onSnapshot((snap) => {
       console.log("snapshot: getUsers");
       state.users = snap.docs.map((doc) => {
-        return { ...doc.data(), userId: doc.id };
+        // return { ...doc.data(), userId: doc.id };
+        return doc.data();
       });
       console.log("init users | store: ", state.users);
     });
+
+    watchEffect((onInvalidate) => {
+      onInvalidate(() => unsub());
+    });
+  },
+  getUser(to) {
+    const unsub = db
+      .collection("chat-users")
+      .doc(to)
+      .onSnapshot((doc) => {
+        state.otherUser = doc.data();
+      });
 
     watchEffect((onInvalidate) => {
       onInvalidate(() => unsub());
@@ -252,7 +317,6 @@ const methods = {
   toggleLeftDrawer() {
     state.leftDrawerOpen = !state.leftDrawerOpen;
   },
-
 };
 
 const getters = {
