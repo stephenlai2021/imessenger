@@ -77,7 +77,10 @@
       />
     </div>
 
-    <q-footer class="bg-transparent" style="backdrop-filter: blur(20px)">
+    <q-footer
+      class="bg-transparent"
+      style="backdrop-filter: blur(20px); border: 1px solid"
+    >
       <q-form class="flex constraint" :class="{ 'q-mx-sm': inputFocus }">
         <q-btn-group
           v-if="!inputFocus"
@@ -86,22 +89,14 @@
           class="flex row justify-evenly"
           style="width: 50%"
         >
-          <q-btn
-            round
-            dense
-            flat
-            class="q-ml-lg q-mr-sm"
-            color="green-12"
-            icon="eva-image-outline"
-          />
-          <q-btn
-            round
-            dense
-            flat
-            class="q-mx-sm"
-            color="green-12"
-            icon="eva-camera-outline"
-          />
+          <label class="q-my-md" style="cursor: pointer">
+            <input class="file-input" type="file" @change="handleChange" />
+            <q-icon color="green-12" size="sm" name="eva-image-outline" />
+          </label>
+          <label class="q-my-md" style="cursor: pointer">
+            <input class="file-input" type="file" @change="handleChange" />
+            <q-icon color="green-12" size="sm" name="eva-camera-outline" />
+          </label>
           <q-btn
             round
             dense
@@ -188,50 +183,11 @@ export default {
     const inputFocus = ref(false);
     const showMessages = ref(false);
     const to = ref({});
+    const file = ref(null);
+    const fileError = ref(null);
 
-    /* webRTC */
-    const myId = ref(null);
-
-    // connect to Peer server
-    const peer = new Peer();
-
-    // get a random id assigned by Peer server
-    peer.on("open", (id) => {
-      // myId.value = id;
-      // store.state.peerId = id;
-
-      /* write my peer id into firestore */
-      // store.methods.savePeerId()
-
-      /* write other peer id into firestore */
-      // if (store.state.otherUserId) {
-      console.log("other user id | chat: ", store.state.otherUserId);
-      console.log("peer id | chat: ", id);
-      // store.methods.saveOtherPeerId(route.params.to, id);
-      // }
-    });
-
-    // remote receiving call
-    peer.on("call", (call) => {
-      $q.dialog({
-        title: "Confirm",
-        message: "Would you like to answer this call ?",
-        cancel: true,
-        persistent: true,
-      })
-        .onOk(() => {
-          remoteVideoShow.value = true;
-
-          call.answer(localStream.value);
-
-          call.on("stream", (remoteStream) => {
-            remoteVideo.value.srcObject = remoteStream;
-          });
-        })
-        .onCancel(() => {
-          console.log(">>>> Cancel");
-        });
-    });
+    // allowed file types
+    const types = ["image/png", "image/jpeg", "image/jpg"];  
 
     // watch
     watch(
@@ -269,111 +225,53 @@ export default {
       }
     );
 
+    watch(
+      () => file.value,
+      (newVal, oldVal) => {
+        console.log("You have selected: ", newVal);
+
+        if (file.value && types.includes(file.value.type)) {
+          console.log("file name: ", file.value.name);
+
+          fileError.value = null;
+          store.methods.useStorage2(file.value, "smackchat");
+
+          setTimeout(() => {
+            if (store.state.uploadCompleted) {
+              file.value = null;
+            }
+          }, 2000);
+
+          if (store.state.url) {
+            store.methods.sendMessage({
+              text: store.state.url,
+              from: "me",
+              to: route.params.to,
+              createdAt: timestamp(),
+            });
+          }
+        } else {
+          file.value = null;
+          // fileError.value = "Please select an image file (png or jpeg/jpg)";
+        }
+      }
+    );
+
     // methods
+    const call = () => {};
 
-    /* webRTC */
-    const call = () => {
-      // read other peer id from firestore
-      store.methods.getOtherPeerId(route.params.to);
+    const handleChange = (e) => {
+      let selected = e.target.files[0];
+      console.log("You have selected: ", selected);
 
-      const call = peer.call(idInput.value, localStream.value);
-
-      remoteVideoShow.value = true;
-
-      call.on("stream", (remoteStream) => {
-        remoteVideo.value.srcObject = remoteStream;
-      });
-    };
-
-    const hangUp = () => {
-      console.log("close connection");
-
-      peer.destroy();
-    };
-
-    const pauseVideo = () => {
-      console.log("pause video");
-
-      pause.value = true;
-
-      localVideo.value.srcObject.getTracks().forEach((track) => {
-        track.enabled = false;
-      });
-    };
-
-    const resumeVideo = () => {
-      console.log("resume video");
-
-      pause.value = false;
-
-      localVideo.value.srcObject.getTracks().forEach((track) => {
-        track.enabled = true;
-      });
-    };
-
-    const toggleVideo = () => {
-      videoOn.value = !videoOn.value;
-
-      if (videoOn.value) {
-        openCamera();
+      if (selected && types.includes(selected.type)) {
+        file.value = selected;
+        fileError.value = null;
+      } else {
+        file.value = null;
+        fileError.value = "Please select an image file (png or jpeg/jpg)";
       }
-
-      if (!videoOn.value) {
-        closeCamera();
-      }
-
-      console.log("video on: ", videoOn.value);
     };
-
-    const toggleAudio = () => {
-      audioOn.value = !audioOn.value;
-
-      if (audioOn.value) {
-        openAudio();
-      }
-
-      if (!audioOn.value) {
-        closeAudio();
-      }
-
-      console.log("video on: ", videoOn.value);
-    };
-
-    const openCamera = () => {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-          localVideo.value.srcObject = localStream.value = stream;
-
-          cameraEnabled.value = true;
-          videoOn.value = true;
-          audioOn.value = true;
-
-          console.log("local stream: ", stream);
-        });
-    };
-
-    const closeCamera = () => {
-      localVideo.value.srcObject.getTracks().forEach((track) => {
-        track.stop();
-
-        cameraEnabled.value = false;
-      });
-    };
-
-    const openAudio = () => {
-      localVideo.value.srcObject.getAudioTracks().forEach((track) => {
-        track.enabled = true;
-      });
-    };
-
-    const closeAudio = () => {
-      localVideo.value.srcObject.getAudioTracks().forEach((track) => {
-        track.enabled = false;
-      });
-    };
-
-    /* end of webRTC */
 
     const sendTypingIndicator = () => {
       indicator.value = true;
@@ -424,10 +322,6 @@ export default {
     });
 
     const showEmojiPicker = () => {
-      // picker.value.pickerVisible
-      //   ? picker.hidePicker()
-      //   : picker.value.showPicker(newMessage.value);
-
       picker.value.togglePicker(btnEmoji.value);
     };
 
@@ -450,13 +344,6 @@ export default {
       if (store.state.otherUser) {
         console.log("getUser | Chat: ", store.state.otherUser);
       }
-
-      // store.methods.getUsers()
-      // to.value = store.state.users.find(user => user.name === route.params.to)
-      // to.value = store.getters.filteredUsers().find(user => user.name === route.params.to)
-      // console.log('to user: ', to.value)
-      // console.log('from url: ', route.params.from)
-      // console.log('to url: ', route.params.to)
     });
 
     return {
@@ -477,16 +364,11 @@ export default {
       indicator,
       inputFocus,
 
-      // webRTC
-      myId,
-
-      // computed
-      // getUser,
-
       // methods
+      call,
       onBlur,
       onFocus,
-      call,
+      handleChange,
       newMessage,
       sendMessage,
       showMessages,
@@ -499,6 +381,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.file-input {
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
 .q-toolbar {
   padding-right: 0;
 }

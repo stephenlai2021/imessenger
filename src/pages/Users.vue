@@ -1,5 +1,5 @@
 <template>
-  <q-page class="" >
+  <q-page class="">
     <!-- <q-header reveal class="bg-white" style="border-bottom: 1px solid red;"> -->
     <q-header reveal class="">
       <q-toolbar class="constraint">
@@ -22,14 +22,14 @@
 
     <!-- <q-page-sticky expand position="top" style="z-index: 500" class="q-my-sm"> -->
     <!-- <q-toolbar class="constraint"> -->
-    <div class="full-width q-px-md" style="display: inline-block; ">
+    <div class="full-width q-px-md" style="display: inline-block">
       <q-input
         v-model="search"
         standout
         :label="t('searchUser')"
         dense
         bg-color=""
-        class="q-my-md "
+        class="q-my-md"
       >
         <template v-slot:prepend>
           <q-icon
@@ -48,7 +48,7 @@
       @click="goChat(user)"
       v-for="(user, index) in matchingUsers"
       :key="index"
-      style="display: inline-block;"
+      style="display: inline-block"
       class="flex row q-ml-md q-my-sm"
     >
       <q-avatar size="45px" style="position: relative">
@@ -224,7 +224,8 @@ export default {
     const matchingUsers = computed(() => {
       return store.getters.filteredUsers().filter((user) => {
         return user.name.includes(
-          search.value.toLowerCase() || search.value.toUpperCase()
+          search.value
+          // search.value.toLowerCase() || search.value.toUpperCase()
         );
       });
     });
@@ -247,7 +248,7 @@ export default {
 
           router.push("/auth");
         }
-      }, 10000);     
+      }, 10000);
     });
 
     return {

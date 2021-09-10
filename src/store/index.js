@@ -2,6 +2,7 @@ import { reactive, watchEffect } from "vue";
 import { auth, db, disk, timestamp } from "src/boot/firebase";
 import { formatDistanceToNow } from "date-fns";
 import router from "../router";
+import { route } from "quasar/wrappers";
 
 const state = reactive({
   users: [],
@@ -32,8 +33,9 @@ const state = reactive({
   url: null,
   error: null,
   progress: null,
-
   uploadCompleted: false,
+
+  isChatPage: false,
 });
 
 const methods = {
@@ -50,11 +52,11 @@ const methods = {
           let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
 
           state.progress = percentage;
-          console.log('progress: ', state.progress);
+          console.log("progress: ", state.progress);
 
           if (state.progress >= 100) {
-            state.uploadCompleted = true
-            console.log('image upload completed: ', state.uploadCompleted)
+            state.uploadCompleted = true;
+            console.log("image upload completed: ", state.uploadCompleted);
           }
         },
         (err) => {
@@ -64,9 +66,39 @@ const methods = {
           state.url = await storageRef.getDownloadURL();
           console.log("image url | store: ", state.url);
 
-          db.collection('chat-users').doc(state.userDetails.name).update({
-            avatar: state.url
-          })
+          db.collection("chat-users").doc(state.userDetails.name).update({
+            avatar: state.url,
+          });
+        }
+      );
+    })
+  },
+  useStorage2(file, data) {
+    watchEffect(() => {
+      // references
+      const storageRef = disk.ref(data + "/" + file.name);
+
+      // upload file
+      storageRef.put(file).on(
+        "state_changed",
+        (snap) => {
+          // update the progress as file uploads
+          let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+
+          state.progress = percentage;
+          console.log("progress: ", state.progress);
+
+          if (state.progress >= 100) {
+            state.uploadCompleted = true;
+            console.log("image upload completed: ", state.uploadCompleted);
+          }
+        },
+        (err) => {
+          state.error = err.message;
+        },
+        async () => {
+          state.url = await storageRef.getDownloadURL();
+          console.log("image url | store: ", state.url);
         }
       );
     });
