@@ -101,15 +101,15 @@
             <label class="full-width btn-1" style="cursor: pointer;">
               <input class="file-input" type="file" @change="handleChange" />
               <q-icon               
-                color="purple-5"
+                color="green"
                 size="md"
                 name="eva-camera-outline"
-                style="position: absolute; bottom: -3px; right: -8px"
+                style="position: absolute; bottom: -8px; right: -13px"
               />
             </label>
           </div>
         </div>
-        <div class="row justify-center">
+        <div v-if="file" class="row justify-center">
           <div class="output-1 text-center q-mt-md" style="width: 150px">
             <div v-if="fileError" class="error">{{ fileError }}</div>
             <div v-if="file">{{ file.name }}</div>
