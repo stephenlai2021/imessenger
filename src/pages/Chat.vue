@@ -79,7 +79,7 @@
 
     <q-footer
       class="bg-transparent"
-      style="backdrop-filter: blur(20px); border: 1px solid"
+      style="backdrop-filter: blur(20px);"
     >
       <q-form class="flex constraint" :class="{ 'q-mx-sm': inputFocus }">
         <q-btn-group
@@ -89,19 +89,19 @@
           class="flex row justify-evenly"
           style="width: 50%"
         >
-          <label class="q-my-md" style="cursor: pointer">
+          <label class="q-ma-md" style="cursor: pointer">
             <input class="file-input" type="file" @change="handleChange" />
-            <q-icon color="green-12" size="sm" name="eva-image-outline" />
+            <q-icon color="green-12" size="md" name="eva-image-outline" />
           </label>
-          <label class="q-my-md" style="cursor: pointer">
+          <label class="q-ma-md" style="cursor: pointer">
             <input class="file-input" type="file" @change="handleChange" />
-            <q-icon color="green-12" size="sm" name="eva-camera-outline" />
+            <q-icon color="green-12" size="md" name="eva-camera-outline" />
           </label>
           <q-btn
             round
-            dense
+            size="16px"
             flat
-            class="q-mr-md q-ma-sm"
+            class="q-ma-sm"
             ref="btnEmoji"
             color="green-12"
             icon="eva-smiling-face-outline"
