@@ -95,14 +95,13 @@
                   : 'https://www.clipartmax.com/png/full/98-984206_profile-photo-facebook-profile-picture-icon.png'
               "
               alt="my avatar"
-              style="width: 90px; border-radius: 50%; border: 2px solid #69f0ae"
+              style="width: 120px; border-radius: 8px;"
             />
-            <label class="full-width btn-1">
+              <!-- style="width: 120px; border-radius: 50%; border: 2px solid #69f0ae" -->
+            <label class="full-width btn-1" style="cursor: pointer;">
               <input class="file-input" type="file" @change="handleChange" />
-              <q-icon
-                dense
-                round
-                flat
+              <q-icon               
+                color="purple-5"
                 size="md"
                 name="eva-camera-outline"
                 style="position: absolute; bottom: -3px; right: -8px"
